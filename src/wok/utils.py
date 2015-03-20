@@ -115,14 +115,14 @@ def get_all_tabs():
 def import_class(class_path):
     module_name, class_name = class_path.rsplit('.', 1)
     try:
-        mod = import_module(module_name)
+        mod = import_module(module_name, class_name)
         return getattr(mod, class_name)
     except (ImportError, AttributeError):
         raise ImportError('Class %s can not be imported' % class_path)
 
 
-def import_module(module_name):
-    return __import__(module_name, globals(), locals(), [''])
+def import_module(module_name, class_name=''):
+    return __import__(module_name, globals(), locals(), [class_name])
 
 
 def check_url_path(path, redirected=0):
