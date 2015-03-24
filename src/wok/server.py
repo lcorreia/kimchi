@@ -145,6 +145,8 @@ class Server(object):
                 plugin_class = ('plugins.%s.%s' %
                                 (plugin_name,
                                  plugin_config['wok']['plugin_class']))
+                extra_auth = plugin_config['wok'].get('extra_auth_api_class',
+                                                      None)
                 script_name = plugin_config['wok']['uri']
                 del plugin_config['wok']
 
@@ -163,6 +165,24 @@ class Server(object):
             get_custom_conf = getattr(plugin_app, "get_custom_conf", None)
             if get_custom_conf is not None:
                 plugin_config.update(get_custom_conf())
+
+            # dynamically add tools.wokauth.on = True to extra plugin APIs
+            if extra_auth:
+                try:
+                    authed_apis = import_class(('plugins.%s.%s' % (plugin_name,
+                                              extra_auth)))
+                except ImportError:
+                    cherrypy.log.error_log.error("Failed to import subnodes "
+                                                 "for plugin %s" % plugin_class)
+                    continue
+
+                urlSubNodes = {}
+                for ident, node in authed_apis.items():
+                    if node.url_auth:
+                        ident = "/%s" % ident
+                        urlSubNodes[ident] = {'tools.wokauth.on': True}
+
+                plugin_config.update(urlSubNodes)
 
             cherrypy.tree.mount(plugin_app, script_name, plugin_config)
 
