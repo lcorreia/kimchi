@@ -76,7 +76,7 @@ class TemplatesModel(object):
                 pool_name = pool_name_from_uri(pool_uri)
                 pool = conn.storagePoolLookupByName(pool_name.encode("utf-8"))
             except Exception:
-                raise InvalidParameter("KCHTMPL0004E", {'pool': pool_name,
+                raise InvalidParameter("KCHTMPL0004E", {'pool': pool_uri,
                                                         'template': name})
 
             tmp_volumes = [disk['volume'] for disk in params.get('disks', [])
@@ -194,7 +194,7 @@ class TemplateModel(object):
                 pool_name = pool_name_from_uri(pool_uri)
                 pool = conn.storagePoolLookupByName(pool_name.encode("utf-8"))
             except Exception:
-                raise InvalidParameter("KCHTMPL0004E", {'pool': pool_name,
+                raise InvalidParameter("KCHTMPL0004E", {'pool': pool_uri,
                                                         'template': name})
             tmp_volumes = [disk['volume'] for disk in new_t.get('disks', [])
                            if 'volume' in disk]
@@ -239,7 +239,7 @@ class LibvirtVMTemplate(VMTemplate):
             conn = self.conn.get()
             pool = conn.storagePoolLookupByName(pool_name.encode("utf-8"))
         except libvirt.libvirtError:
-            raise InvalidParameter("KCHTMPL0004E", {'pool': pool_name,
+            raise InvalidParameter("KCHTMPL0004E", {'pool': pool_uri,
                                                     'template': self.name})
 
         if not pool.isActive():
