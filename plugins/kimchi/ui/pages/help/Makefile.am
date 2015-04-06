@@ -20,14 +20,13 @@ DITA_HTML_FILES = $(patsubst %.dita,%.html,$(wildcard */*.dita))
 HTML_FILES = $(if $(DITA_HTML_FILES), $(DITA_HTML_FILES), $(wildcard */*.html))
 DITA_XSL_FILE = dita-help.xsl
 
-EXTRA_DIST = gen-index.py\
-			 $(DITA_XSL_FILE)
+EXTRA_DIST = $(DITA_XSL_FILE)
+
 helpdir = $(datadir)/wok/plugins/kimchi/ui/pages/help
 
 dist_help_DATA = kimchi.css
 
 all: $(HTML_FILES) $(wildcard */*.dita)
-	@$(foreach dir, $(dir $(wildcard */)), $(shell pwd)/gen-index.py $(wildcard $(dir)*.dita) > $(dir)/index.html;)
 
 %.html: %.dita $(DITA_XSL_FILE)
 	xsltproc -o $@ $(DITA_XSL_FILE) $<
