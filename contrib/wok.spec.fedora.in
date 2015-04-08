@@ -121,16 +121,16 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/wok/ui/
 %{_datadir}/wok
 %{_sysconfdir}/nginx/conf.d/wok.conf.in
-%{_sysconfdir}/nginx/conf.d/wok.conf
 %{_sysconfdir}/wok/wok.conf
 %{_sysconfdir}/wok/
+%{_mandir}/man8/wokd.8.gz
+
+%if 0%{?with_systemd}
+%{_sysconfdir}/nginx/conf.d/wok.conf
 %{_sharedstatedir}/wok/vnc-tokens/
 %{_sharedstatedir}/wok/
 %{_localstatedir}/log/wok/*
 %{_localstatedir}/log/wok/
-%{_mandir}/man8/wokd.8.gz
-
-%if 0%{?with_systemd}
 %{_unitdir}/wokd.service
 %{_prefix}/lib/firewalld/services/wokd.xml
 %endif
