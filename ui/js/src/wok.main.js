@@ -337,7 +337,7 @@ wok.checkHelpFile = function(path) {
     if (/^tabs/.test(path))
         url = path.replace("tabs", "help/" + lang);
     else if (/^plugins/.test(path))
-        url = path.slice(0, path.lastIndexOf('/')) + "help/" + lang + path.slice(path.lastIndexOf('/'));
+        url = path.slice(0, path.lastIndexOf('/')) + "/help/" + lang + path.slice(path.lastIndexOf('/'));
     // Checking if help page exist.
     $.ajax({
         url: url,
