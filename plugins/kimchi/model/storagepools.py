@@ -72,7 +72,7 @@ class StoragePoolsModel(object):
         pools = {}
 
         default_pool = tmpl_defaults['storagepool']
-        default_pool = default_pool.split('/')[2]
+        default_pool = default_pool.split('/')[-1]
 
         pools[default_pool] = {}
         if default_pool == 'default':
