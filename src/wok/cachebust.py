@@ -20,11 +20,16 @@
 import os
 
 
-from wok.config import paths
+from wok.config import paths, PluginPaths
 
 
-def href(url):
+def href(url, plugin = None):
+    if plugin is None:
+        basePath = paths.ui_dir
+    else:
+        basePath = PluginPaths(plugin).ui_dir
+
     # for error.html, url is absolute path
-    f = os.path.join(paths.ui_dir, url.lstrip("/"))
+    f = os.path.join(basePath, url.lstrip("/"))
     mtime = os.path.getmtime(f)
     return "%s?cacheBust=%s" % (url, mtime)
