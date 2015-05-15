@@ -28,10 +28,10 @@ from wok import config
 from wok.model import model
 from wok import mockmodel
 from wok import vnc
-from wok.config import KimchiConfig, PluginConfig
+from wok.config import WokConfig, PluginConfig
 from wok.control import sub_nodes
 from wok.proxy import start_proxy, terminate_proxy
-from wok.root import KimchiRoot
+from wok.root import WokRoot
 from wok.utils import get_enabled_plugins, import_class
 
 
@@ -73,7 +73,7 @@ class Server(object):
             if not os.path.isdir(directory):
                 os.makedirs(directory)
 
-        self.configObj = KimchiConfig()
+        self.configObj = WokConfig()
         # We'll use the session timeout (= 10 minutes) and the
         # nginx timeout (= 10 minutes). This monitor isn't involved
         # in anything other than monitor the timeout of the connection,
@@ -141,7 +141,7 @@ class Server(object):
                 ident = "/%s" % ident
                 cfg[ident] = {'tools.wokauth.on': True}
 
-        self.app = cherrypy.tree.mount(KimchiRoot(model_instance, dev_env),
+        self.app = cherrypy.tree.mount(WokRoot(model_instance, dev_env),
                                        config=self.configObj)
         self._load_plugins()
 

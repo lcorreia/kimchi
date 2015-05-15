@@ -26,7 +26,7 @@ from cherrypy import expose
 
 from wok.config import PluginPaths
 from wok.control.base import Collection, Resource
-from wok.root import Root
+from wok.root import WokRoot
 from plugins.sample.i18n import messages
 from plugins.sample.model import Model
 
@@ -34,7 +34,7 @@ from plugins.sample.model import Model
 model = Model()
 
 
-class Drawings(Root):
+class Drawings(WokRoot):
     def __init__(self):
         Resource.__init__(self, model)
         self.description = Description(model)

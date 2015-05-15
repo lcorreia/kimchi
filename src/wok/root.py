@@ -114,16 +114,16 @@ class Root(Resource):
         raise cherrypy.HTTPError(404)
 
 
-class KimchiRoot(Root):
-    def __init__(self, model, dev_env):
-        super(KimchiRoot, self).__init__(model, dev_env)
-        self.default_page = 'kimchi-ui.html'
+class WokRoot(Root):
+    def __init__(self, model, dev_env=False):
+        super(WokRoot, self).__init__(model, dev_env)
+        self.default_page = 'wok-ui.html'
         for ident, node in sub_nodes.items():
             setattr(self, ident, node(model))
         with open(os.path.join(paths.src_dir, 'API.json')) as f:
             self.api_schema = json.load(f)
         self.paths = paths
-        self.domain = 'kimchi'
+        self.domain = 'wok'
         self.messages = messages
 
     @cherrypy.expose

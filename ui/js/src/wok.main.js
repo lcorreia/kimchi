@@ -90,12 +90,11 @@ wok.main = function() {
         return tabs;
     };
 
-    var tabConfigUrl = 'config/ui/tabs.xml';
     var pluginConfigUrl = 'plugins/{plugin}/ui/config/tab-ext.xml';
     var pluginI18nUrl = 'plugins/{plugin}/i18n.json';
     var DEFAULT_HASH;
     var buildTabs = function(callback) {
-        var tabs = retrieveTabs(tabConfigUrl);
+        var tabs = [];
         wok.listPlugins(function(plugins) {
             $(plugins).each(function(i, p) {
                 var url = wok.substitute(pluginConfigUrl, {
