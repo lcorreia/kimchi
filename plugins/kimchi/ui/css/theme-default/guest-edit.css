@@ -134,7 +134,7 @@
 }
 
 .guest-edit-snapshot .icon {
-    background: url('../../images/theme-default/kimchi-loading15x15.gif') no-repeat;
+    background: url('../images/theme-default/kimchi-loading15x15.gif') no-repeat;
     display: block;
     width: 16px;
     height: 16px;
@@ -256,12 +256,12 @@
 }
 
 .guest-edit-permission .pam .body .item .user-icon {
-    background: url('/images/theme-default/user.png') no-repeat scroll;
+    background: url('../images/theme-default/user.png') no-repeat scroll;
     background-size: 15px 15px;
 }
 
 .guest-edit-permission .pam .body .item .group-icon {
-    background: url('/images/theme-default/group.png') no-repeat scroll;
+    background: url('../images/theme-default/group.png') no-repeat scroll;
     background-size: 15px 15px;
 }
 

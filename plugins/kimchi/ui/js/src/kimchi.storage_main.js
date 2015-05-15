@@ -156,7 +156,7 @@ kimchi.storageBindClick = function() {
         $('.pool-add-volume').on('click', function(event) {
             var poolName = $(this).data('name');
             kimchi.selectedSP = poolName;
-            wok.window.open('storagepool-add-volume.html');
+            wok.window.open('plugins/kimchi/storagepool-add-volume.html');
         });
 
         $('.storage-action').on('click', function() {
@@ -211,7 +211,7 @@ kimchi.doListVolumes = function(poolObj) {
 
     var getOngoingVolumes = function() {
         var result = {}
-        var filter = 'status=running&target_uri=' + encodeURIComponent('^/storagepools/' + poolName + '/*')
+        var filter = 'status=running&target_uri=' + encodeURIComponent('^/plugins/kimchi/storagepools/' + poolName + '/*')
         kimchi.getTasksByFilter(filter, function(tasks) {
             for(var i = 0; i < tasks.length; i++) {
                 var volumeName = tasks[i].target_uri.split('/').pop();
@@ -338,7 +338,7 @@ kimchi.storage_main = function() {
     if(wok.tabMode['storage'] === 'admin') {
         $('.tools').attr('style','display');
         $('#storage-pool-add').on('click', function() {
-            wok.window.open('storagepool-add.html');
+            wok.window.open('plugins/kimchi/storagepool-add.html');
         });
         $('.list-title .title-actions').attr('style','display');
     }

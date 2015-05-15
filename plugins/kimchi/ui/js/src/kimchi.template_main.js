@@ -34,9 +34,9 @@ kimchi.doListTemplates = function() {
                     }
                 }
                 if(isLocal){
-                    value.location = "images/theme-default/icon-local.png";
+                    value.location = "plugins/kimchi/images/theme-default/icon-local.png";
                 }else{
-                    value.location = "images/theme-default/icon-remote.png";
+                    value.location = "plugins/kimchi/images/theme-default/icon-remote.png";
                 }
                 listHtml += wok.substitute(templateHtml, value);
             });
@@ -57,7 +57,7 @@ kimchi.templateBindClick = function() {
     $('.template-edit').on('click', function(event) {
         var templateName = $(this).data('template');
         kimchi.selectedTemplate = templateName;
-        wok.window.open("template-edit.html");
+        wok.window.open("plugins/kimchi/template-edit.html");
     });
     $('.template-clone').on('click', function(event) {
         kimchi.selectedTemplate = $(this).data('template');
@@ -97,7 +97,7 @@ kimchi.template_main = function() {
         $('.tools').attr('style','display');
         $("#template-add").on("click", function(event) {
             wok.window.open({
-                url: 'template-add.html',
+                url: 'plugins/kimchi/template-add.html',
                 close: function() {
                     if (kimchi.deepScanHandler) {
                         kimchi.deepScanHandler.stop = true;

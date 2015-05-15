@@ -62,7 +62,7 @@ class HostTests(unittest.TestCase):
         self.request = partial(request, host, ssl_port)
 
     def test_hostinfo(self):
-        resp = self.request('/host').read()
+        resp = self.request('/plugins/kimchi/host').read()
         info = json.loads(resp)
         keys = ['os_distro', 'os_version', 'os_codename', 'cpu_model',
                 'memory', 'cpus']
@@ -78,7 +78,7 @@ class HostTests(unittest.TestCase):
         time.sleep(1)
         stats_keys = ['cpu_utilization', 'memory', 'disk_read_rate',
                       'disk_write_rate', 'net_recv_rate', 'net_sent_rate']
-        resp = self.request('/host/stats').read()
+        resp = self.request('/plugins/kimchi/host/stats').read()
         stats = json.loads(resp)
         self.assertEquals(sorted(stats_keys), sorted(stats.keys()))
 
@@ -94,41 +94,43 @@ class HostTests(unittest.TestCase):
         self.assertIn('buffers', memory_stats)
         self.assertIn('avail', memory_stats)
 
-        resp = self.request('/host/stats/history').read()
+        resp = self.request('/plugins/kimchi/host/stats/history').read()
         history = json.loads(resp)
         self.assertEquals(sorted(stats_keys), sorted(history.keys()))
 
     def test_host_actions(self):
         def _task_lookup(taskid):
-            return json.loads(self.request('/tasks/%s' % taskid).read())
+            return json.loads(self.request('/plugins/kimchi/tasks/%s' %
+                                           taskid).read())
 
-        resp = self.request('/host/shutdown', '{}', 'POST')
+        resp = self.request('/plugins/kimchi/host/shutdown', '{}', 'POST')
         self.assertEquals(200, resp.status)
-        resp = self.request('/host/reboot', '{}', 'POST')
+        resp = self.request('/plugins/kimchi/host/reboot', '{}', 'POST')
         self.assertEquals(200, resp.status)
 
         # Test system update
-        resp = self.request('/host/packagesupdate', None, 'GET')
+        resp = self.request('/plugins/kimchi/host/packagesupdate', None, 'GET')
         pkgs = json.loads(resp.read())
         self.assertEquals(3, len(pkgs))
 
         pkg_keys = ['package_name', 'repository', 'arch', 'version']
         for p in pkgs:
             name = p['package_name']
-            resp = self.request('/host/packagesupdate/' + name, None, 'GET')
+            resp = self.request('/plugins/kimchi/host/packagesupdate/' + name,
+                                None, 'GET')
             info = json.loads(resp.read())
             self.assertEquals(sorted(pkg_keys), sorted(info.keys()))
 
-        resp = self.request('/host/swupdate', '{}', 'POST')
+        resp = self.request('/plugins/kimchi/host/swupdate', '{}', 'POST')
         task = json.loads(resp.read())
         task_params = [u'id', u'message', u'status', u'target_uri']
         self.assertEquals(sorted(task_params), sorted(task.keys()))
 
-        resp = self.request('/tasks/' + task[u'id'], None, 'GET')
+        resp = self.request('/plugins/kimchi/tasks/' + task[u'id'], None, 'GET')
         task_info = json.loads(resp.read())
         self.assertEquals(task_info['status'], 'running')
         wait_task(_task_lookup, task_info['id'])
-        resp = self.request('/tasks/' + task[u'id'], None, 'GET')
+        resp = self.request('/plugins/kimchi/tasks/' + task[u'id'], None, 'GET')
         task_info = json.loads(resp.read())
         self.assertEquals(task_info['status'], 'finished')
         self.assertIn(u'All packages updated', task_info['message'])
@@ -136,14 +138,15 @@ class HostTests(unittest.TestCase):
         self.assertEquals(0, len(pkgs))
 
     def test_host_partitions(self):
-        resp = self.request('/host/partitions')
+        resp = self.request('/plugins/kimchi/host/partitions')
         self.assertEquals(200, resp.status)
         partitions = json.loads(resp.read())
 
         keys = ['name', 'path', 'type', 'fstype', 'size', 'mountpoint',
                 'available']
         for item in partitions:
-            resp = self.request('/host/partitions/%s' % item['name'])
+            resp = self.request('/plugins/kimchi/host/partitions/%s' % 
+                                item['name'])
             info = json.loads(resp.read())
             self.assertEquals(sorted(info.keys()), sorted(keys))
 
@@ -152,33 +155,36 @@ class HostTests(unittest.TestCase):
             for dev in devices:
                 self.assertEquals(dev['device_type'], dev_type)
 
-        resp = self.request('/host/devices?_cap=scsi_host')
+        resp = self.request('/plugins/kimchi/host/devices?_cap=scsi_host')
         nodedevs = json.loads(resp.read())
         # Mockmodel brings 3 preconfigured scsi fc_host
         self.assertEquals(3, len(nodedevs))
 
-        nodedev = json.loads(self.request('/host/devices/scsi_host2').read())
+        nodedev = json.loads(self.request(
+                             '/plugins/kimchi/host/devices/scsi_host2').read())
         # Mockmodel generates random wwpn and wwnn
         self.assertEquals('scsi_host2', nodedev['name'])
         self.assertEquals('fc_host', nodedev['adapter']['type'])
         self.assertEquals(16, len(nodedev['adapter']['wwpn']))
         self.assertEquals(16, len(nodedev['adapter']['wwnn']))
 
-        devs = json.loads(self.request('/host/devices').read())
+        devs = json.loads(self.request('/plugins/kimchi/host/devices').read())
         dev_names = [dev['name'] for dev in devs]
         for dev_type in ('pci', 'usb_device', 'scsi'):
-            resp = self.request('/host/devices?_cap=%s' % dev_type)
+            resp = self.request('/plugins/kimchi/host/devices?_cap=%s' % 
+                                dev_type)
             devsByType = json.loads(resp.read())
             names = [dev['name'] for dev in devsByType]
             self.assertTrue(set(names) <= set(dev_names))
             asset_devices_type(devsByType, dev_type)
 
-        resp = self.request('/host/devices?_passthrough=true')
+        resp = self.request('/plugins/kimchi/host/devices?_passthrough=true')
         passthru_devs = [dev['name'] for dev in json.loads(resp.read())]
         self.assertTrue(set(passthru_devs) <= set(dev_names))
 
         for dev_type in ('pci', 'usb_device', 'scsi'):
-            resp = self.request('/host/devices?_cap=%s&_passthrough=true' %
+            resp = self.request(
+                   '/plugins/kimchi/host/devices?_cap=%s&_passthrough=true' %
                                 dev_type)
             filteredDevs = json.loads(resp.read())
             filteredNames = [dev['name'] for dev in filteredDevs]
@@ -186,17 +192,18 @@ class HostTests(unittest.TestCase):
             asset_devices_type(filteredDevs, dev_type)
 
         for dev in passthru_devs:
-            resp = self.request('/host/devices?_passthrough_affected_by=%s' %
+            resp = self.request(
+                   '/plugins/kimchi/host/devices?_passthrough_affected_by=%s' %
                                 dev)
             affected_devs = [dev['name'] for dev in json.loads(resp.read())]
             self.assertTrue(set(affected_devs) <= set(dev_names))
 
     def test_get_available_passthrough_devices(self):
-        resp = self.request('/host/devices?_passthrough=true')
+        resp = self.request('/plugins/kimchi/host/devices?_passthrough=true')
         all_devs = [dev['name'] for dev in json.loads(resp.read())]
 
         resp = self.request(
-            '/host/devices?_passthrough=true&_available_only=true'
+        '/plugins/kimchi/host/devices?_passthrough=true&_available_only=true'
         )
         available_devs = [dev['name'] for dev in json.loads(resp.read())]
 

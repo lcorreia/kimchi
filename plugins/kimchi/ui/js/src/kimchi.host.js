@@ -86,7 +86,8 @@ kimchi.host_main = function() {
                 id: 'repositories-grid-add-button',
                 label: i18n['KCHREPO6012M'],
                 onClick: function(event) {
-                    wok.window.open({url:'repository-add.html', class: repo_type});
+                    wok.window.open({url:'plugins/kimchi/repository-add.html',
+                                    class: repo_type});
                 }
             }, {
                 id: 'repositories-grid-enable-button',
@@ -114,7 +115,8 @@ kimchi.host_main = function() {
                         return;
                     }
                     kimchi.selectedRepository = repository['repo_id'];
-                    wok.window.open({url:'repository-edit.html', class: repo_type});
+                    wok.window.open({url:'plugins/kimchi/repository-edit.html',
+                                    class: repo_type});
                 }
             }, {
                 id: 'repositories-grid-remove-button',
@@ -302,7 +304,7 @@ kimchi.host_main = function() {
                 id: reportGridID + '-generate-button',
                 label: i18n['KCHDR6006M'],
                 onClick: function(event) {
-                    wok.window.open('report-add.html');
+                    wok.window.open('plugins/kimchi/report-add.html');
                 }
             }, {
                 id: reportGridID + '-rename-button',
@@ -315,7 +317,7 @@ kimchi.host_main = function() {
                     }
 
                     kimchi.selectedReport = report['name'];
-                    wok.window.open('report-rename.html');
+                    wok.window.open('plugins/kimchi/report-rename.html');
                 }
             }, {
                 id: reportGridID + '-remove-button',
@@ -389,11 +391,11 @@ kimchi.host_main = function() {
 
     var getPendingReports = function() {
         var reports = []
-        var filter = 'status=running&target_uri=' + encodeURIComponent('^/debugreports/*')
+        var filter = 'status=running&target_uri=' + encodeURIComponent('^/plugins/kimchi/debugreports/*')
 
         kimchi.getTasksByFilter(filter, function(tasks) {
             for(var i = 0; i < tasks.length; i++) {
-                reportName = tasks[i].target_uri.replace(/^\/debugreports\//, '') || i18n['KCHDR6012M'];
+                reportName = tasks[i].target_uri.replace(/^\/plugins\/kimchi\/debugreports\//, '') || i18n['KCHDR6012M'];
                 reports.push({'name': reportName, 'time': i18n['KCHDR6007M']})
 
                 if(kimchi.trackingTasks.indexOf(tasks[i].id) >= 0) {

@@ -59,11 +59,11 @@ def tearDownModule():
 def _do_network_test(self, model, params):
     with RollbackContext() as rollback:
         net_name = params['name']
-        uri = '/networks/%s' % net_name.encode('utf-8')
+        uri = '/plugins/kimchi/networks/%s' % net_name.encode('utf-8')
 
         # Create a network
         req = json.dumps(params)
-        resp = self.request('/networks', req, 'POST')
+        resp = self.request('/plugins/kimchi/networks', req, 'POST')
         rollback.prependDefer(rollback_wrapper, model.network_delete,
                               net_name)
         self.assertEquals(201, resp.status)
@@ -100,7 +100,7 @@ class NetworkTests(unittest.TestCase):
         self.request = partial(request, host, ssl_port)
 
     def test_get_networks(self):
-        networks = json.loads(self.request('/networks').read())
+        networks = json.loads(self.request('/plugins/kimchi/networks').read())
         self.assertIn('default', [net['name'] for net in networks])
 
         with RollbackContext() as rollback:
@@ -111,16 +111,16 @@ class NetworkTests(unittest.TestCase):
                                   'connection': 'nat',
                                   'subnet': '127.0.10%i.0/24' % i})
 
-                resp = self.request('/networks', req, 'POST')
+                resp = self.request('/plugins/kimchi/networks', req, 'POST')
                 rollback.prependDefer(model.network_delete, name)
                 self.assertEquals(201, resp.status)
                 network = json.loads(resp.read())
                 self.assertEquals([], network["vms"])
 
-            nets = json.loads(self.request('/networks').read())
+            nets = json.loads(self.request('/plugins/kimchi/networks').read())
             self.assertEquals(len(networks) + 5, len(nets))
 
-            network = json.loads(self.request('/networks/network-1').read())
+            network = json.loads(self.request('/plugins/kimchi/networks/network-1').read())
             keys = [u'name', u'connection', u'interface', u'subnet', u'dhcp',
                     u'vms', u'in_use', u'autostart', u'state', u'persistent']
             self.assertEquals(sorted(keys), sorted(network.keys()))
@@ -134,7 +134,7 @@ class NetworkTests(unittest.TestCase):
 
         # Verify the current system has at least one interface to create a
         # bridged network
-        interfaces = json.loads(self.request('/interfaces?type=nic').read())
+        interfaces = json.loads(self.request('/plugins/kimchi/interfaces?type=nic').read())
         if len(interfaces) > 0:
             iface = interfaces[0]['name']
             networks.append({'name': u'bridge-network', 'connection': 'bridge',

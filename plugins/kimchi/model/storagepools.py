@@ -23,7 +23,7 @@ import sys
 
 from lxml.builder import E
 
-from wok.config import config, paths
+from wok.config import config, PluginPaths
 from ..scan import Scanner
 from wok.exception import InvalidOperation, MissingParameter
 from wok.exception import NotFoundError, OperationFailed
@@ -82,7 +82,8 @@ class StoragePoolsModel(object):
             pools['ISO'] = {'path': '/var/lib/kimchi/isos'}
 
         error_msg = ("Please, check the configuration in %s/template.conf to "
-                     "ensure it has a valid storage pool." % paths.conf_dir)
+                     "ensure it has a valid storage pool." %
+                     PluginPaths('kimchi').conf_dir)
 
         conn = self.conn.get()
         for pool_name in pools:
@@ -245,7 +246,7 @@ class StoragePoolsModel(object):
 
         params['path'] = self.scanner.scan_dir_prepare(params['name'])
         scan_params['pool_path'] = params['path']
-        task_id = add_task('/storagepools/%s' % ISO_POOL_NAME,
+        task_id = add_task('/plugins/kimchi/storagepools/%s' % ISO_POOL_NAME,
                            self.scanner.start_scan, self.objstore, scan_params)
         # Record scanning-task/storagepool mapping for future querying
         try:

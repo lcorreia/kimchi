@@ -63,7 +63,7 @@ class MockNetworkTests(unittest.TestCase):
     def test_vlan_tag_bridge(self):
         # Verify the current system has at least one interface to create a
         # bridged network
-        interfaces = json.loads(self.request('/interfaces?type=nic').read())
+        interfaces = json.loads(self.request('/plugins/kimchi/interfaces?type=nic').read())
         if len(interfaces) > 0:
             iface = interfaces[0]['name']
             _do_network_test(self, model, {'name': u'bridge-network',

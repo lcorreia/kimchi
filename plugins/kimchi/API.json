@@ -257,14 +257,14 @@
                 "template": {
                     "description": "The URI of a template to use when building a VM",
                     "type": "string",
-                    "pattern": "^/templates/(.*?)/?$",
+                    "pattern": "^/plugins/kimchi/templates/(.*?)/?$",
                     "required": true,
                     "error": "KCHVM0012E"
                 },
                 "storagepool": {
                     "description": "Assign a specefic Storage Pool to the new VM",
                     "type": "string",
-                    "pattern": "^/storagepools/[^/]+/?$",
+                    "pattern": "^/plugins/kimchi/storagepools/[^/]+/?$",
                     "error": "KCHVM0013E"
                 },
                 "graphics": { "$ref": "#/kimchitype/graphics" }
@@ -428,7 +428,7 @@
                 "icon": {
                     "description": "The template icon path",
                     "type": "string",
-                    "pattern": "^images/",
+                    "pattern": "^/plugins/kimchi/images/",
                     "error": "KCHTMPL0009E"
                 },
                 "os_distro": {
@@ -493,7 +493,7 @@
                 "storagepool": {
                     "description": "Location of the storage pool",
                     "type": "string",
-                    "pattern": "^/storagepools/[^/]+/?$",
+                    "pattern": "^/plugins/kimchi/storagepools/[^/]+/?$",
                     "error": "KCHTMPL0015E"
                 },
                 "networks": {
@@ -600,7 +600,7 @@
                 "icon": {
                     "description": "The template icon path",
                     "type": "string",
-                    "pattern": "^images/",
+                    "pattern": "^/plugins/kimchi/images/",
                     "error": "KCHTMPL0009E"
                 },
                 "os_distro": {
@@ -664,7 +664,7 @@
                 "storagepool": {
                     "description": "Location of the storage pool",
                     "type": "string",
-                    "pattern": "^/storagepools/[^/]+/?$",
+                    "pattern": "^/plugins/kimchi/storagepools/[^/]+/?$",
                     "error": "KCHTMPL0015E"
                 },
                 "networks": {

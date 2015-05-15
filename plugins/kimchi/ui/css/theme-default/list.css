@@ -312,7 +312,7 @@
 }
 
 .guest-pending .icon {
-    background: url('../../images/theme-default/kimchi-loading15x15.gif') no-repeat;
+    background: url('../images/theme-default/kimchi-loading15x15.gif') no-repeat;
     display: inline-block;
     width: 20px;
     height: 20px;

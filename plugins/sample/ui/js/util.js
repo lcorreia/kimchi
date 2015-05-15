@@ -20,7 +20,7 @@ sample = {};
 
 sample.description = function(suc, err){
     wok.requestJSON({
-        url : kimchi.url + 'plugins/sample/description',
+        url : 'plugins/sample/description',
         type : 'GET',
         contentType : 'application/json',
         dataType : 'json',

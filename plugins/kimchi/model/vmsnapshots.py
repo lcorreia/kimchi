@@ -72,8 +72,8 @@ class VMSnapshotsModel(object):
         name = params.get('name', unicode(int(time.time())))
 
         task_params = {'vm_name': vm_name, 'name': name}
-        taskid = add_task(u'/vms/%s/snapshots/%s' % (vm_name, name),
-                          self._create_task, self.objstore, task_params)
+        taskid = add_task(u'/plugins/kimchi/vms/%s/snapshots/%s' % (vm_name,
+                          name), self._create_task, self.objstore, task_params)
         return self.task.lookup(taskid)
 
     def _create_task(self, cb, params):

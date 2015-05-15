@@ -64,18 +64,18 @@ class MockModelTests(unittest.TestCase):
     def test_screenshot_refresh(self):
         # Create a VM
         req = json.dumps({'name': 'test', 'cdrom': fake_iso})
-        request(host, ssl_port, '/templates', req, 'POST')
+        request(host, ssl_port, '/plugins/kimchi/templates', req, 'POST')
         req = json.dumps({'name': 'test-vm', 'template': '/templates/test'})
-        resp = request(host, ssl_port, '/vms', req, 'POST')
+        resp = request(host, ssl_port, '/plugins/kimchi/vms', req, 'POST')
         task = json.loads(resp.read())
         wait_task(model.task_lookup, task['id'])
 
         # Test screenshot refresh for running vm
-        request(host, ssl_port, '/vms/test-vm/start', '{}', 'POST')
-        resp = request(host, ssl_port, '/vms/test-vm/screenshot')
+        request(host, ssl_port, '/plugins/kimchi/vms/test-vm/start', '{}', 'POST')
+        resp = request(host, ssl_port, '/plugins/kimchi/vms/test-vm/screenshot')
         self.assertEquals(200, resp.status)
         self.assertEquals('image/png', resp.getheader('content-type'))
-        resp1 = request(host, ssl_port, '/vms/test-vm')
+        resp1 = request(host, ssl_port, '/plugins/kimchi/vms/test-vm')
         rspBody = resp1.read()
         testvm_Data = json.loads(rspBody)
         screenshotURL = testvm_Data['screenshot']
@@ -91,13 +91,14 @@ class MockModelTests(unittest.TestCase):
 
     def test_vm_list_sorted(self):
         req = json.dumps({'name': 'test', 'cdrom': fake_iso})
-        request(host, ssl_port, '/templates', req, 'POST')
+        request(host, ssl_port, '/plugins/kimchi/templates', req, 'POST')
 
         def add_vm(name):
             # Create a VM
-            req = json.dumps({'name': name, 'template': '/templates/test'})
-            task = json.loads(request(host, ssl_port, '/vms', req,
-                              'POST').read())
+            req = json.dumps({'name': name,
+                              'template': '/plugins/kimchi/templates/test'})
+            task = json.loads(request(host, ssl_port, '/plugins/kimchi/vms',
+                              req, 'POST').read())
             wait_task(model.task_lookup, task['id'])
 
         vms = [u'abc', u'bca', u'cab', u'xba']
@@ -111,7 +112,7 @@ class MockModelTests(unittest.TestCase):
         model.templates_create({'name': u'test',
                                 'cdrom': fake_iso})
         task = model.vms_create({'name': u'test-vm',
-                                 'template': '/templates/test'})
+                                 'template': '/plugins/kimchi/templates/test'})
         wait_task(model.task_lookup, task['id'])
         vms = model.vms_get_list()
         self.assertEquals(2, len(vms))

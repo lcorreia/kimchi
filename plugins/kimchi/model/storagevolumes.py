@@ -119,7 +119,7 @@ class StorageVolumesModel(object):
             raise InvalidParameter('KCHVOL0001E', {'name': name})
 
         params['pool'] = pool_name
-        targeturi = '/storagepools/%s/storagevolumes/%s' % (pool_name, name)
+        targeturi = '/plugins/kimchi/storagepools/%s/storagevolumes/%s' % (pool_name, name)
         taskid = add_task(targeturi, create_func, self.objstore, params)
         return self.task.lookup(taskid)
 
@@ -422,7 +422,7 @@ class StorageVolumeModel(object):
                   'name': name,
                   'new_pool': new_pool,
                   'new_name': new_name}
-        taskid = add_task(u'/storagepools/%s/storagevolumes/%s' %
+        taskid = add_task(u'/plugins/kimchi/storagepools/%s/storagevolumes/%s' %
                           (pool, new_name), self._clone_task, self.objstore,
                           params)
         return self.task.lookup(taskid)

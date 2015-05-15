@@ -51,7 +51,7 @@ from wok.xmlutils.utils import xml_item_update
 
 
 fake_user = {'root': 'letmein!'}
-mockmodel_defaults = {'storagepool': '/storagepools/default-pool',
+mockmodel_defaults = {'storagepool': '/plugins/kimchi/storagepools/default-pool',
                       'domain': 'test', 'arch': 'i686'}
 storagevolumes.VALID_RAW_CONTENT = ['dos/mbr boot sector',
                                     'x86 boot sector',
@@ -258,7 +258,7 @@ class MockModel(Model):
         return MockModel._libvirt_get_vol_path(pool, vol)
 
     def _gen_debugreport_file(self, name):
-        return add_task('/debugreports/%s' % name, self._create_log,
+        return add_task('/plugins/kimchi/debugreports/%s' % name, self._create_log,
                         self.objstore, name)
 
     def _create_log(self, cb, name):
@@ -368,7 +368,7 @@ class MockModel(Model):
         return self._mock_swupdate.pkgs[pkg_name]
 
     def _mock_host_swupdate(self, args=None):
-        task_id = add_task('/host/swupdate', self._mock_swupdate.doUpdate,
+        task_id = add_task('/plugins/kimchi/host/swupdate', self._mock_swupdate.doUpdate,
                            self.objstore)
         return self.task_lookup(task_id)
 
@@ -420,7 +420,7 @@ class MockModel(Model):
     def _mock_vmsnapshots_create(self, vm_name, params):
         name = params.get('name', unicode(int(time.time())))
         params = {'vm_name': vm_name, 'name': name}
-        taskid = add_task(u'/vms/%s/snapshots/%s' % (vm_name, name),
+        taskid = add_task(u'/plugins/kimchi/vms/%s/snapshots/%s' % (vm_name, name),
                           self._vmsnapshots_create_task, self.objstore, params)
         return self.task_lookup(taskid)
 

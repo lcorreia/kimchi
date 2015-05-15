@@ -33,7 +33,7 @@
 }
 
 .host-panel .logo {
-    background: url("../images/icon-vm.png") no-repeat left top;
+    background: url("plugins/kimchi/images/icon-vm.png") no-repeat left top;
     height: 128px;
     width: 128px;
 }
@@ -220,7 +220,7 @@
 }
 
 #id-debug-img {
-    background: url(../../images/theme-default/kimchi-loading15x15.gif) 12px
+    background: url(../images/theme-default/kimchi-loading15x15.gif) 12px
             center no-repeat;
     padding-left: 23px;
 }

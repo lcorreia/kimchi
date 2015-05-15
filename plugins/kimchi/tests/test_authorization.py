@@ -64,62 +64,62 @@ class AuthorizationTests(unittest.TestCase):
 
     def test_nonroot_access(self):
         # Non-root users can access static host information
-        resp = self.request('/host', '{}', 'GET')
+        resp = self.request('/plugins/kimchi/host', '{}', 'GET')
         self.assertEquals(403, resp.status)
 
         # Non-root users can access host stats
-        resp = self.request('/host/stats', '{}', 'GET')
+        resp = self.request('/plugins/kimchi/host/stats', '{}', 'GET')
         self.assertEquals(403, resp.status)
 
         # Non-root users can not reboot/shutdown host system
-        resp = self.request('/host/reboot', '{}', 'POST')
+        resp = self.request('/plugins/kimchi/host/reboot', '{}', 'POST')
         self.assertEquals(403, resp.status)
-        resp = self.request('/host/shutdown', '{}', 'POST')
+        resp = self.request('/plugins/kimchi/host/shutdown', '{}', 'POST')
         self.assertEquals(403, resp.status)
 
         # Non-root users can not get or debug reports
-        resp = self.request('/debugreports', '{}', 'GET')
+        resp = self.request('/plugins/kimchi/debugreports', '{}', 'GET')
         self.assertEquals(403, resp.status)
-        resp = self.request('/debugreports', '{}', 'POST')
+        resp = self.request('/plugins/kimchi/debugreports', '{}', 'POST')
         self.assertEquals(403, resp.status)
 
         # Non-root users can not create or delete network (only get)
-        resp = self.request('/networks', '{}', 'GET')
+        resp = self.request('/plugins/kimchi/networks', '{}', 'GET')
         self.assertEquals(200, resp.status)
-        resp = self.request('/networks', '{}', 'POST')
+        resp = self.request('/plugins/kimchi/networks', '{}', 'POST')
         self.assertEquals(403, resp.status)
-        resp = self.request('/networks/default/activate', '{}', 'POST')
+        resp = self.request('/plugins/kimchi/networks/default/activate', '{}', 'POST')
         self.assertEquals(403, resp.status)
-        resp = self.request('/networks/default', '{}', 'DELETE')
+        resp = self.request('/plugins/kimchi/networks/default', '{}', 'DELETE')
         self.assertEquals(403, resp.status)
 
         # Non-root users can not create or delete storage pool (only get)
-        resp = self.request('/storagepools', '{}', 'GET')
+        resp = self.request('/plugins/kimchi/storagepools', '{}', 'GET')
         self.assertEquals(200, resp.status)
-        resp = self.request('/storagepools', '{}', 'POST')
+        resp = self.request('/plugins/kimchi/storagepools', '{}', 'POST')
         self.assertEquals(403, resp.status)
-        resp = self.request('/storagepools/default/activate', '{}', 'POST')
+        resp = self.request('/plugins/kimchi/storagepools/default/activate', '{}', 'POST')
         self.assertEquals(403, resp.status)
-        resp = self.request('/storagepools/default', '{}', 'DELETE')
+        resp = self.request('/plugins/kimchi/storagepools/default', '{}', 'DELETE')
         self.assertEquals(403, resp.status)
 
         # Non-root users can not update or delete a template
         # but he can get and create a new one
-        resp = self.request('/templates', '{}', 'GET')
+        resp = self.request('/plugins/kimchi/templates', '{}', 'GET')
         self.assertEquals(403, resp.status)
         req = json.dumps({'name': 'test', 'cdrom': fake_iso})
-        resp = self.request('/templates', req, 'POST')
+        resp = self.request('/plugins/kimchi/templates', req, 'POST')
         self.assertEquals(403, resp.status)
-        resp = self.request('/templates/test', '{}', 'PUT')
+        resp = self.request('/plugins/kimchi/templates/test', '{}', 'PUT')
         self.assertEquals(403, resp.status)
-        resp = self.request('/templates/test', '{}', 'DELETE')
+        resp = self.request('/plugins/kimchi/templates/test', '{}', 'DELETE')
         self.assertEquals(403, resp.status)
 
         # Non-root users can only get vms authorized to them
         model.templates_create({'name': u'test', 'cdrom': fake_iso})
 
         task_info = model.vms_create({'name': u'test-me',
-                                      'template': '/templates/test'})
+                                 'template': '/plugins/kimchi/templates/test'})
         wait_task(model.task_lookup, task_info['id'])
 
         model.vm_update(u'test-me',
@@ -127,39 +127,39 @@ class AuthorizationTests(unittest.TestCase):
                          'groups': []})
 
         task_info = model.vms_create({'name': u'test-usera',
-                                      'template': '/templates/test'})
+                                 'template': '/plugins/kimchi/templates/test'})
         wait_task(model.task_lookup, task_info['id'])
 
         non_root = list(set(model.users_get_list()) - set(['root']))[0]
         model.vm_update(u'test-usera', {'users': [non_root], 'groups': []})
 
         task_info = model.vms_create({'name': u'test-groupa',
-                                      'template': '/templates/test'})
+                                 'template': '/plugins/kimchi/templates/test'})
         wait_task(model.task_lookup, task_info['id'])
         a_group = model.groups_get_list()[0]
         model.vm_update(u'test-groupa', {'groups': [a_group]})
 
-        resp = self.request('/vms', '{}', 'GET')
+        resp = self.request('/plugins/kimchi/vms', '{}', 'GET')
         self.assertEquals(200, resp.status)
         vms_data = json.loads(resp.read())
         self.assertEquals([u'test-groupa', u'test-me'],
                           sorted([v['name'] for v in vms_data]))
-        resp = self.request('/vms', req, 'POST')
+        resp = self.request('/plugins/kimchi/vms', req, 'POST')
         self.assertEquals(403, resp.status)
 
         # Create a vm using mockmodel directly to test Resource access
         task_info = model.vms_create({'name': 'kimchi-test',
-                                      'template': '/templates/test'})
+                                 'template': '/plugins/kimchi/templates/test'})
         wait_task(model.task_lookup, task_info['id'])
-        resp = self.request('/vms/kimchi-test', '{}', 'PUT')
+        resp = self.request('/plugins/kimchi/vms/kimchi-test', '{}', 'PUT')
         self.assertEquals(403, resp.status)
-        resp = self.request('/vms/kimchi-test', '{}', 'DELETE')
+        resp = self.request('/plugins/kimchi/vms/kimchi-test', '{}', 'DELETE')
         self.assertEquals(403, resp.status)
 
         # Non-root users can only update VMs authorized by them
-        resp = self.request('/vms/test-me/start', '{}', 'POST')
+        resp = self.request('/plugins/kimchi/vms/test-me/start', '{}', 'POST')
         self.assertEquals(200, resp.status)
-        resp = self.request('/vms/test-usera/start', '{}', 'POST')
+        resp = self.request('/plugins/kimchi/vms/test-usera/start', '{}', 'POST')
         self.assertEquals(403, resp.status)
 
         model.template_delete('test')

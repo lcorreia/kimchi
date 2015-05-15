@@ -35,7 +35,7 @@ kimchi.guest_media_main = function() {
             var replaceCDROM = function(event) {
                 event.preventDefault();
                 kimchi.selectedGuestStorage = $(this).data('dev');
-                wok.window.open("guest-cdrom-edit.html");
+                wok.window.open("plugins/kimchi/guest-cdrom-edit.html");
             };
 
             $('input[type="text"][name="cdrom"]', container).on('click', replaceCDROM);

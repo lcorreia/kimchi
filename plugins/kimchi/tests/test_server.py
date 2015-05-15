@@ -132,13 +132,13 @@ class ServerTests(unittest.TestCase):
         """
         A non-existent path should return HTTP:404
         """
-        url_list = ['/doesnotexist', '/vms/blah']
+        url_list = ['/plugins/kimchi/doesnotexist', '/plugins/kimchi/vms/blah']
         for url in url_list:
             resp = self.request(url)
             self.assertEquals(404, resp.status)
 
         # Verify it works for DELETE too
-        resp = self.request('/templates/blah', '', 'DELETE')
+        resp = self.request('/plugins/kimchi/templates/blah', '', 'DELETE')
         self.assertEquals(404, resp.status)
 
     def test_accepts(self):
@@ -177,10 +177,10 @@ class ServerTests(unittest.TestCase):
 
     def test_auth_unprotected(self):
         hdrs = {'AUTHORIZATION': ''}
-        uris = ['/js/kimchi.min.js',
-                '/css/theme-default.min.css',
+        uris = ['/plugins/kimchi/js/kimchi.min.js',
+                '/plugins/kimchi/css/theme-default.min.css',
+                '/plugins/kimchi/images/icon-vm.png',
                 '/libs/jquery-1.10.0.min.js',
-                '/images/icon-vm.png',
                 '/login.html',
                 '/logout']
 
@@ -190,9 +190,9 @@ class ServerTests(unittest.TestCase):
 
     def test_auth_protected(self):
         hdrs = {'AUTHORIZATION': ''}
-        uris = ['/vms',
-                '/vms/doesnotexist',
-                '/tasks']
+        uris = ['/plugins/kimchi/vms',
+                '/plugins/kimchi/vms/doesnotexist',
+                '/plugins/kimchi/tasks']
 
         for uri in uris:
             resp = self.request(uri, None, 'GET', hdrs)
@@ -201,7 +201,7 @@ class ServerTests(unittest.TestCase):
     def test_auth_bad_creds(self):
         # Test HTTPBA
         hdrs = {'AUTHORIZATION': "Basic " + base64.b64encode("nouser:badpass")}
-        resp = self.request('/vms', None, 'GET', hdrs)
+        resp = self.request('/plugins/kimchi/vms', None, 'GET', hdrs)
         self.assertEquals(401, resp.status)
 
         # Test REST API
@@ -216,7 +216,7 @@ class ServerTests(unittest.TestCase):
         hdrs = {"X-Requested-With": "XMLHttpRequest"}
 
         # Try our request (Note that request() will add a valid HTTPBA header)
-        resp = self.request('/vms', None, 'GET', hdrs)
+        resp = self.request('/plugins/kimchi/vms', None, 'GET', hdrs)
         self.assertEquals(401, resp.status)
         self.assertEquals(None, resp.getheader('WWW-Authenticate'))
 
@@ -226,7 +226,7 @@ class ServerTests(unittest.TestCase):
                 'Accept': 'application/json'}
 
         # Test we are logged out
-        resp = self.request('/tasks', None, 'GET', hdrs)
+        resp = self.request('/plugins/kimchi/tasks', None, 'GET', hdrs)
         self.assertEquals(401, resp.status)
 
         # Execute a login call
@@ -246,7 +246,7 @@ class ServerTests(unittest.TestCase):
         hdrs['Cookie'] = cookie
 
         # Test we are logged in with the cookie
-        resp = self.request('/tasks', None, 'GET', hdrs)
+        resp = self.request('/plugins/kimchi/tasks', None, 'GET', hdrs)
         self.assertEquals(200, resp.status)
 
         # Execute a logout call
@@ -255,7 +255,7 @@ class ServerTests(unittest.TestCase):
         del hdrs['Cookie']
 
         # Test we are logged out
-        resp = self.request('/tasks', None, 'GET', hdrs)
+        resp = self.request('/plugins/kimchi/tasks', None, 'GET', hdrs)
         self.assertEquals(401, resp.status)
 
     def test_get_param(self):
@@ -265,22 +265,22 @@ class ServerTests(unittest.TestCase):
 
         # Create 2 different templates
         req = json.dumps({'name': 'test-tmpl1', 'cdrom': mockiso})
-        self.request('/templates', req, 'POST')
+        self.request('/plugins/kimchi/templates', req, 'POST')
 
         req = json.dumps({'name': 'test-tmpl2', 'cdrom': mockiso})
-        self.request('/templates', req, 'POST')
+        self.request('/plugins/kimchi/templates', req, 'POST')
 
         # Remove mock iso
         os.unlink(mockiso)
 
         # Get the templates
-        resp = self.request('/templates')
+        resp = self.request('/plugins/kimchi/templates')
         self.assertEquals(200, resp.status)
         res = json.loads(resp.read())
         self.assertEquals(2, len(res))
 
         # Get a specific template
-        resp = self.request('/templates?name=test-tmpl1')
+        resp = self.request('/plugins/kimchi/templates?name=test-tmpl1')
         self.assertEquals(200, resp.status)
         res = json.loads(resp.read())
         self.assertEquals(1, len(res))

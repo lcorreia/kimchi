@@ -68,7 +68,7 @@ class VMScreenshot(object):
         if now - last_update > self.OUTDATED_SECS:
             self._clean_extra(self.LIVE_WINDOW)
             self._generate_thumbnail()
-        return '/data/screenshots/%s' %\
+        return 'plugins/kimchi/data/screenshots/%s' %\
                os.path.basename(self.info['thumbnail'])
 
     def _clean_extra(self, window=-1):

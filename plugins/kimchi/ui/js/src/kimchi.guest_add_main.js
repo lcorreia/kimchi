@@ -34,7 +34,7 @@ kimchi.guest_add_main = function() {
             $('#btn-create-template').on('click', function(event) {
                 wok.topic('templateCreated').subscribe(showTemplates);
 
-                wok.window.open('template-add.html');
+                wok.window.open('plugins/kimchi/template-add.html');
 
                 event.preventDefault();
             });

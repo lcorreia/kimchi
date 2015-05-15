@@ -27,7 +27,7 @@ from xml.sax.saxutils import escape
 
 from wok import netinfo
 from wok import network as knetwork
-from wok.config import paths
+from wok.config import PluginPaths
 from wok.exception import InvalidOperation, InvalidParameter
 from wok.exception import MissingParameter, NotFoundError, OperationFailed
 from ..osinfo import defaults as tmpl_defaults
@@ -52,7 +52,7 @@ class NetworksModel(object):
         conn = self.conn.get()
 
         error_msg = ("Please, check the configuration in %s/template.conf to "
-                     "ensure it lists only valid networks." % paths.conf_dir)
+         "ensure it lists only valid networks." % PluginPaths('kimchi').conf_dir)
 
         for net_name in networks:
             try:

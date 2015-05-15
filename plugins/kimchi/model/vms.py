@@ -110,7 +110,7 @@ class VMsModel(object):
         t.validate()
         data = {'name': name, 'template': t,
                 'graphics': params.get('graphics', {})}
-        taskid = add_task(u'/vms/%s' % name, self._create_task,
+        taskid = add_task(u'/plugins/kimchi/vms/%s' % name, self._create_task,
                           self.objstore, data)
 
         return self.task.lookup(taskid)
@@ -262,16 +262,17 @@ class VMModel(object):
             task_names = session.get_list('task')
             for tn in task_names:
                 t = session.get('task', tn)
-                if t['target_uri'].startswith('/vms/'):
-                    uri_name = t['target_uri'][5:]  # 5 = len('/vms/')
+                if t['target_uri'].startswith('/plugins/kimchi/vms/'):
+                    uri_name = t['target_uri'].lstrip('/plugins/kimchi/vms/')
                     vms_being_created.append(uri_name)
 
         current_vm_names = self.vms.get_list() + vms_being_created
         new_name = get_next_clone_name(current_vm_names, name)
 
         # create a task with the actual clone function
-        taskid = add_task(u'/vms/%s/clone' % new_name, self._clone_task,
-                          self.objstore, {'name': name, 'new_name': new_name})
+        taskid = add_task(u'/plugins/kimchi/vms/%s/clone' % new_name,
+                          self._clone_task, self.objstore,
+                          {'name': name, 'new_name': new_name})
 
         return self.task.lookup(taskid)
 

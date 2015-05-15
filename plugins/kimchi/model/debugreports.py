@@ -62,8 +62,8 @@ class DebugReportsModel(object):
         gen_cmd = self.get_system_report_tool()
 
         if gen_cmd is not None:
-            return add_task('/debugreports/%s' % name, gen_cmd, self.objstore,
-                            name)
+            return add_task('/plugins/kimchi/debugreports/%s' % name, gen_cmd,
+                            self.objstore, name)
 
         raise OperationFailed("KCHDR0002E")
 
@@ -172,7 +172,8 @@ class DebugReportModel(object):
         ctime = os.stat(file_target).st_mtime
         ctime = time.strftime("%Y-%m-%d-%H:%M:%S", time.localtime(ctime))
         file_target = os.path.split(file_target)[-1]
-        file_target = os.path.join("/data/debugreports", file_target)
+        file_target = os.path.join("plugins/kimchi/data/debugreports",
+                                   file_target)
         return {'uri': file_target,
                 'ctime': ctime}
 

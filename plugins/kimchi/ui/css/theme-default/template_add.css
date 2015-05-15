@@ -175,7 +175,7 @@
     margin: 0 5px 0 0;
     border: 1px solid #CCCCCC;
     border-radius: 8px;
-    background: url(../../images/icon-vm.png) center center no-repeat;
+    background: url(../images/icon-vm.png) center center no-repeat;
     background-size: 58px;
 }
 
@@ -284,13 +284,13 @@
 
 #iso-search-loading {
     margin: 10px 15px;
-    background: #C0C0C0 url(../../images/theme-default/loading.gif) 7px
+    background: #C0C0C0 url(../images/theme-default/loading.gif) 7px
                 center no-repeat;
     padding: 0 20px 0 26px;
 }
 
 #iso-more-loading {
-    background: #C0C0C0 url(../../images/theme-default/loading.gif) 7px
+    background: #C0C0C0 url(../images/theme-default/loading.gif) 7px
                 center no-repeat;
     padding: 0 20px 0 26px;
 }

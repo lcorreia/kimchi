@@ -621,7 +621,7 @@ kimchi.guest_edit_main = function() {
                 });
         };
         var listGeneratingSnapshots = function(){
-            kimchi.getTasksByFilter('status=running&target_uri='+encodeURIComponent('^/snapshots/*'), function(tasks) {
+            kimchi.getTasksByFilter('status=running&target_uri='+encodeURIComponent('^/plugins/kimchi/snapshots/*'), function(tasks) {
                 $(".task", "#form-guest-edit-snapshot").empty();
                 for(var i=0;i<tasks.length;i++){
                     addOngoingItem(tasks[i]);
@@ -656,7 +656,7 @@ kimchi.guest_edit_main = function() {
     };
 
     var initContent = function(guest) {
-        guest['icon'] = guest['icon'] || 'images/icon-vm.png';
+        guest['icon'] = guest['icon'] || 'plugins/kimchi/images/icon-vm.png';
         $('#form-guest-edit-general').fillWithObject(guest);
         kimchi.thisVMState = guest['state'];
         refreshCDROMs();
@@ -667,7 +667,7 @@ kimchi.guest_edit_main = function() {
                 text: false
             }).click(function(event) {
                 event.preventDefault();
-                wok.window.open("guest-storage-add.html");
+                wok.window.open("plugins/kimchi/guest-storage-add.html");
             });
         if ((kimchi.thisVMState === "running") || (kimchi.thisVMState === "paused")) {
             $("#form-guest-edit-general input").prop("disabled", true);

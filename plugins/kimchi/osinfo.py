@@ -26,7 +26,7 @@ from collections import defaultdict
 from configobj import ConfigObj
 from distutils.version import LooseVersion
 
-from wok.config import paths
+from wok.config import PluginPaths
 
 
 SUPPORTED_ARCHS = {'x86': ('i386', 'i686', 'x86_64'),
@@ -84,7 +84,7 @@ modern_version_bases = {'x86': {'debian': '6.0', 'ubuntu': '7.10',
 
 
 icon_available_distros = [icon[5:-4] for icon in glob.glob1('%s/images/'
-                          % paths.ui_dir, 'icon-*.png')]
+                          % PluginPaths('kimchi').ui_dir, 'icon-*.png')]
 
 
 def _get_arch():
@@ -124,7 +124,7 @@ def _get_tmpl_defaults():
     default_config = ConfigObj(tmpl_defaults)
 
     # Load template configuration file
-    config_file = os.path.join(paths.conf_dir, 'template.conf')
+    config_file = os.path.join(PluginPaths('kimchi').conf_dir, 'template.conf')
     config = ConfigObj(config_file)
 
     # Merge default configuration with file configuration
@@ -141,7 +141,8 @@ def _get_tmpl_defaults():
 
     # Parse storage section to get storage pool and disks values
     storage_section = default_config.pop('storage')
-    defaults['storagepool'] = '/storagepools/' + storage_section.pop('pool')
+    defaults['storagepool'] = '/plugins/kimchi/storagepools/' + \
+                              storage_section.pop('pool')
     defaults['disks'] = []
     for disk in storage_section.keys():
         data = storage_section[disk]
@@ -210,8 +211,9 @@ def lookup(distro, version):
     params.update(custom_specs.get(distro, {}).get(version, {}))
 
     if distro in icon_available_distros:
-        params['icon'] = 'images/icon-%s.png' % distro
+        params['icon'] = 'plugins/kimchi/images/icon-%s.png' % distro
     else:
-        params['icon'] = 'images/icon-vm.png'
+        params['icon'] = 'plugins/kimchi/images/icon-vm.png'
+
 
     return params

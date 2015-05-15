@@ -300,7 +300,7 @@ kimchi.template_edit_main = function() {
         if($('.template-storage-type', tmpItem).val() === 'iscsi' || $('.template-storage-type', tmpItem).val() == 'scsi') {
             tempNameTail = tempName[tempName.length-1];
         }
-        tempName = '/storagepools/' + tempNameHead;
+        tempName = '/plugins/kimchi/storagepools/' + tempNameHead;
         data['storagepool'] = tempName;
         $.each(editableFields, function(i, field) {
             /* Support only 1 disk at this moment */

@@ -202,7 +202,7 @@ kimchi.vmedit = function(event) {
     var vm_id=vm.attr("id");
     kimchi.selectedGuest = vm_id;
     wok.window.open({
-        url: 'guest-edit.html',
+        url: 'plugins/kimchi/guest-edit.html',
         close: function() {
             kimchi.clearGuestEdit();
         }
@@ -245,7 +245,7 @@ kimchi.listVmsAuto = function() {
     }
     var getCreatingGuests = function(){
         var guests = [];
-        kimchi.getTasksByFilter('status=running&target_uri='+encodeURIComponent('^/vms/[^/]+$'), function(tasks) {
+        kimchi.getTasksByFilter('status=running&target_uri='+encodeURIComponent('^/plugins/kimchi/vms/[^/]+$'), function(tasks) {
             for(var i=0;i<tasks.length;i++){
                 var guestUri = tasks[i].target_uri;
                 var guestName = guestUri.split('/')[2]
@@ -260,7 +260,7 @@ kimchi.listVmsAuto = function() {
     };
     var getCloningGuests = function(){
         var guests = [];
-        kimchi.getTasksByFilter('status=running&target_uri='+encodeURIComponent('^/vms/.+/clone'), function(tasks) {
+        kimchi.getTasksByFilter('status=running&target_uri='+encodeURIComponent('^/plugins/kimchi/vms/.+/clone'), function(tasks) {
             for(var i=0;i<tasks.length;i++){
                 var guestUri = tasks[i].target_uri;
                 var guestName = guestUri.split('/')[2]
@@ -325,7 +325,7 @@ kimchi.createGuestLi = function(vmObject, prevScreenImage, openMenu) {
     if (vmObject.screenshot) {
         curImg = vmObject.screenshot.replace(/^\//,'');
     }
-    var load_src = curImg || 'images/icon-vm.png';
+    var load_src = curImg || 'plugins/kimchi/images/icon-vm.png';
     var tile_src = prevScreenImage || vmObject['load-src'];
     var liveTile=result.find('div[name=guest-tile] > .tile');
     liveTile.addClass(vmObject.state);
@@ -352,7 +352,7 @@ kimchi.createGuestLi = function(vmObject, prevScreenImage, openMenu) {
 	    liveTile.off("click", kimchi.openVmConsole);
             liveTile.on("click", kimchi.vmresume);
 	    if(vmObject.state="paused") {
-	        liveTile.find('.overlay').attr('src',"/images/theme-default/ac24_resume.png");
+	        liveTile.find('.overlay').attr('src',"plugins/kimchi/images/theme-default/ac24_resume.png");
 	        liveTile.find('.overlay').attr('alt',"Resume");
 	    }
             liveTile.hover(function(event){$(this).find('.overlay').show()}, function(event){$(this).find('.overlay').hide()});
@@ -492,7 +492,7 @@ kimchi.guest_main = function() {
     if(wok.tabMode['guests'] === 'admin') {
         $('.tools').attr('style','display');
         $("#vm-add").on("click", function(event) {
-            wok.window.open('guest-add.html');
+            wok.window.open('plugins/kimchi/guest-add.html');
         });
     }
     kimchi.guestTemplate = $('#guest-tmpl').html();

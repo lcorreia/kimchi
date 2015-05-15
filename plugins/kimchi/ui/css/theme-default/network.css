@@ -92,7 +92,7 @@
 }
 
 .network .list .nw-loading {
-    background: #c0c0c0 url(../../images/theme-default/loading.gif)
+    background: #c0c0c0 url(../images/theme-default/loading.gif)
                 center no-repeat;
 }
 
