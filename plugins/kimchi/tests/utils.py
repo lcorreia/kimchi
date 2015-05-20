@@ -38,7 +38,7 @@ from lxml import etree
 
 from wok.plugins.kimchi import mockmodel
 import wok.server
-from wok.config import config, paths
+from wok.config import config, PluginPaths
 from wok.auth import User, USER_NAME, USER_GROUPS, USER_ROLES, tabs
 from wok.exception import NotFoundError, OperationFailed
 from wok.utils import wok_log
@@ -167,7 +167,7 @@ def get_remote_iso_path():
     """
     host_arch = os.uname()[4]
     remote_path = ''
-    with open(os.path.join(paths.conf_dir, 'distros.d', 'fedora.json')) \
+    with open(os.path.join(PluginPaths('kimchi').conf_dir, 'distros.d', 'fedora.json')) \
             as fedora_isos:
         # Get a list of dicts
         json_isos_list = json.load(fedora_isos)

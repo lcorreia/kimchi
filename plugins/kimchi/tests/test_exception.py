@@ -62,7 +62,7 @@ class ExceptionTests(unittest.TestCase):
 
         # test 405 wrong method
         resp = json.loads(request(host, ssl_port, '/', None, 'DELETE').read())
-        msg = u'KCHAPI0002E: Delete is not allowed for kimchiroot'
+        msg = u'KCHAPI0002E: Delete is not allowed for wokroot'
         self.assertEquals('405 Method Not Allowed', resp.get('code'))
         self.assertEquals(msg, resp.get('reason'))
 
@@ -92,7 +92,7 @@ class ExceptionTests(unittest.TestCase):
 
         # test 405 wrong method
         resp = json.loads(request(host, ssl_port, '/', None, 'DELETE').read())
-        msg = u'KCHAPI0002E: Delete is not allowed for kimchiroot'
+        msg = u'KCHAPI0002E: Delete is not allowed for wokroot'
         self.assertEquals('405 Method Not Allowed', resp.get('code'))
         self.assertEquals(msg, resp.get('reason'))
 
