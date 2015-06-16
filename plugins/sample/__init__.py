@@ -35,7 +35,7 @@ model = Model()
 
 
 class Drawings(WokRoot):
-    def __init__(self):
+    def __init__(self, wok_options):
         Resource.__init__(self, model)
         self.description = Description(model)
         self.rectangles = Rectangles(model)

@@ -18,76 +18,24 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 #
 
-import libvirt
 import os
-import platform
-import threading
 
 
 from ConfigParser import SafeConfigParser
 
 
-from kimchi.xmlutils.utils import xpath_get_text
-
 __version__ = "@wokversion@"
 __release__ = "@wokrelease@"
-__with_spice__ = "@withspice@"
 
 DEFAULT_LOG_LEVEL = "debug"
-
-kimchiLock = threading.Lock()
-
-# Storage pool constant for read-only pool types
-READONLY_POOL_TYPE = ['iscsi', 'scsi', 'mpath']
 
 
 def get_object_store():
     return os.path.join(paths.state_dir, 'objectstore')
 
 
-def get_distros_store():
-    return os.path.join(paths.conf_dir, 'distros.d')
-
-
-def get_screenshot_path():
-    return os.path.join(paths.state_dir, 'screenshots')
-
-
-def get_debugreports_path():
-    return os.path.join(paths.state_dir, 'debugreports')
-
-
 def get_version():
     return "-".join([__version__, __release__])
-
-
-def find_qemu_binary(find_emulator=False):
-    try:
-        connect = libvirt.open(None)
-    except Exception, e:
-        raise Exception("Unable to get qemu binary location: %s" % e)
-    try:
-        xml = connect.getCapabilities()
-
-        # On Little Endian system, the qemu binary is
-        # qemu-system-ppc64, not qemu-system-ppc64le as expected
-        arch = platform.machine()
-        if arch == "ppc64le":
-            arch = "ppc64"
-
-        if find_emulator:
-            expr = "/capabilities/guest/arch[@name='%s']\
-                    /emulator" % arch
-        else:
-            expr = "/capabilities/guest/arch[@name='%s']\
-                    /domain[@type='kvm']/emulator" % arch
-        res = xpath_get_text(xml, expr)
-        location = res[0]
-    except Exception, e:
-        raise Exception("Unable to get qemu binary location: %s" % e)
-    finally:
-        connect.close()
-    return location
 
 
 class Paths(object):
@@ -96,20 +44,6 @@ class Paths(object):
         self.prefix = self.get_prefix()
         self.installed = (self.prefix == '@pkgdatadir@')
         self.ui_dir = self.add_prefix('ui')
-        self.spice_file = os.path.join(self.ui_dir,
-                                       'spice-html5/pages/spice_auto.html')
-
-        if __with_spice__ == 'yes':
-            self.spice_dir = self.add_prefix('ui/spice-html5')
-        elif os.path.exists('@datadir@/spice-html5'):
-            self.spice_dir = '@datadir@/spice-html5'
-        else:
-            self.spice_dir = '/usr/share/spice-html5'
-
-        if os.path.exists('@datadir@/novnc'):
-            self.novnc_dir = '@datadir@/novnc'
-        else:
-            self.novnc_dir = '/usr/share/novnc'
 
         if self.installed:
             self.nginx_conf_dir = '@sysconfdir@/nginx/conf.d'
@@ -119,7 +53,6 @@ class Paths(object):
             self.src_dir = '@wokdir@'
             self.plugins_dir = '@wokdir@/plugins'
             self.mo_dir = '@prefix@/share/locale'
-            self.spice_css_file = os.path.join(self.spice_dir, 'spice.css')
         else:
             self.nginx_conf_dir = self.add_prefix('src/nginx')
             self.state_dir = self.add_prefix('data')
@@ -128,7 +61,6 @@ class Paths(object):
             self.src_dir = self.add_prefix('src/wok')
             self.plugins_dir = self.add_prefix('plugins')
             self.mo_dir = self.add_prefix('mo')
-            self.spice_css_file = os.path.join(self.spice_dir, 'css/spice.css')
 
     def get_prefix(self):
         if __file__.startswith("/"):
@@ -208,28 +140,6 @@ class WokConfig(dict):
             'tools.sessions.timeout': SESSIONSTIMEOUT,
             'tools.wokauth.on': False
         },
-        '/novnc': {
-            'tools.staticdir.on': True,
-            'tools.staticdir.dir': paths.novnc_dir,
-            'tools.nocache.on': True,
-            'tools.wokauth.on': True
-        },
-        '/spice_auto.html': {
-            'tools.staticfile.on': True,
-            'tools.staticfile.filename': paths.spice_file,
-            'tools.nocache.on': True,
-            'tools.kimchiauth.on': True
-        },
-        '/spice-html5': {
-            'tools.staticdir.on': True,
-            'tools.staticdir.dir': paths.spice_dir,
-            'tools.nocache.on': True
-        },
-        '/spice-html5/spice.css': {
-            'tools.staticfile.on': True,
-            'tools.staticfile.filename': paths.spice_css_file,
-            'tools.nocache.on': True,
-        },
         '/base64/jquery.base64.js': {
             'tools.staticfile.on': True,
             'tools.staticfile.filename': '%s/base64/jquery.base64.js' %
@@ -239,38 +149,6 @@ class WokConfig(dict):
         '/wok-ui.html': {
             'tools.wokauth.on': True
         },
-        '/data/screenshots': {
-            'tools.staticdir.on': True,
-            'tools.staticdir.dir': get_screenshot_path(),
-            'tools.nocache.on': False
-        },
-        '/data/debugreports': {
-            'tools.staticdir.on': True,
-            'tools.staticdir.dir': get_debugreports_path(),
-            'tools.nocache.on': False,
-            'tools.kimchiauth.on': True,
-            'tools.staticdir.content_types': {'xz': 'application/x-xz'}
-        },
-        '/config/ui/tabs.xml': {
-            'tools.staticfile.on': True,
-            'tools.staticfile.filename': '%s/config/ui/tabs.xml' %
-                                         paths.prefix,
-            'tools.nocache.on': True
-        },
-        '/favicon.ico': {
-            'tools.staticfile.on': True,
-            'tools.staticfile.filename': '%s/images/logo.ico' % paths.ui_dir
-        },
-        '/robots.txt': {
-            'tools.staticfile.on': True,
-            'tools.staticfile.filename': '%s/robots.txt' % paths.ui_dir
-        },
-        '/help': {
-            'tools.staticdir.on': True,
-            'tools.staticdir.dir': '%s/ui/pages/help' % paths.prefix,
-            'tools.staticdir.index': 'en_US/index.html',
-            'tools.nocache.on': True
-        }
     }
 
     def __init__(self):

@@ -224,12 +224,12 @@ kimchi.template_add_main = function() {
     $('#iso-remote').css('opacity', 0.3).css('cursor', 'not-allowed');
 
     var enabledRemoteIso = function() {
-        if (wok.capabilities == undefined) {
+        if (kimchi.capabilities == undefined) {
             setTimeout(enabledRemoteIso, 2000);
             return;
         }
 
-        if (wok.capabilities.qemu_stream != true) {
+        if (kimchi.capabilities.qemu_stream != true) {
             return;
         }
 

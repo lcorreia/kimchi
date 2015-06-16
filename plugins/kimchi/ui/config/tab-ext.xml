@@ -1,38 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<tabs>
+<tabs-ext>
     <tab>
         <access role="admin" mode="admin"/>
         <access role="user" mode="none"/>
 
         <title>Host</title>
-        <path>tabs/host.html</path>
+        <path>plugins/kimchi/host.html</path>
     </tab>
     <tab>
         <access role="admin" mode="admin"/>
         <access role="user" mode="byInstance"/>
 
         <title>Guests</title>
-        <path>tabs/guests.html</path>
+        <path>plugins/kimchi/guests.html</path>
     </tab>
     <tab>
         <access role="admin" mode="admin"/>
         <access role="user" mode="none"/>
 
         <title>Templates</title>
-        <path>tabs/templates.html</path>
+        <path>plugins/kimchi/templates.html</path>
     </tab>
     <tab>
         <access role="admin" mode="admin"/>
         <access role="user" mode="read-only"/>
 
         <title>Storage</title>
-        <path>tabs/storage.html</path>
+        <path>plugins/kimchi/storage.html</path>
     </tab>
     <tab>
         <access role="admin" mode="admin"/>
         <access role="user" mode="read-only"/>
 
         <title>Network</title>
-        <path>tabs/network.html</path>
+        <path>plugins/kimchi/network.html</path>
     </tab>
-</tabs>
+</tabs-ext>

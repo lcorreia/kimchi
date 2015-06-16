@@ -49,11 +49,11 @@ kimchi.template_edit_main = function() {
         $('#template-edit-graphics').append('<option>Spice</option>');
         wok.select('template-edit-graphics-list', vncOpt);
         var enableSpice = function() {
-            if (wok.capabilities == undefined) {
+            if (kimchi.capabilities == undefined) {
                 setTimeout(enableSpice, 2000);
                 return;
             }
-            if (wok.capabilities.qemu_spice == true) {
+            if (kimchi.capabilities.qemu_spice == true) {
                 spiceOpt = [{label: 'Spice', value: 'spice'}]
                 wok.select('template-edit-graphics-list', spiceOpt);
             }

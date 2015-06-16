@@ -45,22 +45,6 @@ wok_log = cherrypy.log.error_log
 task_id = 0
 
 
-def _uri_to_name(collection, uri):
-    expr = '/%s/(.*?)$' % collection
-    m = re.match(expr, uri)
-    if not m:
-        raise InvalidParameter("KCHUTILS0001E", {'uri': uri})
-    return m.group(1)
-
-
-def template_name_from_uri(uri):
-    return _uri_to_name('templates', uri)
-
-
-def pool_name_from_uri(uri):
-    return _uri_to_name('storagepools', uri)
-
-
 def get_next_task_id():
     global task_id
     task_id += 1

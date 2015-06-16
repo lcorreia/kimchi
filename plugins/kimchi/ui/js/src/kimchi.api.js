@@ -22,29 +22,6 @@ var kimchi = {
     trackingTasks: [],
 
     /**
-     * A wrapper of jQuery.ajax function to allow custom bindings.
-     *
-     * @param settings an extended object to jQuery Ajax settings object
-     *   with some extra properties (see below)
-     *
-     *   resend: if the XHR has failed due to 401, the XHR can be resent
-     *     after user being authenticated successfully by setting resend
-     *     to true: settings = {resend: true}. It's useful for switching
-     *     pages (Guests, Templates, etc.).
-     *       e.g., the user wants to list guests by clicking Guests tab,
-     *     but he is told not authorized and a login window will pop up.
-     *     After login, the Ajax request for /vms will be resent without
-     *     user clicking the tab again.
-     *       Default to false.
-     */
-    requestJSON : function(settings) {
-        settings['originalError'] = settings['error'];
-        settings['error'] = null;
-        settings['kimchi'] = true;
-        return $.ajax(settings);
-    },
-
-    /**
      *
      * Get host capabilities
      * suc: callback if succeed err: callback if failed
@@ -569,25 +546,6 @@ var kimchi = {
         });
     },
 
-    login : function(settings, suc, err) {
-        $.ajax({
-            url : "login",
-            type : "POST",
-            contentType : "application/json",
-            data : JSON.stringify(settings),
-            dataType : "json"
-        }).done(suc).fail(err);
-    },
-
-    logout : function(suc, err) {
-        kimchi.requestJSON({
-            url : 'logout',
-            type : 'POST',
-            contentType : "application/json",
-            dataType : "json"
-        }).done(suc).fail(err);
-    },
-
     deleteStoragePool : function(poolName, suc, err) {
         $.ajax({
             url : 'plugins/kimchi/storagepools/' + encodeURIComponent(poolName),
@@ -610,19 +568,6 @@ var kimchi = {
                 error : err
             });
     },
-
-    listPlugins : function(suc, err, sync) {
-        kimchi.requestJSON({
-            url : 'plugins',
-            type : 'GET',
-            contentType : 'application/json',
-            dataType : 'json',
-            resend: true,
-            async : !sync,
-            success : suc,
-            error : err
-        });
-     },
 
     listNetworks : function(suc, err) {
         wok.requestJSON({

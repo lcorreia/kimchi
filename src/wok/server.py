@@ -26,8 +26,6 @@ import os
 from wok import auth
 from wok import config
 from wok.model import model
-from wok import mockmodel
-from wok import vnc
 from wok.config import WokConfig, PluginConfig
 from wok.control import sub_nodes
 from wok.proxy import start_proxy, terminate_proxy
@@ -64,10 +62,7 @@ class Server(object):
         make_dirs = [
             os.path.dirname(os.path.abspath(options.access_log)),
             os.path.dirname(os.path.abspath(options.error_log)),
-            os.path.dirname(os.path.abspath(config.get_object_store())),
-            os.path.abspath(config.get_screenshot_path()),
-            os.path.abspath(config.get_debugreports_path()),
-            os.path.abspath(config.get_distros_store())
+            os.path.dirname(os.path.abspath(config.get_object_store()))
         ]
         for directory in make_dirs:
             if not os.path.isdir(directory):
@@ -126,14 +121,8 @@ class Server(object):
 
         if hasattr(options, 'model'):
             model_instance = options.model
-        elif options.test:
-            model_instance = mockmodel.MockModel()
         else:
             model_instance = model.Model()
-
-        if isinstance(model_instance, model.Model):
-            vnc_ws_proxy = vnc.new_ws_proxy()
-            cherrypy.engine.subscribe('exit', vnc_ws_proxy.terminate)
 
         for ident, node in sub_nodes.items():
             if node.url_auth:
@@ -143,14 +132,14 @@ class Server(object):
 
         self.app = cherrypy.tree.mount(WokRoot(model_instance, dev_env),
                                        config=self.configObj)
-        self._load_plugins()
+        self._load_plugins(options)
 
         # Terminate proxy when cherrypy server is terminated
         cherrypy.engine.subscribe('exit', terminate_proxy)
 
         cherrypy.lib.sessions.init()
 
-    def _load_plugins(self):
+    def _load_plugins(self, options):
         for plugin_name, plugin_config in get_enabled_plugins():
             try:
                 plugin_class = ('plugins.%s.%s' %
@@ -164,11 +153,17 @@ class Server(object):
                 continue
 
             try:
-                plugin_app = import_class(plugin_class)()
+                plugin_app = import_class(plugin_class)(options)
             except ImportError:
                 cherrypy.log.error_log.error("Failed to import plugin %s" %
                                              plugin_class)
                 continue
+
+            # dynamically extend plugin config with custom data, if provided
+            get_custom_conf = getattr(plugin_app, "get_custom_conf", None)
+            if get_custom_conf is not None:
+                plugin_config.update(get_custom_conf())
+
             cherrypy.tree.mount(plugin_app, script_name, plugin_config)
 
     def start(self):

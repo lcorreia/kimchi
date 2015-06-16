@@ -507,14 +507,14 @@ kimchi.host_main = function() {
         });
 
         var setupUI = function() {
-            if (wok.capabilities == undefined) {
+            if (kimchi.capabilities == undefined) {
                 setTimeout(setupUI, 2000);
                 return;
             }
 
-            if((wok.capabilities['repo_mngt_tool']) && (wok.capabilities['repo_mngt_tool']!="None")) {
-                initRepositoriesGrid(wok.capabilities['repo_mngt_tool']);
-                $('#repositories-section').switchClass('hidden', wok.capabilities['repo_mngt_tool']);
+            if((kimchi.capabilities['repo_mngt_tool']) && (kimchi.capabilities['repo_mngt_tool']!="None")) {
+                initRepositoriesGrid(kimchi.capabilities['repo_mngt_tool']);
+                $('#repositories-section').switchClass('hidden', kimchi.capabilities['repo_mngt_tool']);
                 wok.topic('kimchi/repositoryAdded')
                     .subscribe(listRepositories);
                 wok.topic('kimchi/repositoryUpdated')
@@ -523,7 +523,7 @@ kimchi.host_main = function() {
                     .subscribe(listRepositories);
             }
 
-            if(wok.capabilities['update_tool']) {
+            if(kimchi.capabilities['update_tool']) {
                 $('#software-update-section').removeClass('hidden');
                 initSoftwareUpdatesGrid();
                 wok.topic('kimchi/softwareUpdated')
@@ -533,7 +533,7 @@ kimchi.host_main = function() {
                 });
             }
 
-            if(wok.capabilities['system_report_tool']) {
+            if(kimchi.capabilities['system_report_tool']) {
                 listDebugReports();
                 wok.topic('kimchi/debugReportAdded')
                     .subscribe(listDebugReports);

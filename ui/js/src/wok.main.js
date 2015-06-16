@@ -17,16 +17,6 @@
  */
 wok.tabMode = {};
 
-wok.capabilities = undefined;
-wok.getCapabilities(function(result) {
-    wok.capabilities = result;
-
-    if(wok.capabilities.federation=="on")
-        $('#peers').removeClass('hide-content');
-}, function() {
-    wok.capabilities = {};
-});
-
 wok.main = function() {
     wok.isLoggingOut = false;
     wok.popable();

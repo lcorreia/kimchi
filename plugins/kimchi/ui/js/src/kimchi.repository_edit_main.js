@@ -21,10 +21,10 @@ kimchi.repository_edit_main = function() {
 
     var saveButton = $('#repository-edit-button-save');
 
-    if(wok.capabilities['repo_mngt_tool']=="yum") {
+    if(kimchi.capabilities['repo_mngt_tool']=="yum") {
         editForm.find('input.deb').prop('disabled', true);
     }
-    else if(wok.capabilities['repo_mngt_tool']=="deb") {
+    else if(kimchi.capabilities['repo_mngt_tool']=="deb") {
         editForm.find('input.yum').prop('disabled', true);
     }
 
