@@ -21,14 +21,14 @@ import copy
 import os
 import time
 import urlparse
-
 from ConfigParser import ConfigParser
 
 from wok.basemodel import Singleton
-from config import kimchiLock
 from wok.exception import InvalidOperation, InvalidParameter
 from wok.exception import OperationFailed, NotFoundError, MissingParameter
 from wok.utils import validate_repo_url
+
+from config import kimchiLock
 from yumparser import get_yum_repositories, write_repo_to_file
 from yumparser import get_display_name, get_expanded_url
 

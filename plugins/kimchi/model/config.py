@@ -17,23 +17,23 @@
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 
-from multiprocessing.pool import ThreadPool
-
 import cherrypy
+from multiprocessing.pool import ThreadPool
 
 from wok.basemodel import Singleton
 from wok.config import config as kconfig
 from wok.config import get_version
+from wok.exception import NotFoundError
+from wok.utils import check_url_path, run_command, wok_log
+
 from ..config import find_qemu_binary
 from ..distroloader import DistroLoader
-from wok.exception import NotFoundError
-from debugreports import DebugReportsModel
-from featuretests import FeatureTests, FEATURETEST_POOL_NAME
-from featuretests import FEATURETEST_VM_NAME
 from ..repositories import Repositories
 from ..screenshot import VMScreenshot
 from ..swupdate import SoftwareUpdate
-from wok.utils import check_url_path, wok_log, run_command
+from debugreports import DebugReportsModel
+from featuretests import FeatureTests, FEATURETEST_POOL_NAME
+from featuretests import FEATURETEST_VM_NAME
 
 
 class ConfigModel(object):

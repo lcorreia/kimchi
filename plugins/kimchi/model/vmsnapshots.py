@@ -17,19 +17,19 @@
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 
-import time
-
 import libvirt
 import lxml.etree as ET
+import time
 from lxml import objectify
 from lxml.builder import E
 
 from wok.exception import InvalidOperation, NotFoundError, OperationFailed
+from wok.utils import add_task
+from wok.xmlutils.utils import xpath_get_text
+
 from tasks import TaskModel
 from vms import DOM_STATE_MAP, VMModel
 from vmstorages import VMStorageModel, VMStoragesModel
-from wok.utils import add_task
-from wok.xmlutils.utils import xpath_get_text
 
 
 class VMSnapshotsModel(object):

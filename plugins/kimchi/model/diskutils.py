@@ -17,11 +17,11 @@
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 
-
 from wok.exception import OperationFailed, NotFoundError
-from vms import VMModel, VMsModel
 from wok.utils import wok_log
+
 from ..xmlutils.disk import get_vm_disk_info, get_vm_disks
+from vms import VMModel, VMsModel
 
 """
     Functions that multiple storage-related models (e.g. VMStoragesModel,

@@ -20,11 +20,12 @@
 import cherrypy
 
 from wok.control.base import Collection, Resource
-from storagevolumes import IsoVolumes, StorageVolumes
 from wok.control.utils import get_class_name, model_fn
 from wok.control.utils import validate_params
-from ..model.storagepools import ISO_POOL_NAME
 from wok.control.utils import UrlSubNode
+
+from ..model.storagepools import ISO_POOL_NAME
+from storagevolumes import IsoVolumes, StorageVolumes
 
 
 @UrlSubNode('storagepools', True)

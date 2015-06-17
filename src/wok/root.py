@@ -20,9 +20,8 @@
 import cherrypy
 import json
 import os
-
-
 from distutils.version import LooseVersion
+
 from wok import auth
 from wok import template
 from wok.i18n import messages

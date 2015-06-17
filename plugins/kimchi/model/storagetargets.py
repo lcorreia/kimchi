@@ -22,9 +22,10 @@ import lxml.etree as ET
 from lxml import objectify
 from lxml.builder import E
 
+from wok.utils import patch_find_nfs_target, wok_log
+
 from config import CapabilitiesModel
 from storageservers import STORAGE_SERVERS
-from wok.utils import wok_log, patch_find_nfs_target
 
 
 class StorageTargetsModel(object):

@@ -22,11 +22,11 @@ import libvirt
 import lxml.etree as ET
 import platform
 import subprocess
-
 from lxml.builder import E
 
 from wok.rollbackcontext import RollbackContext
-from wok.utils import wok_log, run_command, servermethod
+from wok.utils import run_command, servermethod, wok_log
+
 
 FEATURETEST_VM_NAME = "FEATURETEST_VM"
 FEATURETEST_POOL_NAME = "FEATURETEST_POOL"

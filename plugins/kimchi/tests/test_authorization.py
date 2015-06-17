@@ -20,10 +20,10 @@
 import json
 import os
 import unittest
-
 from functools import partial
 
 from wok.plugins.kimchi import mockmodel
+
 from iso_gen import construct_fake_iso
 from utils import get_free_port, patch_auth, request
 from utils import run_server, wait_task

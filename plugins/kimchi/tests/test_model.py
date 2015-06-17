@@ -27,23 +27,24 @@ import time
 import unittest
 import uuid
 
-
-import iso_gen
 import wok.objectstore
-import utils
 from wok import netinfo
-from wok.plugins.kimchi import osinfo
 from wok.basemodel import Singleton
 from wok.config import config
 from wok.exception import InvalidOperation
 from wok.exception import InvalidParameter, NotFoundError, OperationFailed
+from wok.rollbackcontext import RollbackContext
+from wok.utils import add_task
+from wok.xmlutils.utils import xpath_get_text
+
+from wok.plugins.kimchi import osinfo
 from wok.plugins.kimchi.config import kimchiPaths as paths
 from wok.plugins.kimchi.model import model
 from wok.plugins.kimchi.model.libvirtconnection import LibvirtConnection
 from wok.plugins.kimchi.model.vms import VMModel
-from wok.rollbackcontext import RollbackContext
-from wok.utils import add_task
-from wok.xmlutils.utils import xpath_get_text
+
+import iso_gen
+import utils
 
 
 invalid_repository_urls = ['www.fedora.org',       # missing protocol

@@ -20,20 +20,20 @@
 import libvirt
 import lxml.etree as ET
 import sys
-
 from lxml.builder import E
 
 from wok.config import config, PluginPaths
-from ..scan import Scanner
 from wok.exception import InvalidOperation, MissingParameter
 from wok.exception import NotFoundError, OperationFailed
+from wok.utils import add_task, run_command, wok_log
+from wok.xmlutils.utils import xpath_get_text
+
+from ..osinfo import defaults as tmpl_defaults
+from ..scan import Scanner
+from ..utils import pool_name_from_uri
 from config import CapabilitiesModel
 from host import DeviceModel
 from libvirtstoragepool import StoragePoolDef
-from ..osinfo import defaults as tmpl_defaults
-from wok.utils import add_task, wok_log, run_command
-from ..utils import pool_name_from_uri
-from wok.xmlutils.utils import xpath_get_text
 
 
 ISO_POOL_NAME = u'kimchi_isos'

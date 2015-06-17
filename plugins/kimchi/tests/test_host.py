@@ -25,11 +25,12 @@ import psutil
 import tempfile
 import time
 import unittest
-
 from functools import partial
 
 from wok.plugins.kimchi.mockmodel import MockModel
+
 from utils import get_free_port, patch_auth, request, run_server, wait_task
+
 
 test_server = None
 model = None

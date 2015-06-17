@@ -19,8 +19,8 @@
 
 import contextlib
 import glob
-import platform
 import os
+import platform
 import re
 import stat
 import struct

@@ -22,7 +22,7 @@ import re
 import socket
 
 from wok.config import config
-from wok.utils import wok_log, run_command
+from wok.utils import run_command, wok_log
 
 
 class PeersModel(object):

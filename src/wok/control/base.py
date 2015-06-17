@@ -28,8 +28,8 @@ from wok.control.utils import get_class_name, internal_redirect, model_fn
 from wok.control.utils import parse_request, validate_method
 from wok.control.utils import validate_params
 from wok.exception import InvalidOperation, InvalidParameter
-from wok.exception import WokException, MissingParameter, NotFoundError
-from wok.exception import OperationFailed, UnauthorizedError
+from wok.exception import MissingParameter, NotFoundError
+from wok.exception import OperationFailed, UnauthorizedError, WokException
 
 
 class Resource(object):

@@ -25,12 +25,13 @@ import shutil
 import subprocess
 import time
 
-from .. import config
-from wok.exception import InvalidParameter, WokException, NotFoundError
-from wok.exception import OperationFailed
-from tasks import TaskModel
+from wok.exception import InvalidParameter, NotFoundError, OperationFailed
+from wok.exception import WokException
 from wok.utils import add_task, wok_log
 from wok.utils import run_command
+
+from .. import config
+from tasks import TaskModel
 
 
 class DebugReportsModel(object):

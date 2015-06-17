@@ -24,12 +24,14 @@ import os
 import tempfile
 import threading
 import unittest
-
 from functools import partial
 
-import utils
-from wok.plugins.kimchi import mockmodel
 from wok.control.base import Collection, Resource
+
+from wok.plugins.kimchi import mockmodel
+
+import utils
+
 
 test_server = None
 model = None

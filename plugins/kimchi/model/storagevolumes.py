@@ -18,6 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 
 import contextlib
+import libvirt
 import lxml.etree as ET
 import magic
 import os
@@ -27,18 +28,17 @@ import time
 import urllib2
 from lxml.builder import E
 
-import libvirt
-
-from ..config import READONLY_POOL_TYPE
 from wok.exception import InvalidOperation, InvalidParameter, IsoFormatError
 from wok.exception import MissingParameter, NotFoundError, OperationFailed
+from wok.utils import add_task, get_next_clone_name, get_unique_file_name
+from wok.utils import wok_log
+from wok.xmlutils.utils import xpath_get_text
+
+from ..config import READONLY_POOL_TYPE
 from ..isoinfo import IsoImage
 from diskutils import get_disk_used_by, set_disk_used_by
 from storagepools import StoragePoolModel
 from tasks import TaskModel
-from wok.utils import add_task, get_next_clone_name, get_unique_file_name
-from wok.utils import wok_log
-from wok.xmlutils.utils import xpath_get_text
 
 
 VOLUME_TYPE_MAP = {0: 'file',

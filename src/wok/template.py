@@ -20,11 +20,11 @@
 import cherrypy
 import errno
 import json
+from Cheetah.Template import Template
+from glob import iglob
 
 
 from wok.config import paths
-from Cheetah.Template import Template
-from glob import iglob
 
 
 def get_lang():

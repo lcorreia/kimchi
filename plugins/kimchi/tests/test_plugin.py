@@ -20,14 +20,13 @@
 import json
 import os
 import unittest
-
-
 from functools import partial
 
-
-from wok.plugins.kimchi import mockmodel
 import wok.server
 from wok.utils import get_enabled_plugins
+
+from wok.plugins.kimchi import mockmodel
+
 import utils
 
 

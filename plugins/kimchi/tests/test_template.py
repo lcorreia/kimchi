@@ -21,12 +21,12 @@
 import json
 import os
 import unittest
-
 from functools import partial
 
 from wok.plugins.kimchi import osinfo
 from wok.plugins.kimchi.config import READONLY_POOL_TYPE
 from wok.plugins.kimchi.mockmodel import MockModel
+
 from utils import get_free_port, patch_auth, request, run_server
 
 

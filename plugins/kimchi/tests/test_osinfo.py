@@ -19,7 +19,6 @@
 
 import unittest
 
-
 from wok.plugins.kimchi.osinfo import _get_arch, get_template_default, lookup
 from wok.plugins.kimchi.osinfo import modern_version_bases
 

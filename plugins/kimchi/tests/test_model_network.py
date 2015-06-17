@@ -21,11 +21,12 @@
 import json
 import os
 import unittest
-
 from functools import partial
 
-from wok.plugins.kimchi.model.model import Model
 from wok.rollbackcontext import RollbackContext
+
+from wok.plugins.kimchi.model.model import Model
+
 from utils import get_free_port, patch_auth, request, rollback_wrapper
 from utils import run_server
 

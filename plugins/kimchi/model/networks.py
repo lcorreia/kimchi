@@ -17,12 +17,10 @@
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 
-import sys
-import time
-
 import ipaddr
 import libvirt
-
+import sys
+import time
 from xml.sax.saxutils import escape
 
 from wok import netinfo
@@ -30,12 +28,13 @@ from wok import network as knetwork
 from wok.config import PluginPaths
 from wok.exception import InvalidOperation, InvalidParameter
 from wok.exception import MissingParameter, NotFoundError, OperationFailed
-from ..osinfo import defaults as tmpl_defaults
 from wok.rollbackcontext import RollbackContext
-from wok.utils import wok_log, run_command
+from wok.utils import run_command, wok_log
+from wok.xmlutils.utils import xpath_get_text
+
+from ..osinfo import defaults as tmpl_defaults
 from ..xmlutils.network import create_vlan_tagged_bridge_xml
 from ..xmlutils.network import to_network_xml
-from wok.xmlutils.utils import xpath_get_text
 
 
 KIMCHI_BRIDGE_PREFIX = 'kb'

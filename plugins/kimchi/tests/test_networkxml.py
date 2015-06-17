@@ -18,13 +18,14 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 
 import ipaddr
-import unittest
 import lxml.etree as ET
+import unittest
 
-import utils
+from wok.xmlutils.utils import xpath_get_text
 
 from wok.plugins.kimchi.xmlutils import network as nxml
-from wok.xmlutils.utils import xpath_get_text
+
+import utils
 
 
 class NetworkXmlTests(unittest.TestCase):

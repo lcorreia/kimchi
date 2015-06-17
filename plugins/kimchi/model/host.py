@@ -19,27 +19,27 @@
 
 import libvirt
 import os
-import time
 import platform
+import psutil
+import time
+from cherrypy.process.plugins import BackgroundTask
 from collections import defaultdict
 from lxml import objectify
 
-import psutil
-from cherrypy.process.plugins import BackgroundTask
-
-from .. import disks
 from wok import netinfo
 from wok.basemodel import Singleton
-import hostdev
 from wok.exception import InvalidOperation, InvalidParameter
 from wok.exception import NotFoundError, OperationFailed
+from wok.utils import add_task, wok_log
+from wok.xmlutils.utils import xpath_get_text
+
+import hostdev
+from .. import disks
+from ..repositories import Repositories
+from ..swupdate import SoftwareUpdate
 from config import CapabilitiesModel
 from tasks import TaskModel
 from vms import DOM_STATE_MAP, VMModel, VMsModel
-from ..repositories import Repositories
-from ..swupdate import SoftwareUpdate
-from wok.utils import add_task, wok_log
-from wok.xmlutils.utils import xpath_get_text
 
 
 HOST_STATS_INTERVAL = 1

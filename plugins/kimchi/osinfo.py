@@ -21,7 +21,6 @@ import copy
 import glob
 import os
 import psutil
-
 from collections import defaultdict
 from configobj import ConfigObj
 from distutils.version import LooseVersion

@@ -17,17 +17,17 @@
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 
+import libvirt
+import lxml.etree as ET
 import os
 import tempfile
-import lxml.etree as ET
 from lxml.builder import E
 
-import libvirt
-
 from wok.exception import InvalidParameter, OperationFailed, TimeoutExpired
-from ..iscsi import TargetClient
 from wok.rollbackcontext import RollbackContext
-from wok.utils import wok_log, parse_cmd_output, run_command
+from wok.utils import parse_cmd_output, run_command, wok_log
+
+from ..iscsi import TargetClient
 
 
 class StoragePoolDef(object):

@@ -23,12 +23,12 @@ import socket
 import stat
 import string
 import urlparse
-
 from lxml import objectify
 from lxml.builder import E
 
 from wok.exception import InvalidParameter, NotFoundError
 from wok.utils import check_url_path
+
 
 BUS_TO_DEV_MAP = {'ide': 'hd', 'virtio': 'vd', 'scsi': 'sd'}
 DEV_TYPE_SRC_ATTR_MAP = {'file': 'file', 'block': 'dev'}

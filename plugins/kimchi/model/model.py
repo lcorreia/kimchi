@@ -21,9 +21,10 @@ import inspect
 import os
 
 from wok.basemodel import BaseModel
-from libvirtconnection import LibvirtConnection
 from wok.objectstore import ObjectStore
 from wok.utils import import_module, listPathModules
+
+from libvirtconnection import LibvirtConnection
 
 
 class Model(BaseModel):

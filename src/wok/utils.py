@@ -29,11 +29,11 @@ import subprocess
 import traceback
 import urllib2
 import xml.etree.ElementTree as ET
+from cherrypy.lib.reprconf import Parser
 from httplib import HTTPConnection, HTTPException
 from multiprocessing import Process, Queue
 from threading import Timer
 from urlparse import urlparse
-from cherrypy.lib.reprconf import Parser
 
 from wok.asynctask import AsyncTask
 from wok.config import paths, PluginPaths

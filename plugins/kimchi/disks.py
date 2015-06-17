@@ -20,7 +20,6 @@
 import os.path
 import re
 import subprocess
-
 from parted import Device as PDevice
 from parted import Disk as PDisk
 

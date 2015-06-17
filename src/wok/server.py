@@ -25,9 +25,9 @@ import os
 
 from wok import auth
 from wok import config
-from wok.model import model
 from wok.config import WokConfig, PluginConfig
 from wok.control import sub_nodes
+from wok.model import model
 from wok.proxy import start_proxy, terminate_proxy
 from wok.root import WokRoot
 from wok.utils import get_enabled_plugins, import_class

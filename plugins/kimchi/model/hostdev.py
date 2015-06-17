@@ -21,9 +21,10 @@ import os
 from pprint import pformat
 from pprint import pprint
 
-from libvirtconnection import LibvirtConnection
 from wok.utils import wok_log
 from wok.xmlutils.utils import dictize
+
+from libvirtconnection import LibvirtConnection
 
 
 def _get_all_host_dev_infos(libvirt_conn):

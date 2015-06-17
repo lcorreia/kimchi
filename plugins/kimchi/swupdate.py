@@ -21,9 +21,10 @@ import subprocess
 import time
 
 from wok.basemodel import Singleton
-from config import kimchiLock
 from wok.exception import NotFoundError, OperationFailed
-from wok.utils import wok_log, run_command
+from wok.utils import run_command, wok_log
+
+from config import kimchiLock
 from yumparser import get_yum_packages_list_update
 
 

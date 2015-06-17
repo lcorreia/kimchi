@@ -18,7 +18,6 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 
 import lxml.etree as ET
-
 from distutils.version import LooseVersion
 from lxml.builder import E
 

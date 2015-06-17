@@ -18,26 +18,33 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 
 import copy
+import libvirt
 import lxml.etree as ET
 import os
 import random
 import string
 import time
 import uuid
-
 from lxml import etree, objectify
 from lxml.builder import E
 from xml.etree import ElementTree
 
-import libvirt
-
 from wok import vnc
-from .. import model
 from wok.config import config
-from ..config import READONLY_POOL_TYPE
 from wok.exception import InvalidOperation, InvalidParameter
 from wok.exception import NotFoundError, OperationFailed
+from wok.rollbackcontext import RollbackContext
+from wok.utils import add_task, convert_data_size, get_next_clone_name
+from wok.utils import import_class, run_setfacl_set_attr, wok_log
+from wok.xmlutils.utils import xpath_get_text, xml_item_update
+from wok.xmlutils.utils import dictize
+
+from .. import model
+from ..config import READONLY_POOL_TYPE
 from ..kvmusertests import UserTests
+from ..screenshot import VMScreenshot
+from ..utils import template_name_from_uri
+from ..xmlutils.cpu import get_cpu_xml, get_numa_xml
 from config import CapabilitiesModel
 from featuretests import FeatureTests
 from tasks import TaskModel
@@ -45,14 +52,6 @@ from templates import TemplateModel
 from utils import get_ascii_nonascii_name, get_vm_name
 from utils import get_metadata_node, remove_metadata_node
 from utils import set_metadata_node
-from wok.rollbackcontext import RollbackContext
-from ..screenshot import VMScreenshot
-from wok.utils import add_task, convert_data_size, get_next_clone_name
-from wok.utils import import_class, wok_log, run_setfacl_set_attr
-from ..utils import template_name_from_uri
-from ..xmlutils.cpu import get_cpu_xml, get_numa_xml
-from wok.xmlutils.utils import xpath_get_text, xml_item_update
-from wok.xmlutils.utils import dictize
 
 
 DOM_STATE_MAP = {0: 'nostate',

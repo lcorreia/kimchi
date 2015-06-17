@@ -18,21 +18,21 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 
 import glob
-import os
-
 import libvirt
+import os
+import platform
 from lxml import etree, objectify
 from lxml.builder import E
 
 from wok.exception import InvalidOperation, InvalidParameter, NotFoundError
 from wok.exception import OperationFailed
+from wok.rollbackcontext import RollbackContext
+from wok.utils import run_command, wok_log
+
 from config import CapabilitiesModel
 from host import DeviceModel, DevicesModel
 from utils import get_vm_config_flag
 from vms import DOM_STATE_MAP, VMModel
-from wok.rollbackcontext import RollbackContext
-from wok.utils import wok_log, run_command
-import platform
 
 
 class VMHostDevsModel(object):

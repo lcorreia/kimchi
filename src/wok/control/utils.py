@@ -20,8 +20,6 @@
 
 import cherrypy
 import json
-
-
 from jsonschema import Draft3Validator, ValidationError, FormatChecker
 
 

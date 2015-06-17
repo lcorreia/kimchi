@@ -21,14 +21,14 @@ import json
 import os
 import cherrypy
 
+from wok import vnc
+from wok.i18n import messages
+from wok.root import WokRoot
 
 import config
 import mockmodel
 from control import sub_nodes
-from wok.i18n import messages
 from model import model as kimchiModel
-from wok.root import WokRoot
-from wok import vnc
 
 
 class KimchiRoot(WokRoot):

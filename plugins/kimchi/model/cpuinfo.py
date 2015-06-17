@@ -18,11 +18,11 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 
 import platform
-
 from xml.etree import ElementTree as ET
 
 from wok.exception import InvalidParameter, InvalidOperation
-from wok.utils import wok_log, run_command
+from wok.utils import run_command, wok_log
+
 
 ARCH = 'power' if platform.machine().startswith('ppc') else 'x86'
 

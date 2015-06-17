@@ -19,7 +19,6 @@
 
 import ipaddr
 import lxml.etree as ET
-
 from lxml.builder import E
 
 

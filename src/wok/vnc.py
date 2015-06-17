@@ -21,7 +21,6 @@
 import base64
 import errno
 import os
-
 from multiprocessing import Process
 from websockify import WebSocketProxy
 

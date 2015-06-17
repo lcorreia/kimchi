@@ -18,19 +18,19 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 
 import copy
+import libvirt
 import os
 import stat
 
-import libvirt
-
 from wok.exception import InvalidOperation, InvalidParameter
 from wok.exception import NotFoundError, OperationFailed
-from ..kvmusertests import UserTests
-from cpuinfo import CPUInfoModel
-from ..utils import pool_name_from_uri
 from wok.utils import probe_file_permission_as_user, run_setfacl_set_attr
-from ..vmtemplate import VMTemplate
 from wok.xmlutils.utils import xpath_get_text
+
+from ..kvmusertests import UserTests
+from ..utils import pool_name_from_uri
+from ..vmtemplate import VMTemplate
+from cpuinfo import CPUInfoModel
 
 
 class TemplatesModel(object):

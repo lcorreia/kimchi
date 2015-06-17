@@ -23,8 +23,9 @@ import tempfile
 import threading
 import unittest
 
-from wok.exception import NotFoundError
 from wok import objectstore
+from wok.exception import NotFoundError
+
 
 tmpfile = None
 

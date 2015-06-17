@@ -19,6 +19,7 @@
 
 from wok import netinfo
 from wok.exception import NotFoundError
+
 from networks import NetworksModel
 
 

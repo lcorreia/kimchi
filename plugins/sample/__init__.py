@@ -19,14 +19,14 @@
 
 import json
 import os
-
-
 from cherrypy import expose
 
 
 from wok.config import PluginPaths
 from wok.control.base import Collection, Resource
 from wok.root import WokRoot
+
+
 from plugins.sample.i18n import messages
 from plugins.sample.model import Model
 

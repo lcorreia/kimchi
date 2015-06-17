@@ -21,7 +21,6 @@ import sqlite3
 import threading
 import traceback
 
-
 try:
     from collections import OrderedDict
 except ImportError:

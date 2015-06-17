@@ -22,6 +22,7 @@ import struct
 
 from wok.plugins.kimchi.isoinfo import IsoImage
 
+
 iso_des = [
     ('openbsd', lambda v: True,
         lambda v: 'OpenBSD/i386    %s Install CD' % v),

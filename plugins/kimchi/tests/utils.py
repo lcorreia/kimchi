@@ -28,20 +28,20 @@ import os
 import socket
 import ssl
 import sys
-import time
 import threading
+import time
 import unittest
-
 from contextlib import closing
 from lxml import etree
 
-
-from wok.plugins.kimchi import mockmodel
 import wok.server
 from wok.config import config, PluginPaths
 from wok.auth import User, USER_NAME, USER_GROUPS, USER_ROLES, tabs
 from wok.exception import NotFoundError, OperationFailed
 from wok.utils import wok_log
+
+from wok.plugins.kimchi import mockmodel
+
 
 _ports = {}
 

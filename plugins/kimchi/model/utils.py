@@ -25,6 +25,7 @@ from lxml.builder import E
 
 from wok.exception import OperationFailed
 
+
 KIMCHI_META_URL = "https://github.com/kimchi-project/kimchi"
 KIMCHI_NAMESPACE = "kimchi"
 

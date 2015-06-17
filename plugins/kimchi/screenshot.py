@@ -25,15 +25,15 @@ import tempfile
 import time
 import uuid
 
-
 try:
     from PIL import Image
 except ImportError:
     import Image
 
 
-import config
 from wok.utils import wok_log
+
+import config
 
 
 (fd, pipe) = tempfile.mkstemp()

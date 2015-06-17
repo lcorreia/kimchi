@@ -17,16 +17,16 @@
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 
-import random
-
 import libvirt
+import random
 from lxml import etree, objectify
 
 from wok.exception import InvalidParameter, MissingParameter
 from wok.exception import NotFoundError, InvalidOperation
+
+from ..xmlutils.interface import get_iface_xml
 from config import CapabilitiesModel
 from vms import DOM_STATE_MAP, VMModel
-from ..xmlutils.interface import get_iface_xml
 
 
 def getDHCPLeases(net, mac):

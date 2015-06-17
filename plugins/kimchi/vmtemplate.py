@@ -22,16 +22,16 @@ import stat
 import time
 import urlparse
 import uuid
-
 from lxml import etree
 from lxml.builder import E
 
+from wok.exception import InvalidParameter, ImageFormatError, IsoFormatError
+from wok.exception import MissingParameter, OperationFailed
+from wok.utils import check_url_path
+
 import imageinfo
 import osinfo
-from wok.exception import InvalidParameter, IsoFormatError, MissingParameter
-from wok.exception import ImageFormatError, OperationFailed
 from isoinfo import IsoImage
-from wok.utils import check_url_path
 from utils import pool_name_from_uri
 from xmlutils.cpu import get_cpu_xml
 from xmlutils.disk import get_disk_xml
