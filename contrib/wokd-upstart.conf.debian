@@ -1,5 +1,5 @@
 #
-# kimchid - Kimchi Web Server
+# wokd - Wok Web Server
 #
 # Copyright IBM, Corp. 2013
 #
@@ -18,17 +18,11 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
-description	"Kimchi Web Server"
+description	"Wok - Webserver Originated from Kimchi"
 
-start on started libvirt-bin
-stop on stopped libvirt-bin
+start on stopped rc RUNLEVEL=[2345]
 
 respawn
 respawn limit 5 30
 
-pre-start script
-    status libvirt-bin | grep -q "start/running" && exit 0
-    start libvirt-bin || exit 1
-end script
-
-exec /usr/bin/kimchid
+exec /usr/bin/wokd
