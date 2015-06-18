@@ -15,6 +15,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-thirdpartydir = $(datadir)/kimchi/ui/spice-html5/thirdparty
+thirdpartydir = $(datadir)/wok/plugins/kimchi/ui/spice-html5/thirdparty
 
 dist_thirdparty_DATA = $(wildcard *.js) $(NULL)

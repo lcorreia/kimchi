@@ -18,11 +18,7 @@ SUBDIRS = DEBIAN
 
 EXTRA_DIST = \
 	check_i18n.py \
-	kimchid.sysvinit \
-	kimchid.service.fedora \
 	kimchi.spec.fedora.in \
-	kimchid-upstart.conf.debian \
-	kimchid-upstart.conf.fedora \
 	make-deb.sh.in \
 	$(NULL)
 

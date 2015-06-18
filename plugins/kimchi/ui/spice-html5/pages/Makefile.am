@@ -15,6 +15,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-spicepagesdir = $(datadir)/kimchi/ui/spice-html5/pages
+spicepagesdir = $(datadir)/wok/plugins/kimchi/ui/spice-html5/pages
 
 dist_spicepages_DATA = $(wildcard *.html) $(NULL)

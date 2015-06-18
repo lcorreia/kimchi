@@ -14,7 +14,7 @@
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 
-zh_TW_helpdir = $(datadir)/kimchi/ui/pages/help/zh_TW
+zh_TW_helpdir = $(datadir)/wok/plugins/kimchi/ui/pages/help/zh_TW
 
 dist_zh_TW_help_DATA = $(wildcard *.html) $(NULL)
 

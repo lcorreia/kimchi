@@ -15,4 +15,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-SUBDIRS = ui
+SUBDIRS = config css images js pages spice-html5
+
+uidir = $(datadir)/wok/plugins/kimchi/ui

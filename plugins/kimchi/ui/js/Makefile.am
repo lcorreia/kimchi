@@ -15,13 +15,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-EXTRA_DIST = src widgets
+EXTRA_DIST = src
 
-jsdir = $(datadir)/kimchi/ui/js
+jsdir = $(datadir)/wok/plugins/kimchi/ui/js
 
 dist_js_DATA = kimchi.min.js $(filter-out kimchi.min.js, $(wildcard *.js))
 
-kimchi.min.js: widgets/*.js src/*.js
+kimchi.min.js: src/*.js
 	cat $(sort $^) > $@
 
 CLEANFILES = kimchi.min.js

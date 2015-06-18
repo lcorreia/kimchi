@@ -15,8 +15,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-xmldir = $(datadir)/kimchi/config/ui
+xmldir = $(datadir)/wok/plugins/kimchi/ui/config
 
 dist_xml_DATA = \
-	tabs.xml \
+	tab-ext.xml \
 	$(NULL)

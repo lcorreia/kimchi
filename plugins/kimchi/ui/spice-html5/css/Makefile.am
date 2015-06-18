@@ -15,6 +15,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-spicecssdir = $(datadir)/kimchi/ui/spice-html5
+spicecssdir = $(datadir)/wok/plugins/kimchi/ui/spice-html5
 
 dist_spicecss_DATA = $(wildcard *.css) $(NULL)

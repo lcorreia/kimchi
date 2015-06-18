@@ -20,6 +20,6 @@ SUBDIRS = pages
 if WITH_SPICE
 SUBDIRS += css thirdparty
 
-spicehtml5dir = $(datadir)/kimchi/ui/spice-html5
+spicehtml5dir = $(datadir)/wok/plugins/kimchi/ui/spice-html5
 dist_spicehtml5_DATA = $(wildcard *.js) $(NULL)
 endif

@@ -64,15 +64,6 @@ else
 AC_SUBST([ENABLE_SAMPLE], [False])
 fi
 
-# check for systemd
-PKG_PROG_PKG_CONFIG
-AC_ARG_WITH([systemdsystemunitdir],
-    AS_HELP_STRING([--with-systemdsystemunitdir=DIR], [Directory for systemd service files]),
-    [], [with_systemdsystemunitdir=$($PKG_CONFIG --variable=systemdsystemunitdir systemd)])
-if test "x$with_systemdsystemunitdir" != xno; then
-    AC_SUBST([systemdsystemunitdir], [$with_systemdsystemunitdir])
-fi
-
 AC_ARG_WITH(
     [spice-html5],
     [AS_HELP_STRING([--with-spice-html5],
@@ -87,28 +78,13 @@ AC_CONFIG_FILES([
     po/gen-pot
     Makefile
     docs/Makefile
-    docs/kimchid.8
-    src/Makefile
-    src/distros.d/Makefile
-    src/nginx/Makefile
-    src/kimchi/Makefile
-    src/kimchi/control/Makefile
-    src/kimchi/control/vm/Makefile
-    src/kimchi/model/Makefile
-    src/kimchi/xmlutils/Makefile
-    plugins/Makefile
-    plugins/sample/Makefile
-    plugins/sample/po/Makefile.in
-    plugins/sample/sample.conf
-    plugins/sample/ui/Makefile
-    plugins/sample/ui/config/Makefile
-    plugins/sample/ui/js/Makefile
-    plugins/sample/ui/pages/Makefile
+    distros.d/Makefile
+    control/Makefile
+    control/vm/Makefile
+    model/Makefile
     ui/Makefile
+    ui/config/Makefile
     ui/css/Makefile
-    ui/fontello/Makefile
-    ui/fontello/css/Makefile
-    ui/fontello/font/Makefile
     ui/images/Makefile
     ui/images/theme-default/Makefile
     ui/js/Makefile
@@ -116,10 +92,6 @@ AC_CONFIG_FILES([
     ui/spice-html5/css/Makefile
     ui/spice-html5/pages/Makefile
     ui/spice-html5/thirdparty/Makefile
-    ui/libs/Makefile
-    ui/libs/themes/Makefile
-    ui/libs/themes/base/Makefile
-    ui/libs/themes/base/images/Makefile
     ui/pages/Makefile
     ui/pages/help/Makefile
     ui/pages/help/en_US/Makefile
@@ -133,16 +105,13 @@ AC_CONFIG_FILES([
     ui/pages/help/ru_RU/Makefile
     ui/pages/help/zh_CN/Makefile
     ui/pages/help/zh_TW/Makefile
-    ui/pages/tabs/Makefile
-    ui/pages/websockify/Makefile
     contrib/Makefile
     contrib/DEBIAN/Makefile
     contrib/DEBIAN/control
     contrib/kimchi.spec.fedora
     contrib/kimchi.spec.suse
     tests/Makefile
-    config/Makefile
-    config/ui/Makefile
+    xmlutils/Makefile
 ],[
     chmod +x po/gen-pot
 ])

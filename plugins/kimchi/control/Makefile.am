@@ -21,7 +21,7 @@ SUBDIRS = vm
 
 control_PYTHON = *.py
 
-controldir = $(pythondir)/kimchi/control
+controldir = $(pythondir)/wok/plugins/kimchi/control
 
 install-data-local:
 	$(MKDIR_P) $(DESTDIR)$(controldir)

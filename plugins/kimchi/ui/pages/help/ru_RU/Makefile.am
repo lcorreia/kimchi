@@ -14,7 +14,7 @@
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 
-ru_RU_helpdir = $(datadir)/kimchi/ui/pages/help/ru_RU
+ru_RU_helpdir = $(datadir)/wok/plugins/kimchi/ui/pages/help/ru_RU
 
 dist_ru_RU_help_DATA = $(wildcard *.html) $(NULL)
 

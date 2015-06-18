@@ -16,9 +16,24 @@
 # You should have received a copy of the GNU Lesser General Public
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
-SUBDIRS = src ui docs contrib tests po config plugins
 
-man_MANS = docs/kimchid.8
+SUBDIRS = contrib control distros.d docs model po tests ui xmlutils
+
+kimchi_PYTHON = $(filter-out config.py, $(wildcard *.py))
+
+nodist_kimchi_PYTHON = config.py
+
+if WITH_SPICE
+WITH_SPICE=yes
+else
+WITH_SPICE=no
+endif
+
+wokdir = $(pythondir)/wok
+kimchidir = $(pythondir)/wok/plugins/kimchi
+
+confdir = $(sysconfdir)/wok/plugins.d
+dist_conf_DATA = kimchi.conf template.conf
 
 AUTOMAKE_OPTIONS = foreign
 
@@ -26,28 +41,26 @@ ACLOCAL_AMFLAGS = --install -I m4
 
 EXTRA_DIST = \
 	config.rpath \
+	API.json \
 	autogen.sh \
 	COPYING.ASL2 \
 	COPYING.LGPL \
 	CONTRIBUTE.md \
 	VERSION \
 	build-aux/pkg-version \
+	config.py.in \
 	$(NULL)
 
 
-PEP8_BLACKLIST = *src/kimchi/config.py,*src/kimchi/i18n.py,*tests/test_config.py
+PEP8_BLACKLIST = *config.py,*i18n.py,*tests/test_config.py
 
-SKIP_PYFLAKES_ERR = "\./src/kimchi/websocket\.py"
-
-I18N_FILES = plugins/*/i18n.py \
-	src/kimchi/i18n.py \
+I18N_FILES = ./i18n.py \
 	$(NULL)
 
 check-local:
-	PYTHONPATH=src contrib/check_i18n.py $(I18N_FILES)
+	contrib/check_i18n.py $(I18N_FILES)
 	find . -path './.git' -prune -type f -o \
 		-name '*.py' -o -name '*.py.in'  | xargs $(PYFLAKES) | \
-		grep -w -v $(SKIP_PYFLAKES_ERR) | \
 		while read LINE; do echo "$$LINE"; false; done
 
 	$(PEP8) --version
@@ -63,6 +76,22 @@ all-local:
 		ln -sf ../../../po/$$L.gmo $$dir/kimchi.mo ;   \
 	done < po/LINGUAS
 
+do_substitution = \
+	sed -e 's,[@]prefix[@],$(prefix),g'             \
+	-e 's,[@]datadir[@],$(datadir),g'               \
+	-e 's,[@]sysconfdir[@],$(sysconfdir),g'         \
+	-e 's,[@]localstatedir[@],$(localstatedir),g'   \
+	-e 's,[@]pkgdatadir[@],$(pkgdatadir),g'         \
+	-e 's,[@]wokdir[@],$(wokdir),g'           \
+	-e 's,[@]kimchidir[@],$(kimchidir),g'           \
+	-e 's,[@]kimchiversion[@],$(PACKAGE_VERSION),g' \
+	-e 's,[@]kimchirelease[@],$(PACKAGE_RELEASE),g' \
+	-e 's,[@]withspice[@],$(WITH_SPICE),g'
+
+config.py: config.py.in Makefile
+	$(do_substitution) < $(srcdir)/config.py.in > config.py
+
+
 #
 # Packaging helpers
 #
@@ -71,15 +100,7 @@ install-deb: install
 	cp -R $(top_srcdir)/contrib/DEBIAN $(DESTDIR)/
 	mkdir -p $(DESTDIR)/var/lib/kimchi/debugreports
 	mkdir -p $(DESTDIR)/var/lib/kimchi/screenshots
-	mkdir -p $(DESTDIR)/var/lib/kimchi/vnc-tokens
 	mkdir -p $(DESTDIR)/var/lib/kimchi/isos
-	touch $(DESTDIR)/var/lib/kimchi/objectstore
-	$(MKDIR_P) $(DESTDIR)/etc/init
-	$(MKDIR_P) $(DESTDIR)/usr/lib/firewalld/services
-	cp -R $(top_srcdir)/contrib/kimchid-upstart.conf.debian \
-		$(DESTDIR)/etc/init/kimchid.conf
-	cp -R $(top_srcdir)/src/firewalld.xml \
-		$(DESTDIR)/usr/lib/firewalld/services/kimchid.xml
 
 
 deb: contrib/make-deb.sh
@@ -115,41 +136,13 @@ ChangeLog:
 	fi
 
 install-data-local:
-	@if test -d "$(systemdsystemunitdir)" ; then \
-		mkdir -p $(DESTDIR)/$(systemdsystemunitdir); \
-		$(INSTALL_DATA) contrib/kimchid.service.fedora $(DESTDIR)/$(systemdsystemunitdir)/kimchid.service; \
-	else \
-		mkdir -p $(DESTDIR)/etc/init.d/; \
-		$(INSTALL_DATA) contrib/kimchid.sysvinit $(DESTDIR)/etc/init.d/kimchid; \
-		chmod +x $(DESTDIR)/etc/init.d/kimchid; \
-    fi; \
-	if test -d /usr/lib/firewalld/services/; then \
-		mkdir -p $(DESTDIR)/usr/lib/firewalld/services/; \
-		$(INSTALL_DATA) src/firewalld.xml $(DESTDIR)/usr/lib/firewalld/services/kimchid.xml; \
-	fi; \
-	mkdir -p $(DESTDIR)/var/lib/kimchi/{debugreports,screenshots,vnc-tokens,isos}
-	touch $(DESTDIR)/var/lib/kimchi/objectstore
-	mkdir -p $(DESTDIR)/var/log/kimchi/
-	touch $(DESTDIR)/var/log/kimchi/kimchi-access.log
-	touch $(DESTDIR)/var/log/kimchi/kimchi-error.log
-	mkdir -p $(DESTDIR)/etc/kimchi/
-	$(INSTALL_DATA) src/dhparams.pem $(DESTDIR)/etc/kimchi/dhparams.pem
-	touch $(DESTDIR)/etc/nginx/conf.d/kimchi.conf
+	$(MKDIR_P) $(DESTDIR)$(kimchidir)
+	$(INSTALL_DATA) API.json $(DESTDIR)$(kimchidir)/API.json
+	mkdir -p $(DESTDIR)/var/lib/kimchi/{debugreports,screenshots,isos}
 
 uninstall-local:
-	@if test -f $(systemdsystemunitdir)/kimchid.service; then \
-		$(RM) $(DESTDIR)/$(systemdsystemunitdir)/kimchid.service; \
-	elif test -f /etc/init.d/kimchid; then \
-		$(RM) $(DESTDIR)/etc/init.d/kimchid; \
-		$(RM) $(DESTDIR)/etc/init/kimchi.conf; \
-	fi; \
-	if test -d /usr/lib/firewalld/services/; then \
-		$(RM) $(DESTDIR)/usr/lib/firewalld/services/kimchid.xml; \
-	fi; \
+	$(RM) $(DESTDIR)$(kimchidir)/API.json
 	$(RM) -rf $(DESTDIR)/var/lib/kimchi
-	$(RM) -rf $(DESTDIR)/var/log/kimchi
-	$(RM) -rf $(DESTDIR)/etc/kimchi
-	$(RM) $(DESTDIR)/etc/nginx/conf.d/kimchi.conf
 
 VERSION:
 	@if test -d .git; then                                \
@@ -162,4 +155,5 @@ VERSION:
 clean-local:
 	rm -rf mo rpm
 
-CLEANFILES = kimchi.spec `find "$(top_srcdir)" -type f -name "*.pyc" -print`
+BUILT_SOURCES = config.py
+CLEANFILES = config.py kimchi.spec `find "$(top_srcdir)" -type f -name "*.pyc" -print`

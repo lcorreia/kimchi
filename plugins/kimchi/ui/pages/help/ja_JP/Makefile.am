@@ -14,7 +14,7 @@
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 
-ja_JP_helpdir = $(datadir)/kimchi/ui/pages/help/ja_JP
+ja_JP_helpdir = $(datadir)/wok/plugins/kimchi/ui/pages/help/ja_JP
 
 dist_ja_JP_help_DATA = $(wildcard *.html) $(NULL)
 

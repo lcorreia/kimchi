@@ -20,7 +20,7 @@
 
 vm_PYTHON = *.py
 
-vmdir = $(pythondir)/kimchi/control/vm
+vmdir = $(pythondir)/wok/plugins/kimchi/control/vm
 
 install-data-local:
 	$(MKDIR_P) $(DESTDIR)$(vmdir)

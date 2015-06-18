@@ -14,7 +14,7 @@
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 
-fr_FR_helpdir = $(datadir)/kimchi/ui/pages/help/fr_FR
+fr_FR_helpdir = $(datadir)/wok/plugins/kimchi/ui/pages/help/fr_FR
 
 dist_fr_FR_help_DATA = $(wildcard *.html) $(NULL)
 

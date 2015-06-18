@@ -22,7 +22,7 @@ DITA_XSL_FILE = dita-help.xsl
 
 EXTRA_DIST = gen-index.py\
 			 $(DITA_XSL_FILE)
-helpdir = $(datadir)/kimchi/ui/pages/help
+helpdir = $(datadir)/wok/plugins/kimchi/ui/pages/help
 
 dist_help_DATA = kimchi.css
 
