@@ -4,9 +4,10 @@ Kimchi Project
 Kimchi is an HTML5 based management tool for KVM. It is designed to make it as
 easy as possible to get started with KVM and create your first guest.
 
-Kimchi runs as a daemon on the hypervisor host. It manages KVM guests through
-libvirt. The management interface is accessed over the web using a browser that
-supports HTML5.
+Kimchi runs as a Wok plugin. Wok runs as a daemon on the hypervisor host.
+
+Kimchi manages KVM guests through libvirt. The management interface is accessed
+over the web using a browser that supports HTML5.
 
 Browser Support
 ===============
@@ -33,11 +34,11 @@ find.
 Hypervisor Distro Support
 =========================
 
-Kimchi daemon might run on any GNU/Linux distribution that meets the conditions
+Kimchi and Wok might run on any GNU/Linux distribution that meets the conditions
 described on the 'Getting Started' section below.
 
-The Kimchi community makes an effort to test with the latest versions of Fedora,
-RHEL, OpenSuSe, and Ubuntu.
+The Kimchi community makes an effort to test it with the latest versions of
+Fedora, RHEL, OpenSuSe, and Ubuntu.
 
 Getting Started
 ===============
@@ -124,6 +125,17 @@ information on how configure your system to access this repository.
 
 Build and Install
 -----------------
+
+    Wok:
+    $ ./autogen.sh --system
+
+    $ make
+    $ sudo make install   # Optional if running from the source tree
+
+
+    Kimchi:
+    $ cd plugins/kimchi
+
     For openSUSE 13.1:
     $ ./autogen.sh --with-spice-html5
 
@@ -136,12 +148,12 @@ Build and Install
 Run
 ---
 
-    $ sudo kimchid --host=0.0.0.0
+    $ sudo wokd --host=0.0.0.0
 
-If you cannot access Kimchi, take a look at these 2 points:
+If you cannot access Wok, take a look at these 2 points:
 
 1. Firewall
-Kimchi uses by default the ports 8000, 8001 and 64667. To allow incoming connections:
+Wok uses by default the ports 8000, 8001 and 64667. To allow incoming connections:
 
     For system using firewalld, do:
     sudo firewall-cmd --add-port=8000/tcp --permanent
@@ -163,7 +175,7 @@ Kimchi uses by default the ports 8000, 8001 and 64667. To allow incoming connect
 
 
 2. SELinux
-Allow httpd_t context for Kimchi web server:
+Allow httpd_t context for Wok web server:
 
     semanage permissive -a httpd_t
 
@@ -171,6 +183,7 @@ Allow httpd_t context for Kimchi web server:
 Test
 ----
 
+    $ cd plugins/kimchi
     $ make check-local # check for i18n and formatting errors
     $ sudo make check
 
@@ -182,9 +195,9 @@ Usage
 
 Connect your browser to https://localhost:8001.  You should see a screen like:
 
-![Kimchi Login Screen](/docs/kimchi-login.png)
+![Wok Login Screen](/docs/kimchi-login.png)
 
-Kimchi uses PAM to authenticate users so you can log in with the same username
+Wok uses PAM to authenticate users so you can log in with the same username
 and password that you would use to log in to the machine itself.  Once logged in
 you will see a screen like:
 

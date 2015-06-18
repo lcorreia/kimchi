@@ -31,13 +31,13 @@ the following general conventions:
       URI. Available *actions* are described within the *actions* property of a
       Resource representation.  The request body *must* contain a JSON object
       which specifies parameters.
-* URIs begin with a '/' to indicate the root of the API.
+* URIs begin with '/plugins/kimchi' to indicate the root of Kimchi plugin.
     * Variable segments in the URI begin with a ':' and should replaced with the
       appropriate resource identifier.
 
 ### Collection: Virtual Machines
 
-**URI:** /vms
+**URI:** /plugins/kimchi/vms
 
 **Methods:**
 
@@ -61,7 +61,7 @@ the following general conventions:
 
 ### Resource: Virtual Machine
 
-**URI:** /vms/*:name*
+**URI:** /plugins/kimchi/vms/*:name*
 
 **Methods:**
 
@@ -149,7 +149,7 @@ the following general conventions:
 
 ### Sub-resource: Virtual Machine Screenshot
 
-**URI:** /vms/*:name*/screenshot
+**URI:** /plugins/kimchi/vms/*:name*/screenshot
 
 Represents a snapshot of the Virtual Machine's primary monitor.
 
@@ -159,7 +159,7 @@ Represents a snapshot of the Virtual Machine's primary monitor.
 
 
 ### Sub-collection: Virtual Machine storages
-**URI:** /vms/*:name*/storages
+**URI:** /plugins/kimchi/vms/*:name*/storages
 * **GET**: Retrieve a summarized list of all storages of specified guest
 * **POST**: Attach a new storage or virtual drive to specified virtual machine.
     * type: The type of the storage (currently support 'cdrom' and 'disk').
@@ -168,7 +168,7 @@ Represents a snapshot of the Virtual Machine's primary monitor.
     * vol: Storage volume name of disk image.
 
 ### Sub-resource: storage
-**URI:** /vms/*:name*/storages/*:dev*
+**URI:** /plugins/kimchi/vms/*:name*/storages/*:dev*
 * **GET**: Retrieve storage information
     * dev: The name of the storage in the vm.
     * type: The type of the storage (currently support 'cdrom' and 'disk').
@@ -182,28 +182,28 @@ Represents a snapshot of the Virtual Machine's primary monitor.
 
 
 ### Sub-collection: Virtual Machine Passthrough Devices
-**URI:** /vms/*:name*/hostdevs
+**URI:** /plugins/kimchi/vms/*:name*/hostdevs
 * **GET**: Retrieve a summarized list of all directly assigned host device of
            specified guest.
 * **POST**: Directly assign a host device to guest.
     * name: The name of the host device to be assigned to vm.
 
 ### Sub-resource: Device
-**URI:** /vms/*:name*/hostdevs/*:dev*
+**URI:** /plugins/kimchi/vms/*:name*/hostdevs/*:dev*
 * **GET**: Retrieve assigned device information
     * name: The name of the assigned device.
     * type: The type of the assigned device.
 * **DELETE**: Detach the host device from VM.
 
 ### Sub-collection: Virtual Machine Snapshots
-**URI:** /vms/*:name*/snapshots
+**URI:** /plugins/kimchi/vms/*:name*/snapshots
 * **POST**: Create a new snapshot on a VM.
     * name: The snapshot name (optional, defaults to a value based on the
             current time).
 * **GET**: Retrieve a list of snapshots on a VM.
 
 ### Sub-resource: Snapshot
-**URI:** /vms/*:name*/snapshots/*:snapshot*
+**URI:** /plugins/kimchi/vms/*:name*/snapshots/*:snapshot*
 * **GET**: Retrieve snapshot information.
     * created: The time when the snapshot was created
                (in seconds, since the epoch).
@@ -220,12 +220,12 @@ Represents a snapshot of the Virtual Machine's primary monitor.
 * revert: Revert the domain to the given snapshot.
 
 ### Sub-resource: Current snapshot
-**URI:** /vms/*:name*/snapshots/current
+**URI:** /plugins/kimchi/vms/*:name*/snapshots/current
 * **GET**: Retrieve current snapshot information for the virtual machine.
 
 ### Collection: Templates
 
-**URI:** /templates
+**URI:** /plugins/kimchi/templates
 
 **Methods:**
 
@@ -270,7 +270,7 @@ Represents a snapshot of the Virtual Machine's primary monitor.
 
 ### Sub-Collection: Virtual Machine Network Interfaces
 
-**URI:** /vms/*:name*/ifaces
+**URI:** /plugins/kimchi/vms/*:name*/ifaces
 
 Represents all network interfaces attached to a Virtual Machine.
 
@@ -289,7 +289,7 @@ Represents all network interfaces attached to a Virtual Machine.
 
 ### Sub-Resource: Virtual Machine Network Interface
 
-**URI:** /vms/*:name*/ifaces/*:mac*
+**URI:** /plugins/kimchi/vms/*:name*/ifaces/*:mac*
 
 A interface represents available network interface on VM.
 
@@ -325,7 +325,7 @@ A interface represents available network interface on VM.
 
 ### Resource: Template
 
-**URI:** /templates/*:name*
+**URI:** /plugins/kimchi/templates/*:name*
 
 **Methods:**
 
@@ -398,7 +398,7 @@ A interface represents available network interface on VM.
 
 ### Collection: Storage Pools
 
-**URI:** /storagepools
+**URI:** /plugins/kimchi/storagepools
 
 **Methods:**
 
@@ -429,7 +429,7 @@ A interface represents available network interface on VM.
 
 ### Resource: Storage Pool
 
-**URI:** /storagepools/*:name*
+**URI:** /plugins/kimchi/storagepools/*:name*
 
 **Methods:**
 
@@ -474,7 +474,7 @@ A interface represents available network interface on VM.
 
 ### Collection: Storage Volumes
 
-**URI:** /storagepools/*:poolname*/storagevolumes
+**URI:** /plugins/kimchi/storagepools/*:poolname*/storagevolumes
 
 **Methods:**
 
@@ -494,7 +494,7 @@ A interface represents available network interface on VM.
 
 ### Resource: Storage Volume
 
-**URI:** /storagepools/*:poolname*/storagevolumes/*:name*
+**URI:** /plugins/kimchi/storagepools/*:poolname*/storagevolumes/*:name*
 
 **Methods:**
 
@@ -533,7 +533,7 @@ A interface represents available network interface on VM.
 
 ### Collection: Interfaces
 
-**URI:** /interfaces
+**URI:** /plugins/kimchi/interfaces
 
 **Methods:**
 
@@ -541,7 +541,7 @@ A interface represents available network interface on VM.
 
 ### Resource: Interface
 
-**URI:** /interfaces/*:name*
+**URI:** /plugins/kimchi/interfaces/*:name*
 
 A interface represents available interface on host.
 
@@ -572,7 +572,7 @@ A interface represents available interface on host.
 
 ### Collection: Networks
 
-**URI:** /networks
+**URI:** /plugins/kimchi/networks
 
 **Methods:**
 
@@ -594,7 +594,7 @@ A interface represents available interface on host.
 
 ### Resource: Network
 
-**URI:** /networks/*:name*
+**URI:** /plugins/kimchi/networks/*:name*
 
 **Methods:**
 
@@ -639,7 +639,7 @@ A interface represents available interface on host.
 
 ### Collection: Tasks
 
-**URI:** /tasks
+**URI:** /plugins/kimchi/tasks
 
 **Methods:**
 
@@ -647,7 +647,7 @@ A interface represents available interface on host.
 
 ### Resource: Task
 
-**URI:** /tasks/*:id*
+**URI:** /plugins/kimchi/tasks/*:id*
 
 A task represents an asynchronous operation that is being performed by the
 server.
@@ -670,7 +670,7 @@ server.
 
 ### Resource: Configuration
 
-**URI:** /config
+**URI:** /plugins/kimchi/config
 
 Contains information about the application environment and configuration.
 
@@ -687,7 +687,7 @@ Contains information about the application environment and configuration.
 
 ### Resource: Capabilities
 
-**URI:** /config/capabilities
+**URI:** /plugins/kimchi/config/capabilities
 
 Contains information about the host capabilities: iso streaming, screenshot
 creation.
@@ -718,7 +718,7 @@ creation.
 
 ### Collection: Storage Servers
 
-**URI:** /storageservers
+**URI:** /plugins/kimchi/storageservers
 
 **Methods:**
 
@@ -729,7 +729,7 @@ creation.
 
 ### Resource: Storage Server
 
-**URI:** /storageservers/*:host*
+**URI:** /plugins/kimchi/storageservers/*:host*
 
 **Methods:**
 
@@ -739,7 +739,7 @@ creation.
 
 ### Collection: Storage Targets
 
-**URI:** /storageservers/*:name*/storagetargets
+**URI:** /plugins/kimchi/storageservers/*:name*/storagetargets
 
 **Methods:**
 
@@ -756,7 +756,7 @@ creation.
 
 ### Collection: Distros
 
-**URI:** /config/distros
+**URI:** /plugins/kimchi/config/distros
 
 **Methods:**
 
@@ -764,7 +764,7 @@ creation.
 
 ### Resource: Distro
 
-**URI:** /config/distros/*:name*
+**URI:** /plugins/kimchi/config/distros/*:name*
 
 Contains information about the OS distribution.
 
@@ -782,7 +782,7 @@ Contains information about the OS distribution.
 
 #### Collection: Debug Reports
 
-**URI:** /debugreports
+**URI:** /plugins/kimchi/debugreports
 
 **Methods:**
 
@@ -794,7 +794,7 @@ Contains information about the OS distribution.
 
 ### Resource: Debug Report
 
-**URI:** /debugreports/*:name*
+**URI:** /plugins/kimchi/debugreports/*:name*
 
 A Debug Report is an archive of logs and other information about the host that
 is used to diagnose and debug problems. The exact format and contents are
@@ -821,7 +821,7 @@ specific to the low level collection tool being used.
 
 ### Sub-resource: Debug Report content
 
-**URI:** /debugreports/*:name*/content
+**URI:** /plugins/kimchi/debugreports/*:name*/content
 
 It is the sub-resource of Debug Report and the client use it to get the real content
 of the Debug Report file from the server
@@ -834,7 +834,7 @@ of the Debug Report file from the server
 
 ### Resource: Host
 
-**URI:** /host
+**URI:** /plugins/kimchi/host
 Contains information of host.
 
 **Methods:**
@@ -861,7 +861,7 @@ Contains information of host.
 
 ### Resource: Users
 
-**URI:** /users
+**URI:** /plugins/kimchi/users
 List of available users.
 
 **Methods:**
@@ -873,7 +873,7 @@ List of available users.
 
 ### Resource: Groups
 
-**URI:** /groups
+**URI:** /plugins/kimchi/groups
 List of available groups.
 
 **Methods:**
@@ -882,7 +882,7 @@ List of available groups.
 
 ### Resource: HostStats
 
-**URI:** /host/stats
+**URI:** /plugins/kimchi/host/stats
 
 Contains the host sample data.
 
@@ -914,7 +914,7 @@ Contains the host sample data.
 
 ### Resource: HostStats
 
-**URI:** /host/cpuinfo
+**URI:** /plugins/kimchi/host/cpuinfo
 
 The cores and sockets of a hosts's CPU. Useful when sizing VMs to take
 advantages of the perforamance benefits of SMT (Power) or Hyper-Threading (Intel).
@@ -938,7 +938,7 @@ advantages of the perforamance benefits of SMT (Power) or Hyper-Threading (Intel
 
 ### Resource: HostStatsHistory
 
-**URI:** /host/stats/history
+**URI:** /plugins/kimchi/host/stats/history
 
 It is the sub-resource of Host Stats and the client uses it to get the host
 stats history
@@ -964,17 +964,9 @@ stats history
 
 *No actions defined*
 
-### Collection: Plugins
-
-**URI:** /plugins
-
-**Methods:**
-
-* **GET**: Retrieve a summarized list names of all UI Plugins
-
 ### Collection: Partitions
 
-**URI:** /host/partitions
+**URI:** /plugins/kimchi/host/partitions
 
 **Methods:**
 
@@ -982,7 +974,7 @@ stats history
 
 ### Resource: Partition
 
-**URI:** /host/partitions/*:name*
+**URI:** /plugins/kimchi/host/partitions/*:name*
 
 **Methods:**
 
@@ -1000,7 +992,7 @@ stats history
 
 ### Collection: Devices
 
-**URI:** /host/devices
+**URI:** /plugins/kimchi/host/devices
 
 **Methods:**
 
@@ -1020,7 +1012,7 @@ stats history
 
 ### Resource: Device
 
-**URI:** /host/devices/*:name*
+**URI:** /plugins/kimchi/host/devices/*:name*
 
 **Methods:**
 
@@ -1049,11 +1041,11 @@ stats history
 
 
 ### Sub-collection: VMs with the device assigned.
-**URI:** /host/devices/*:name*/vmholders
+**URI:** /plugins/kimchi/host/devices/*:name*/vmholders
 * **GET**: Retrieve a summarized list of all VMs holding the device.
 
 ### Sub-resource: VM holder
-**URI:** /host/devices/*:name*/vmholders/*:vm*
+**URI:** /plugins/kimchi/host/devices/*:name*/vmholders/*:vm*
 * **GET**: Retrieve information of the VM which is holding the device
     * name: The name of the VM.
     * state: The power state of the VM. Could be "running" and "shutdown".
@@ -1061,7 +1053,7 @@ stats history
 
 ### Collection: Host Packages Update
 
-**URI:** /host/packagesupdate
+**URI:** /plugins/kimchi/host/packagesupdate
 
 Contains the information and action of packages update in the host.
 
@@ -1071,7 +1063,7 @@ Contains the information and action of packages update in the host.
 
 ### Resource: Host Package Update
 
-**URI:** /host/packagesupdate/*:name*
+**URI:** /plugins/kimchi/host/packagesupdate/*:name*
 
 Contains the information for a specific package to be updated.
 
@@ -1085,7 +1077,7 @@ Contains the information for a specific package to be updated.
 
 ### Collection: Host Repositories
 
-**URI:** /host/repositories
+**URI:** /plugins/kimchi/host/repositories
 
 **Methods:**
 
@@ -1105,7 +1097,7 @@ http://, ftp:// or file://  URL.
 
 ### Resource: Repository
 
-**URI:** /host/repositories/*:repo-id*
+**URI:** /plugins/kimchi/host/repositories/*:repo-id*
 
 **Methods:**
 
@@ -1153,7 +1145,7 @@ http://, ftp:// or file://  URL.
 
 ### Collection: Peers
 
-**URI:** /peers
+**URI:** /plugins/kimchi/peers
 
 **Methods:**
 

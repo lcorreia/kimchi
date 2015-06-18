@@ -1,11 +1,11 @@
 Kimchi Project - Federation Feature
 ===================================
 
-Federation feature is a mechanism to discover Kimchi peers in the same network.
-It uses openSLP tool (http://www.openslp.org/) to register and find the Kimchi
+Federation feature is a Kimchi mechanism to discover Wok peers in the same
+network. It uses openSLP tool (http://www.openslp.org/) to register and find Wok
 servers.
 
-By default this feature is disabled on Kimchi as it is not critical for KVM
+By default this feature is disabled on Wok as it is not critical for KVM
 virtualization and requires additional software installation.
 
 To enable it, do the following:
@@ -43,18 +43,18 @@ To enable it, do the following:
    For system using iptables, do:
    sudo iptables -A INPUT -s <subnet> -j ACCEPT
 
-4. Start slpd service and make sure it is up while running Kimchi
+4. Start slpd service and make sure it is up while running Wok
    sudo service slpd start
 
-5. Enable federation on Kimchi by editing the /etc/kimchi/kimchi.conf file:
+5. Enable federation on Wok by editing the /etc/wok/wok.conf file:
 
    federation = on
 
-6. Then start Kimchi service
-   sudo service kimchid start
+6. Then start Wok service
+   sudo service wokd start
 
-The Kimchi server will be registered on openSLP on server starting up and will
-be found by other Kimchi peers (with federation feature enabled) in the same
+The Wok server will be registered on openSLP on server starting up and will
+be found by other Wok peers (with federation feature enabled) in the same
 network.
 
 Enjoy!
