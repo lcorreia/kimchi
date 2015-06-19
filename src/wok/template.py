@@ -22,7 +22,7 @@ import errno
 import json
 
 
-from kimchi.config import paths
+from wok.config import paths
 from Cheetah.Template import Template
 from glob import iglob
 

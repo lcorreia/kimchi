@@ -21,12 +21,12 @@ import os
 import tempfile
 import unittest
 
-from kimchi.model import model
-from kimchi.rollbackcontext import RollbackContext
-from kimchi.yumparser import delete_repo_from_file, get_repo_files
-from kimchi.yumparser import get_yum_packages_list_update
-from kimchi.yumparser import get_yum_repositories, write_repo_to_file
-from kimchi.yumparser import YumRepoObject
+from wok.plugins.kimchi.model import model
+from wok.rollbackcontext import RollbackContext
+from wok.plugins.kimchi.yumparser import delete_repo_from_file, get_repo_files
+from wok.plugins.kimchi.yumparser import get_yum_packages_list_update
+from wok.plugins.kimchi.yumparser import get_yum_repositories, write_repo_to_file
+from wok.plugins.kimchi.yumparser import YumRepoObject
 
 
 TEMP_REPO_FILE = ''

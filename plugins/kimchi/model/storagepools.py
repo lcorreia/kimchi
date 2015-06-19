@@ -23,16 +23,17 @@ import sys
 
 from lxml.builder import E
 
-from kimchi.config import config, paths
-from kimchi.scan import Scanner
-from kimchi.exception import InvalidOperation, MissingParameter
-from kimchi.exception import NotFoundError, OperationFailed
-from kimchi.model.config import CapabilitiesModel
-from kimchi.model.host import DeviceModel
-from kimchi.model.libvirtstoragepool import StoragePoolDef
-from kimchi.osinfo import defaults as tmpl_defaults
-from kimchi.utils import add_task, kimchi_log, pool_name_from_uri, run_command
-from kimchi.xmlutils.utils import xpath_get_text
+from wok.config import config, paths
+from ..scan import Scanner
+from wok.exception import InvalidOperation, MissingParameter
+from wok.exception import NotFoundError, OperationFailed
+from config import CapabilitiesModel
+from host import DeviceModel
+from libvirtstoragepool import StoragePoolDef
+from ..osinfo import defaults as tmpl_defaults
+from wok.utils import add_task, kimchi_log, run_command
+from ..utils import pool_name_from_uri
+from wok.xmlutils.utils import xpath_get_text
 
 
 ISO_POOL_NAME = u'kimchi_isos'

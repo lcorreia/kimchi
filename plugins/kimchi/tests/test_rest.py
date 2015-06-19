@@ -29,11 +29,11 @@ import urlparse
 from functools import partial
 
 import iso_gen
-import kimchi.mockmodel
-import kimchi.server
-from kimchi.osinfo import get_template_default
-from kimchi.rollbackcontext import RollbackContext
-from kimchi.utils import add_task
+from wok.plugins.kimchi import mockmodel
+import wok.server
+from wok.plugins.kimchi.osinfo import get_template_default
+from wok.rollbackcontext import RollbackContext
+from wok.utils import add_task
 from utils import get_free_port, patch_auth, request
 from utils import run_server, wait_task
 
@@ -51,7 +51,7 @@ def setUpModule():
     global test_server, model, host, port, ssl_port, cherrypy_port
 
     patch_auth()
-    model = kimchi.mockmodel.MockModel('/tmp/obj-store-test')
+    model = mockmodel.MockModel('/tmp/obj-store-test')
     host = '127.0.0.1'
     port = get_free_port('http')
     ssl_port = get_free_port('https')

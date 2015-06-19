@@ -26,17 +26,18 @@ import uuid
 from lxml import etree
 from lxml.builder import E
 
-from kimchi import imageinfo
-from kimchi import osinfo
-from kimchi.exception import InvalidParameter, IsoFormatError, MissingParameter
-from kimchi.exception import ImageFormatError, OperationFailed
-from kimchi.isoinfo import IsoImage
-from kimchi.utils import check_url_path, pool_name_from_uri
-from kimchi.xmlutils.cpu import get_cpu_xml
-from kimchi.xmlutils.disk import get_disk_xml
-from kimchi.xmlutils.graphics import get_graphics_xml
-from kimchi.xmlutils.interface import get_iface_xml
-from kimchi.xmlutils.qemucmdline import get_qemucmdline_xml
+import imageinfo
+import osinfo
+from wok.exception import InvalidParameter, IsoFormatError, MissingParameter
+from wok.exception import ImageFormatError, OperationFailed
+from isoinfo import IsoImage
+from wok.utils import check_url_path
+from utils import pool_name_from_uri
+from xmlutils.cpu import get_cpu_xml
+from xmlutils.disk import get_disk_xml
+from xmlutils.graphics import get_graphics_xml
+from xmlutils.interface import get_iface_xml
+from xmlutils.qemucmdline import get_qemucmdline_xml
 
 
 class VMTemplate(object):

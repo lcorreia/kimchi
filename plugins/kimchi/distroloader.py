@@ -23,9 +23,9 @@ import json
 import os
 
 
-from kimchi import config
-from kimchi.exception import NotFoundError, OperationFailed
-from kimchi.utils import kimchi_log
+import config
+from wok.exception import NotFoundError, OperationFailed
+from wok.utils import kimchi_log
 
 
 ARCHS = {'x86_64': ['x86_64', 'amd64', 'i686', 'x86', 'i386'],

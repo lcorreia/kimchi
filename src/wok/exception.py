@@ -21,8 +21,8 @@ import cherrypy
 import gettext
 
 
-from kimchi.i18n import messages as _messages
-from kimchi.template import get_lang, validate_language
+from wok.i18n import messages as _messages
+from wok.template import get_lang, validate_language
 
 
 class KimchiException(Exception):

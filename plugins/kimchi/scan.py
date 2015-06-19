@@ -26,8 +26,8 @@ import tempfile
 import time
 
 
-from kimchi.isoinfo import IsoImage, probe_iso
-from kimchi.utils import kimchi_log
+from isoinfo import IsoImage, probe_iso
+from wok.utils import kimchi_log
 
 
 SCAN_IGNORE = ['/tmp/kimchi-scan-*']

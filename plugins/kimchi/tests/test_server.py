@@ -28,8 +28,8 @@ import unittest
 from functools import partial
 
 import utils
-from kimchi import mockmodel
-from kimchi.control.base import Collection, Resource
+from wok.plugins.kimchi import mockmodel
+from wok.control.base import Collection, Resource
 
 test_server = None
 model = None

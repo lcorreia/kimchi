@@ -22,14 +22,14 @@ import re
 import urllib2
 
 
-import kimchi.template
-from kimchi.auth import USER_GROUPS, USER_NAME, USER_ROLES
-from kimchi.control.utils import get_class_name, internal_redirect, model_fn
-from kimchi.control.utils import parse_request, validate_method
-from kimchi.control.utils import validate_params
-from kimchi.exception import InvalidOperation, InvalidParameter
-from kimchi.exception import KimchiException, MissingParameter, NotFoundError
-from kimchi.exception import OperationFailed, UnauthorizedError
+import wok.template
+from wok.auth import USER_GROUPS, USER_NAME, USER_ROLES
+from wok.control.utils import get_class_name, internal_redirect, model_fn
+from wok.control.utils import parse_request, validate_method
+from wok.control.utils import validate_params
+from wok.exception import InvalidOperation, InvalidParameter
+from wok.exception import KimchiException, MissingParameter, NotFoundError
+from wok.exception import OperationFailed, UnauthorizedError
 
 
 class Resource(object):
@@ -90,7 +90,7 @@ class Resource(object):
     def generate_action_handler_task(self, action_name, action_args=None):
         def _render_task(self, task):
             cherrypy.response.status = 202
-            return kimchi.template.render('Task', task)
+            return wok.template.render('Task', task)
 
         return self._generate_action_handler_base(action_name, _render_task,
                                                   action_args=action_args)
@@ -213,7 +213,7 @@ class Resource(object):
 
     def get(self):
         self.lookup()
-        return kimchi.template.render(get_class_name(self), self.data)
+        return wok.template.render(get_class_name(self), self.data)
 
     @property
     def data(self):
@@ -314,7 +314,7 @@ class Collection(object):
         flag_filter, fields_filter = _split_filter(filter_params)
         resources = self._get_resources(flag_filter)
         data = self.filter_data(resources, fields_filter)
-        return kimchi.template.render(get_class_name(self), data)
+        return wok.template.render(get_class_name(self), data)
 
     @cherrypy.expose
     def index(self, *args, **kwargs):
@@ -361,7 +361,7 @@ class AsyncCollection(Collection):
         args = self.model_args + [params]
         task = create(*args)
         cherrypy.response.status = 202
-        return kimchi.template.render("Task", task)
+        return wok.template.render("Task", task)
 
 
 class SimpleCollection(Collection):
@@ -378,4 +378,4 @@ class SimpleCollection(Collection):
             res_list = get_list(*self.model_args)
         except AttributeError:
             pass
-        return kimchi.template.render(get_class_name(self), res_list)
+        return wok.template.render(get_class_name(self), res_list)

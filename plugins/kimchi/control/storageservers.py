@@ -17,9 +17,9 @@
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 
-import kimchi.template
-from kimchi.control.base import Collection, Resource
-from kimchi.control.utils import get_class_name, model_fn, UrlSubNode
+from wok import template
+from wok.control.base import Collection, Resource
+from wok.control.utils import get_class_name, model_fn, UrlSubNode
 
 
 @UrlSubNode('storageservers', True)
@@ -57,4 +57,4 @@ class StorageTargets(Collection):
         res_list = []
         get_list = getattr(self.model, model_fn(self, 'get_list'))
         res_list = get_list(*self.model_args, **filter_params)
-        return kimchi.template.render(get_class_name(self), res_list)
+        return template.render(get_class_name(self), res_list)

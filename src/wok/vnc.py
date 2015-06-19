@@ -25,7 +25,7 @@ import os
 from multiprocessing import Process
 from websockify import WebSocketProxy
 
-from kimchi.config import config, paths
+from wok.config import config, paths
 
 
 WS_TOKENS_DIR = '/var/lib/kimchi/vnc-tokens'

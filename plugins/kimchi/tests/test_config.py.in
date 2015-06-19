@@ -19,8 +19,8 @@
 
 import unittest
 
-from kimchi import config
-from kimchi.config import Paths, PluginPaths, KimchiConfig
+from wok import config
+from wok.config import Paths, PluginPaths, KimchiConfig
 
 get_prefix = None
 

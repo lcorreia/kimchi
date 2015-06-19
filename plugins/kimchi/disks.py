@@ -24,8 +24,8 @@ import subprocess
 from parted import Device as PDevice
 from parted import Disk as PDisk
 
-from kimchi.exception import OperationFailed
-from kimchi.utils import kimchi_log
+from wok.exception import OperationFailed
+from wok.utils import kimchi_log
 
 
 def _get_dev_node_path(maj_min):

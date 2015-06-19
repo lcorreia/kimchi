@@ -20,8 +20,8 @@
 import unittest
 
 
-from kimchi.osinfo import _get_arch, get_template_default, lookup
-from kimchi.osinfo import modern_version_bases
+from wok.plugins.kimchi.osinfo import _get_arch, get_template_default, lookup
+from wok.plugins.kimchi.osinfo import modern_version_bases
 
 
 class OSInfoTests(unittest.TestCase):

@@ -24,9 +24,9 @@ import os
 from cherrypy import expose
 
 
-from kimchi.config import PluginPaths
-from kimchi.control.base import Collection, Resource
-from kimchi.root import Root
+from wok.config import PluginPaths
+from wok.control.base import Collection, Resource
+from wok.root import Root
 from plugins.sample.i18n import messages
 from plugins.sample.model import Model
 

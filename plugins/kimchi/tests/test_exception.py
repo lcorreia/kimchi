@@ -22,8 +22,8 @@ import os
 import unittest
 
 
-import kimchi.mockmodel
-import kimchi.server
+from wok.plugins.kimchi import mockmodel
+import wok.server
 from utils import get_free_port, patch_auth, request, run_server
 
 
@@ -38,7 +38,7 @@ def setup_server(environment='development'):
     global test_server, model, host, port, ssl_port
 
     patch_auth()
-    model = kimchi.mockmodel.MockModel('/tmp/obj-store-test')
+    model = mockmodel.MockModel('/tmp/obj-store-test')
     host = '127.0.0.1'
     port = get_free_port('http')
     ssl_port = get_free_port('https')

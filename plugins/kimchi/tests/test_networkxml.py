@@ -23,8 +23,8 @@ import lxml.etree as ET
 
 import utils
 
-from kimchi.xmlutils import network as nxml
-from kimchi.xmlutils.utils import xpath_get_text
+from wok.plugins.kimchi.xmlutils import network as nxml
+from wok.xmlutils.utils import xpath_get_text
 
 
 class NetworkXmlTests(unittest.TestCase):

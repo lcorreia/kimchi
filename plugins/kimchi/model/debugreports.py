@@ -25,12 +25,12 @@ import shutil
 import subprocess
 import time
 
-from kimchi import config
-from kimchi.exception import InvalidParameter, KimchiException, NotFoundError
-from kimchi.exception import OperationFailed
-from kimchi.model.tasks import TaskModel
-from kimchi.utils import add_task, kimchi_log
-from kimchi.utils import run_command
+from .. import config
+from wok.exception import InvalidParameter, KimchiException, NotFoundError
+from wok.exception import OperationFailed
+from tasks import TaskModel
+from wok.utils import add_task, kimchi_log
+from wok.utils import run_command
 
 
 class DebugReportsModel(object):

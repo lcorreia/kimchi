@@ -28,9 +28,9 @@ except ImportError:
     from ordereddict import OrderedDict
 
 
-from kimchi import config
-from kimchi.exception import NotFoundError
-from kimchi.utils import kimchi_log
+from wok import config
+from wok.exception import NotFoundError
+from wok.utils import kimchi_log
 
 
 class ObjectStoreSession(object):

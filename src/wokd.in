@@ -25,8 +25,8 @@ sys.path.insert(1, '@pythondir@')
 
 from optparse import OptionParser
 
-import kimchi.server
-import kimchi.config as config
+import wok.server
+import wok.config as config
 
 
 if not config.paths.installed:
@@ -93,7 +93,7 @@ def main(options):
     setattr(options, 'max_body_size',
             config.config.get('server', 'max_body_size'))
 
-    kimchi.server.main(options)
+    wok.server.main(options)
 
 if __name__ == '__main__':
     sys.exit(main(sys.argv[1:]))

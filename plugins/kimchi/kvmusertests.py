@@ -22,7 +22,7 @@ import threading
 
 import libvirt
 
-from kimchi.rollbackcontext import RollbackContext
+from wok.rollbackcontext import RollbackContext
 
 KVMUSERTEST_VM_NAME = "KVMUSERTEST_VM"
 

@@ -25,9 +25,9 @@ import json
 from jsonschema import Draft3Validator, ValidationError, FormatChecker
 
 
-from kimchi.auth import USER_ROLES
-from kimchi.exception import InvalidParameter, OperationFailed
-from kimchi.utils import import_module, listPathModules
+from wok.auth import USER_ROLES
+from wok.exception import InvalidParameter, OperationFailed
+from wok.utils import import_module, listPathModules
 
 
 def get_class_name(cls):

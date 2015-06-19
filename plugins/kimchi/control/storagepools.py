@@ -19,12 +19,12 @@
 
 import cherrypy
 
-from kimchi.control.base import Collection, Resource
-from kimchi.control.storagevolumes import IsoVolumes, StorageVolumes
-from kimchi.control.utils import get_class_name, model_fn
-from kimchi.control.utils import validate_params
-from kimchi.model.storagepools import ISO_POOL_NAME
-from kimchi.control.utils import UrlSubNode
+from wok.control.base import Collection, Resource
+from storagevolumes import IsoVolumes, StorageVolumes
+from wok.control.utils import get_class_name, model_fn
+from wok.control.utils import validate_params
+from ..model.storagepools import ISO_POOL_NAME
+from wok.control.utils import UrlSubNode
 
 
 @UrlSubNode('storagepools', True)

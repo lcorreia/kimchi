@@ -20,7 +20,7 @@
 
 import time
 
-from kimchi.exception import TimeoutExpired
+from wok.exception import TimeoutExpired
 
 
 class TasksModel(object):

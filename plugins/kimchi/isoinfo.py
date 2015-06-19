@@ -28,8 +28,8 @@ import sys
 import urllib2
 
 
-from kimchi.exception import IsoFormatError
-from kimchi.utils import check_url_path, kimchi_log
+from wok.exception import IsoFormatError
+from wok.utils import check_url_path, kimchi_log
 
 
 iso_dir = [

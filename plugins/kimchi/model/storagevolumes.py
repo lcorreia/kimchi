@@ -29,16 +29,16 @@ from lxml.builder import E
 
 import libvirt
 
-from kimchi.config import READONLY_POOL_TYPE
-from kimchi.exception import InvalidOperation, InvalidParameter, IsoFormatError
-from kimchi.exception import MissingParameter, NotFoundError, OperationFailed
-from kimchi.isoinfo import IsoImage
-from kimchi.model.diskutils import get_disk_used_by, set_disk_used_by
-from kimchi.model.storagepools import StoragePoolModel
-from kimchi.model.tasks import TaskModel
-from kimchi.utils import add_task, get_next_clone_name, get_unique_file_name
-from kimchi.utils import kimchi_log
-from kimchi.xmlutils.utils import xpath_get_text
+from ..config import READONLY_POOL_TYPE
+from wok.exception import InvalidOperation, InvalidParameter, IsoFormatError
+from wok.exception import MissingParameter, NotFoundError, OperationFailed
+from ..isoinfo import IsoImage
+from diskutils import get_disk_used_by, set_disk_used_by
+from storagepools import StoragePoolModel
+from tasks import TaskModel
+from wok.utils import add_task, get_next_clone_name, get_unique_file_name
+from wok.utils import kimchi_log
+from wok.xmlutils.utils import xpath_get_text
 
 
 VOLUME_TYPE_MAP = {0: 'file',

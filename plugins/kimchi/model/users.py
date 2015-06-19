@@ -20,8 +20,8 @@
 import ldap
 import pwd
 
-from kimchi.config import config
-from kimchi.exception import NotFoundError
+from wok.config import config
+from wok.exception import NotFoundError
 
 
 class UsersModel(object):

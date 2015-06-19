@@ -24,14 +24,14 @@ import libvirt
 from lxml import etree, objectify
 from lxml.builder import E
 
-from kimchi.exception import InvalidOperation, InvalidParameter, NotFoundError
-from kimchi.exception import OperationFailed
-from kimchi.model.config import CapabilitiesModel
-from kimchi.model.host import DeviceModel, DevicesModel
-from kimchi.model.utils import get_vm_config_flag
-from kimchi.model.vms import DOM_STATE_MAP, VMModel
-from kimchi.rollbackcontext import RollbackContext
-from kimchi.utils import kimchi_log, run_command
+from wok.exception import InvalidOperation, InvalidParameter, NotFoundError
+from wok.exception import OperationFailed
+from config import CapabilitiesModel
+from host import DeviceModel, DevicesModel
+from utils import get_vm_config_flag
+from vms import DOM_STATE_MAP, VMModel
+from wok.rollbackcontext import RollbackContext
+from wok.utils import kimchi_log, run_command
 import platform
 
 

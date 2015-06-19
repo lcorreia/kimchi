@@ -31,26 +31,28 @@ from xml.etree import ElementTree
 
 import libvirt
 
-from kimchi import model, vnc
-from kimchi.config import READONLY_POOL_TYPE, config
-from kimchi.exception import InvalidOperation, InvalidParameter
-from kimchi.exception import NotFoundError, OperationFailed
-from kimchi.kvmusertests import UserTests
-from kimchi.model.config import CapabilitiesModel
-from kimchi.model.featuretests import FeatureTests
-from kimchi.model.tasks import TaskModel
-from kimchi.model.templates import TemplateModel
-from kimchi.model.utils import get_ascii_nonascii_name, get_vm_name
-from kimchi.model.utils import get_metadata_node, remove_metadata_node
-from kimchi.model.utils import set_metadata_node
-from kimchi.rollbackcontext import RollbackContext
-from kimchi.screenshot import VMScreenshot
-from kimchi.utils import add_task, convert_data_size, get_next_clone_name
-from kimchi.utils import import_class, kimchi_log, run_setfacl_set_attr
-from kimchi.utils import template_name_from_uri
-from kimchi.xmlutils.cpu import get_cpu_xml, get_numa_xml
-from kimchi.xmlutils.utils import xpath_get_text, xml_item_update
-from kimchi.xmlutils.utils import dictize
+from wok import vnc
+from .. import model
+from wok.config import config
+from ..config import READONLY_POOL_TYPE
+from wok.exception import InvalidOperation, InvalidParameter
+from wok.exception import NotFoundError, OperationFailed
+from ..kvmusertests import UserTests
+from config import CapabilitiesModel
+from featuretests import FeatureTests
+from tasks import TaskModel
+from templates import TemplateModel
+from utils import get_ascii_nonascii_name, get_vm_name
+from utils import get_metadata_node, remove_metadata_node
+from utils import set_metadata_node
+from wok.rollbackcontext import RollbackContext
+from ..screenshot import VMScreenshot
+from wok.utils import add_task, convert_data_size, get_next_clone_name
+from wok.utils import import_class, kimchi_log, run_setfacl_set_attr
+from ..utils import template_name_from_uri
+from ..xmlutils.cpu import get_cpu_xml, get_numa_xml
+from wok.xmlutils.utils import xpath_get_text, xml_item_update
+from wok.xmlutils.utils import dictize
 
 
 DOM_STATE_MAP = {0: 'nostate',
@@ -201,16 +203,16 @@ class VMModel(object):
         self.objstore = kargs['objstore']
         self.caps = CapabilitiesModel(**kargs)
         self.vmscreenshot = VMScreenshotModel(**kargs)
-        self.users = import_class('kimchi.model.users.UsersModel')(**kargs)
-        self.groups = import_class('kimchi.model.groups.GroupsModel')(**kargs)
+        self.users = import_class('plugins.kimchi.model.users.UsersModel')(**kargs)
+        self.groups = import_class('plugins.kimchi.model.groups.GroupsModel')(**kargs)
         self.vms = VMsModel(**kargs)
         self.task = TaskModel(**kargs)
         self.storagepool = model.storagepools.StoragePoolModel(**kargs)
         self.storagevolume = model.storagevolumes.StorageVolumeModel(**kargs)
         self.storagevolumes = model.storagevolumes.StorageVolumesModel(**kargs)
-        cls = import_class('kimchi.model.vmsnapshots.VMSnapshotModel')
+        cls = import_class('plugins.kimchi.model.vmsnapshots.VMSnapshotModel')
         self.vmsnapshot = cls(**kargs)
-        cls = import_class('kimchi.model.vmsnapshots.VMSnapshotsModel')
+        cls = import_class('plugins.kimchi.model.vmsnapshots.VMSnapshotsModel')
         self.vmsnapshots = cls(**kargs)
         self.stats = {}
 

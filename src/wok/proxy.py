@@ -27,8 +27,8 @@ import pwd
 import subprocess
 from string import Template
 
-from kimchi import sslcert
-from kimchi.config import paths
+from wok import sslcert
+from wok.config import paths
 
 
 def _create_proxy_config(options):

@@ -23,16 +23,16 @@ import logging
 import logging.handlers
 import os
 
-from kimchi import auth
-from kimchi import config
-from kimchi.model import model
-from kimchi import mockmodel
-from kimchi import vnc
-from kimchi.config import KimchiConfig, PluginConfig
-from kimchi.control import sub_nodes
-from kimchi.proxy import start_proxy, terminate_proxy
-from kimchi.root import KimchiRoot
-from kimchi.utils import get_enabled_plugins, import_class
+from wok import auth
+from wok import config
+from wok.model import model
+from wok import mockmodel
+from wok import vnc
+from wok.config import KimchiConfig, PluginConfig
+from wok.control import sub_nodes
+from wok.proxy import start_proxy, terminate_proxy
+from wok.root import KimchiRoot
+from wok.utils import get_enabled_plugins, import_class
 
 
 LOGGING_LEVEL = {"debug": logging.DEBUG,

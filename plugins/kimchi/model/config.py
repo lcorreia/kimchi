@@ -21,18 +21,19 @@ from multiprocessing.pool import ThreadPool
 
 import cherrypy
 
-from kimchi.basemodel import Singleton
-from kimchi.config import config as kconfig
-from kimchi.config import find_qemu_binary, get_version
-from kimchi.distroloader import DistroLoader
-from kimchi.exception import NotFoundError
-from kimchi.model.debugreports import DebugReportsModel
-from kimchi.model.featuretests import FeatureTests, FEATURETEST_POOL_NAME
-from kimchi.model.featuretests import FEATURETEST_VM_NAME
-from kimchi.repositories import Repositories
-from kimchi.screenshot import VMScreenshot
-from kimchi.swupdate import SoftwareUpdate
-from kimchi.utils import check_url_path, kimchi_log, run_command
+from wok.basemodel import Singleton
+from wok.config import config as kconfig
+from wok.config import get_version
+from ..config import find_qemu_binary
+from ..distroloader import DistroLoader
+from wok.exception import NotFoundError
+from debugreports import DebugReportsModel
+from featuretests import FeatureTests, FEATURETEST_POOL_NAME
+from featuretests import FEATURETEST_VM_NAME
+from ..repositories import Repositories
+from ..screenshot import VMScreenshot
+from ..swupdate import SoftwareUpdate
+from wok.utils import check_url_path, kimchi_log, run_command
 
 
 class ConfigModel(object):

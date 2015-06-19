@@ -20,10 +20,10 @@
 import inspect
 import os
 
-from kimchi.basemodel import BaseModel
-from kimchi.model.libvirtconnection import LibvirtConnection
-from kimchi.objectstore import ObjectStore
-from kimchi.utils import import_module, listPathModules
+from wok.basemodel import BaseModel
+from libvirtconnection import LibvirtConnection
+from wok.objectstore import ObjectStore
+from wok.utils import import_module, listPathModules
 
 
 class Model(BaseModel):
@@ -41,7 +41,7 @@ class Model(BaseModel):
             if mod_name.startswith("_") or mod_name == this_mod:
                 continue
 
-            module = import_module('model.' + mod_name)
+            module = import_module('plugins.kimchi.model.' + mod_name)
             members = inspect.getmembers(module, inspect.isclass)
             for cls_name, instance in members:
                 if inspect.getmodule(instance) == module:

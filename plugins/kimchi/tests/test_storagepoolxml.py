@@ -20,7 +20,7 @@
 import lxml.etree as ET
 import unittest
 
-from kimchi.model.libvirtstoragepool import StoragePoolDef
+from wok.plugins.kimchi.model.libvirtstoragepool import StoragePoolDef
 
 
 class StoragepoolXMLTests(unittest.TestCase):

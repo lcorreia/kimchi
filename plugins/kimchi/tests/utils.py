@@ -36,12 +36,12 @@ from contextlib import closing
 from lxml import etree
 
 
-import kimchi.mockmodel
-import kimchi.server
-from kimchi.config import config, paths
-from kimchi.auth import User, USER_NAME, USER_GROUPS, USER_ROLES, tabs
-from kimchi.exception import NotFoundError, OperationFailed
-from kimchi.utils import kimchi_log
+from wok.plugins.kimchi import mockmodel
+import wok.server
+from wok.config import config, paths
+from wok.auth import User, USER_NAME, USER_GROUPS, USER_ROLES, tabs
+from wok.exception import NotFoundError, OperationFailed
+from wok.utils import kimchi_log
 
 _ports = {}
 
@@ -118,7 +118,7 @@ def run_server(host, port, ssl_port, test_mode, cherrypy_port=None,
     if model is not None:
         setattr(args, 'model', model)
 
-    s = kimchi.server.Server(args)
+    s = wok.server.Server(args)
     t = threading.Thread(target=s.start)
     t.setDaemon(True)
     t.start()
@@ -142,7 +142,7 @@ def _request(conn, path, data, method, headers):
         headers = {'Content-Type': 'application/json',
                    'Accept': 'application/json'}
     if 'AUTHORIZATION' not in headers.keys():
-        user, pw = kimchi.mockmodel.fake_user.items()[0]
+        user, pw = mockmodel.fake_user.items()[0]
         hdr = "Basic " + base64.b64encode("%s:%s" % (user, pw))
         headers['AUTHORIZATION'] = hdr
     conn.request(method, path, data, headers)
@@ -203,7 +203,7 @@ class FakeUser(User):
     @staticmethod
     def authenticate(username, password, service="passwd"):
         try:
-            return kimchi.mockmodel.fake_user[username] == password
+            return mockmodel.fake_user[username] == password
         except KeyError, e:
             raise OperationFailed("KCHAUTH0001E", {'username': 'username',
                                                    'code': e.message})
@@ -254,7 +254,7 @@ def rollback_wrapper(func, resource, *args):
 # requests lib take care of encode part, so use this lib instead
 def fake_auth_header():
     headers = {'Accept': 'application/json'}
-    user, pw = kimchi.mockmodel.fake_user.items()[0]
+    user, pw = mockmodel.fake_user.items()[0]
     hdr = "Basic " + base64.b64encode("%s:%s" % (user, pw))
     headers['AUTHORIZATION'] = hdr
     return headers

@@ -24,9 +24,9 @@ import time
 import unittest
 
 
-import kimchi.mockmodel
+from wok.plugins.kimchi import mockmodel
 from utils import get_free_port, patch_auth, request, run_server, wait_task
-from kimchi.osinfo import get_template_default
+from wok.plugins.kimchi.osinfo import get_template_default
 
 
 test_server = None
@@ -40,7 +40,7 @@ fake_iso = None
 def setUpModule():
     global host, port, ssl_port, model, test_server, fake_iso
     cherrypy.request.headers = {'Accept': 'application/json'}
-    model = kimchi.mockmodel.MockModel('/tmp/obj-store-test')
+    model = mockmodel.MockModel('/tmp/obj-store-test')
     patch_auth()
     port = get_free_port('http')
     ssl_port = get_free_port('https')

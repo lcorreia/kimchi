@@ -23,8 +23,8 @@ import tempfile
 import threading
 import unittest
 
-from kimchi.exception import NotFoundError
-from kimchi import objectstore
+from wok.exception import NotFoundError
+from wok import objectstore
 
 tmpfile = None
 

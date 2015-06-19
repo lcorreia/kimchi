@@ -35,9 +35,9 @@ from threading import Timer
 from urlparse import urlparse
 from cherrypy.lib.reprconf import Parser
 
-from kimchi.asynctask import AsyncTask
-from kimchi.config import paths, PluginPaths
-from kimchi.exception import InvalidParameter, TimeoutExpired
+from wok.asynctask import AsyncTask
+from wok.config import paths, PluginPaths
+from wok.exception import InvalidParameter, TimeoutExpired
 
 
 MAX_REDIRECTION_ALLOWED = 5

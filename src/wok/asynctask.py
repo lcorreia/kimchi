@@ -22,7 +22,7 @@ import threading
 import traceback
 
 
-from kimchi.exception import OperationFailed
+from wok.exception import OperationFailed
 
 
 class AsyncTask(object):

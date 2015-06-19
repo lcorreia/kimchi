@@ -17,8 +17,8 @@
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 
-from kimchi.exception import NotFoundError
-from kimchi.model.storagepools import StoragePoolModel, StoragePoolsModel
+from wok.exception import NotFoundError
+from storagepools import StoragePoolModel, StoragePoolsModel
 
 # Types of remote storage servers supported
 STORAGE_SERVERS = ['netfs', 'iscsi']

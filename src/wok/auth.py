@@ -30,10 +30,10 @@ import termios
 import time
 import urllib2
 
-from kimchi import template
-from kimchi.config import config
-from kimchi.exception import InvalidOperation, OperationFailed
-from kimchi.utils import get_all_tabs, run_command
+from wok import template
+from wok.config import config
+from wok.exception import InvalidOperation, OperationFailed
+from wok.utils import get_all_tabs, run_command
 
 USER_NAME = 'username'
 USER_GROUPS = 'groups'

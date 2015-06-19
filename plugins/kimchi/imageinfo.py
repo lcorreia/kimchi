@@ -22,8 +22,8 @@ import os
 import sys
 import guestfs
 
-from kimchi.exception import ImageFormatError, InvalidParameter, TimeoutExpired
-from kimchi.utils import run_command, kimchi_log
+from wok.exception import ImageFormatError, InvalidParameter, TimeoutExpired
+from wok.utils import run_command, kimchi_log
 
 
 def probe_img_info(path):

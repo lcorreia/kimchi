@@ -24,12 +24,12 @@ import lxml.etree as ET
 from lxml import objectify
 from lxml.builder import E
 
-from kimchi.exception import InvalidOperation, NotFoundError, OperationFailed
-from kimchi.model.tasks import TaskModel
-from kimchi.model.vms import DOM_STATE_MAP, VMModel
-from kimchi.model.vmstorages import VMStorageModel, VMStoragesModel
-from kimchi.utils import add_task
-from kimchi.xmlutils.utils import xpath_get_text
+from wok.exception import InvalidOperation, NotFoundError, OperationFailed
+from tasks import TaskModel
+from vms import DOM_STATE_MAP, VMModel
+from vmstorages import VMStorageModel, VMStoragesModel
+from wok.utils import add_task
+from wok.xmlutils.utils import xpath_get_text
 
 
 class VMSnapshotsModel(object):

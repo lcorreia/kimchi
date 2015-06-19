@@ -19,8 +19,8 @@
 
 import unittest
 
-from kimchi.exception import InvalidParameter
-from kimchi.utils import convert_data_size
+from wok.exception import InvalidParameter
+from wok.utils import convert_data_size
 
 
 class UtilsTests(unittest.TestCase):

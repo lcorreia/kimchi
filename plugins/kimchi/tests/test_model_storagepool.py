@@ -25,8 +25,8 @@ import unittest
 
 from functools import partial
 
-from kimchi.model.model import Model
-from kimchi.rollbackcontext import RollbackContext
+from wok.plugins.kimchi.model.model import Model
+from wok.rollbackcontext import RollbackContext
 from utils import get_free_port, patch_auth, request
 from utils import run_server
 

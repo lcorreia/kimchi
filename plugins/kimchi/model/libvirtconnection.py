@@ -23,7 +23,7 @@ import time
 import cherrypy
 import libvirt
 
-from kimchi.utils import kimchi_log
+from wok.utils import kimchi_log
 
 
 class LibvirtConnection(object):

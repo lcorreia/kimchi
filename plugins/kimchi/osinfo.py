@@ -26,7 +26,7 @@ from collections import defaultdict
 from configobj import ConfigObj
 from distutils.version import LooseVersion
 
-from kimchi.config import paths
+from wok.config import paths
 
 
 SUPPORTED_ARCHS = {'x86': ('i386', 'i686', 'x86_64'),

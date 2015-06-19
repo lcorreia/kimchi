@@ -25,8 +25,8 @@ import subprocess
 
 from lxml.builder import E
 
-from kimchi.rollbackcontext import RollbackContext
-from kimchi.utils import kimchi_log, run_command, servermethod
+from wok.rollbackcontext import RollbackContext
+from wok.utils import kimchi_log, run_command, servermethod
 
 FEATURETEST_VM_NAME = "FEATURETEST_VM"
 FEATURETEST_POOL_NAME = "FEATURETEST_POOL"

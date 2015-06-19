@@ -25,17 +25,17 @@ import libvirt
 
 from xml.sax.saxutils import escape
 
-from kimchi import netinfo
-from kimchi import network as knetwork
-from kimchi.config import paths
-from kimchi.exception import InvalidOperation, InvalidParameter
-from kimchi.exception import MissingParameter, NotFoundError, OperationFailed
-from kimchi.osinfo import defaults as tmpl_defaults
-from kimchi.rollbackcontext import RollbackContext
-from kimchi.utils import kimchi_log, run_command
-from kimchi.xmlutils.network import create_vlan_tagged_bridge_xml
-from kimchi.xmlutils.network import to_network_xml
-from kimchi.xmlutils.utils import xpath_get_text
+from wok import netinfo
+from wok import network as knetwork
+from wok.config import paths
+from wok.exception import InvalidOperation, InvalidParameter
+from wok.exception import MissingParameter, NotFoundError, OperationFailed
+from ..osinfo import defaults as tmpl_defaults
+from wok.rollbackcontext import RollbackContext
+from wok.utils import kimchi_log, run_command
+from ..xmlutils.network import create_vlan_tagged_bridge_xml
+from ..xmlutils.network import to_network_xml
+from wok.xmlutils.utils import xpath_get_text
 
 
 KIMCHI_BRIDGE_PREFIX = 'kb'

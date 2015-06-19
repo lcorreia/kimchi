@@ -20,7 +20,7 @@
 import os
 
 
-from kimchi.config import paths
+from wok.config import paths
 
 
 def href(url):

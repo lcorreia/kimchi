@@ -21,8 +21,8 @@ import platform
 
 from xml.etree import ElementTree as ET
 
-from kimchi.exception import InvalidParameter, InvalidOperation
-from kimchi.utils import kimchi_log, run_command
+from wok.exception import InvalidParameter, InvalidOperation
+from wok.utils import kimchi_log, run_command
 
 ARCH = 'power' if platform.machine().startswith('ppc') else 'x86'
 

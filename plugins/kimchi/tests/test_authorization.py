@@ -23,7 +23,7 @@ import unittest
 
 from functools import partial
 
-import kimchi.mockmodel
+from wok.plugins.kimchi import mockmodel
 from iso_gen import construct_fake_iso
 from utils import get_free_port, patch_auth, request
 from utils import run_server, wait_task
@@ -41,7 +41,7 @@ def setUpModule():
     global test_server, model, host, port, ssl_port
 
     patch_auth(sudo=False)
-    model = kimchi.mockmodel.MockModel('/tmp/obj-store-test')
+    model = mockmodel.MockModel('/tmp/obj-store-test')
     host = '127.0.0.1'
     port = get_free_port('http')
     ssl_port = get_free_port('https')
@@ -123,7 +123,7 @@ class AuthorizationTests(unittest.TestCase):
         wait_task(model.task_lookup, task_info['id'])
 
         model.vm_update(u'test-me',
-                        {'users': [kimchi.mockmodel.fake_user.keys()[0]],
+                        {'users': [mockmodel.fake_user.keys()[0]],
                          'groups': []})
 
         task_info = model.vms_create({'name': u'test-usera',

@@ -25,9 +25,9 @@ import unittest
 from functools import partial
 
 
-import kimchi.mockmodel
-import kimchi.server
-from kimchi.utils import get_enabled_plugins
+from wok.plugins.kimchi import mockmodel
+import wok.server
+from wok.utils import get_enabled_plugins
 import utils
 
 
@@ -42,7 +42,7 @@ def setUpModule():
     global test_server, model, host, port, ssl_port
 
     utils.patch_auth()
-    model = kimchi.mockmodel.MockModel('/tmp/obj-store-test')
+    model = mockmodel.MockModel('/tmp/obj-store-test')
     host = '127.0.0.1'
     port = utils.get_free_port('http')
     ssl_port = utils.get_free_port('https')

@@ -27,8 +27,8 @@ import urlparse
 from lxml import objectify
 from lxml.builder import E
 
-from kimchi.exception import InvalidParameter, NotFoundError
-from kimchi.utils import check_url_path
+from wok.exception import InvalidParameter, NotFoundError
+from wok.utils import check_url_path
 
 BUS_TO_DEV_MAP = {'ide': 'hd', 'virtio': 'vd', 'scsi': 'sd'}
 DEV_TYPE_SRC_ATTR_MAP = {'file': 'file', 'block': 'dev'}

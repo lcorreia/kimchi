@@ -18,10 +18,10 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 
 
-from kimchi.exception import OperationFailed, NotFoundError
-from kimchi.model.vms import VMModel, VMsModel
-from kimchi.utils import kimchi_log
-from kimchi.xmlutils.disk import get_vm_disk_info, get_vm_disks
+from wok.exception import OperationFailed, NotFoundError
+from vms import VMModel, VMsModel
+from wok.utils import kimchi_log
+from ..xmlutils.disk import get_vm_disk_info, get_vm_disks
 
 """
     Functions that multiple storage-related models (e.g. VMStoragesModel,

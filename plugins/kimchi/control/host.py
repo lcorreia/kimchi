@@ -17,10 +17,10 @@
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 
-from kimchi.control.cpuinfo import CPUInfo
-from kimchi.control.base import Collection, Resource, SimpleCollection
-from kimchi.control.utils import UrlSubNode
-from kimchi.exception import NotFoundError
+from cpuinfo import CPUInfo
+from wok.control.base import Collection, Resource, SimpleCollection
+from wok.control.utils import UrlSubNode
+from wok.exception import NotFoundError
 
 
 @UrlSubNode('host', True)

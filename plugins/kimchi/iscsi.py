@@ -20,7 +20,7 @@
 import subprocess
 
 
-from kimchi.exception import OperationFailed
+from wok.exception import OperationFailed
 
 
 class TargetClient(object):

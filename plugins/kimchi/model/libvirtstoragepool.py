@@ -24,10 +24,10 @@ from lxml.builder import E
 
 import libvirt
 
-from kimchi.exception import InvalidParameter, OperationFailed, TimeoutExpired
-from kimchi.iscsi import TargetClient
-from kimchi.rollbackcontext import RollbackContext
-from kimchi.utils import kimchi_log, parse_cmd_output, run_command
+from wok.exception import InvalidParameter, OperationFailed, TimeoutExpired
+from ..iscsi import TargetClient
+from wok.rollbackcontext import RollbackContext
+from wok.utils import kimchi_log, parse_cmd_output, run_command
 
 
 class StoragePoolDef(object):

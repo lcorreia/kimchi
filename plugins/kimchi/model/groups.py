@@ -19,7 +19,7 @@
 
 import grp
 
-from kimchi.config import config
+from wok.config import config
 
 
 class GroupsModel(object):

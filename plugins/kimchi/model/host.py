@@ -27,19 +27,19 @@ from lxml import objectify
 import psutil
 from cherrypy.process.plugins import BackgroundTask
 
-from kimchi import disks
-from kimchi import netinfo
-from kimchi.basemodel import Singleton
-from kimchi.model import hostdev
-from kimchi.exception import InvalidOperation, InvalidParameter
-from kimchi.exception import NotFoundError, OperationFailed
-from kimchi.model.config import CapabilitiesModel
-from kimchi.model.tasks import TaskModel
-from kimchi.model.vms import DOM_STATE_MAP, VMModel, VMsModel
-from kimchi.repositories import Repositories
-from kimchi.swupdate import SoftwareUpdate
-from kimchi.utils import add_task, kimchi_log
-from kimchi.xmlutils.utils import xpath_get_text
+from .. import disks
+from wok import netinfo
+from wok.basemodel import Singleton
+import hostdev
+from wok.exception import InvalidOperation, InvalidParameter
+from wok.exception import NotFoundError, OperationFailed
+from config import CapabilitiesModel
+from tasks import TaskModel
+from vms import DOM_STATE_MAP, VMModel, VMsModel
+from ..repositories import Repositories
+from ..swupdate import SoftwareUpdate
+from wok.utils import add_task, kimchi_log
+from wok.xmlutils.utils import xpath_get_text
 
 
 HOST_STATS_INTERVAL = 1

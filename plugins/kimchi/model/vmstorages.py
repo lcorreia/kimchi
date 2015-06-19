@@ -21,17 +21,17 @@ import string
 
 from lxml import etree
 
-from kimchi.exception import InvalidOperation, InvalidParameter, NotFoundError
-from kimchi.exception import OperationFailed
-from kimchi.model.config import CapabilitiesModel
-from kimchi.model.vms import DOM_STATE_MAP, VMModel
-from kimchi.model.storagevolumes import StorageVolumeModel
-from kimchi.model.utils import get_vm_config_flag
-from kimchi.osinfo import lookup
-from kimchi.model.diskutils import get_disk_used_by, set_disk_used_by
-from kimchi.utils import kimchi_log
-from kimchi.xmlutils.disk import get_device_node, get_disk_xml
-from kimchi.xmlutils.disk import get_vm_disk_info, get_vm_disks
+from wok.exception import InvalidOperation, InvalidParameter, NotFoundError
+from wok.exception import OperationFailed
+from config import CapabilitiesModel
+from vms import DOM_STATE_MAP, VMModel
+from storagevolumes import StorageVolumeModel
+from utils import get_vm_config_flag
+from ..osinfo import lookup
+from diskutils import get_disk_used_by, set_disk_used_by
+from wok.utils import kimchi_log
+from ..xmlutils.disk import get_device_node, get_disk_xml
+from ..xmlutils.disk import get_vm_disk_info, get_vm_disks
 
 HOTPLUG_TYPE = ['scsi', 'virtio']
 

@@ -23,14 +23,14 @@ import stat
 
 import libvirt
 
-from kimchi.exception import InvalidOperation, InvalidParameter
-from kimchi.exception import NotFoundError, OperationFailed
-from kimchi.kvmusertests import UserTests
-from kimchi.model.cpuinfo import CPUInfoModel
-from kimchi.utils import pool_name_from_uri
-from kimchi.utils import probe_file_permission_as_user, run_setfacl_set_attr
-from kimchi.vmtemplate import VMTemplate
-from kimchi.xmlutils.utils import xpath_get_text
+from wok.exception import InvalidOperation, InvalidParameter
+from wok.exception import NotFoundError, OperationFailed
+from ..kvmusertests import UserTests
+from cpuinfo import CPUInfoModel
+from ..utils import pool_name_from_uri
+from wok.utils import probe_file_permission_as_user, run_setfacl_set_attr
+from ..vmtemplate import VMTemplate
+from wok.xmlutils.utils import xpath_get_text
 
 
 class TemplatesModel(object):

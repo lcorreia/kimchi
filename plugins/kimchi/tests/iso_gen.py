@@ -20,7 +20,7 @@
 import platform
 import struct
 
-from kimchi.isoinfo import IsoImage
+from wok.plugins.kimchi.isoinfo import IsoImage
 
 iso_des = [
     ('openbsd', lambda v: True,

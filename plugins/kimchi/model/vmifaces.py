@@ -22,11 +22,11 @@ import random
 import libvirt
 from lxml import etree, objectify
 
-from kimchi.exception import InvalidParameter, MissingParameter
-from kimchi.exception import NotFoundError, InvalidOperation
-from kimchi.model.config import CapabilitiesModel
-from kimchi.model.vms import DOM_STATE_MAP, VMModel
-from kimchi.xmlutils.interface import get_iface_xml
+from wok.exception import InvalidParameter, MissingParameter
+from wok.exception import NotFoundError, InvalidOperation
+from config import CapabilitiesModel
+from vms import DOM_STATE_MAP, VMModel
+from ..xmlutils.interface import get_iface_xml
 
 
 def getDHCPLeases(net, mac):

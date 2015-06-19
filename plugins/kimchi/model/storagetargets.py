@@ -22,9 +22,9 @@ import lxml.etree as ET
 from lxml import objectify
 from lxml.builder import E
 
-from kimchi.model.config import CapabilitiesModel
-from kimchi.model.storageservers import STORAGE_SERVERS
-from kimchi.utils import kimchi_log, patch_find_nfs_target
+from config import CapabilitiesModel
+from storageservers import STORAGE_SERVERS
+from wok.utils import kimchi_log, patch_find_nfs_target
 
 
 class StorageTargetsModel(object):

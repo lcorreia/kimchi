@@ -52,4 +52,4 @@ for ((i=0;i<${#LIST[@]};i++)); do
     fi
 done
 
-PYTHONPATH=../src:../ $CMD $OPTS ${MODEL_LIST[@]} ${MOCK_LIST[@]}
+PYTHONPATH=../plugins:../src:../ $CMD $OPTS ${MODEL_LIST[@]} ${MOCK_LIST[@]}

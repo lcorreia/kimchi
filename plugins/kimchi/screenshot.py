@@ -32,8 +32,8 @@ except ImportError:
     import Image
 
 
-from kimchi import config
-from kimchi.utils import kimchi_log
+import config
+from wok.utils import kimchi_log
 
 
 (fd, pipe) = tempfile.mkstemp()

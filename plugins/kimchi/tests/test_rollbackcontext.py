@@ -19,7 +19,7 @@
 
 import unittest
 
-from kimchi.rollbackcontext import RollbackContext
+from wok.rollbackcontext import RollbackContext
 
 
 class FirstError(Exception):

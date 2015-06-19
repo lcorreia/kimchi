@@ -20,7 +20,7 @@
 import os
 
 
-from kimchi.control.utils import load_url_sub_node
+from wok.control.utils import load_url_sub_node
 
 
 sub_nodes = load_url_sub_node(os.path.dirname(__file__), __name__)

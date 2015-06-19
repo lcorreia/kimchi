@@ -23,31 +23,31 @@ import os
 import random
 import time
 
-import kimchi.model.cpuinfo
-import kimchi.model.vmifaces
+from model import cpuinfo
+from model import vmifaces
 
 from lxml import objectify
 from lxml.builder import E
 
-from kimchi import config
-from kimchi import imageinfo
-from kimchi import osinfo
-from kimchi.exception import NotFoundError, OperationFailed
-from kimchi.model.debugreports import DebugReportsModel
-from kimchi.model.host import DeviceModel
-from kimchi.model.libvirtstoragepool import IscsiPoolDef, NetfsPoolDef
-from kimchi.model.libvirtstoragepool import StoragePoolDef
-from kimchi.model.model import Model
-from kimchi.model.storagepools import StoragePoolModel
-from kimchi.model.storagevolumes import StorageVolumeModel, StorageVolumesModel
-from kimchi.model import storagevolumes
-from kimchi.model.templates import LibvirtVMTemplate
-from kimchi.model.users import PAMUsersModel
-from kimchi.model.groups import PAMGroupsModel
-from kimchi.objectstore import ObjectStore
-from kimchi.utils import add_task, get_next_clone_name, kimchi_log
-from kimchi.vmtemplate import VMTemplate
-from kimchi.xmlutils.utils import xml_item_update
+import config
+import imageinfo
+import osinfo
+from wok.exception import NotFoundError, OperationFailed
+from model.debugreports import DebugReportsModel
+from model.host import DeviceModel
+from model.libvirtstoragepool import IscsiPoolDef, NetfsPoolDef
+from model.libvirtstoragepool import StoragePoolDef
+from model.model import Model
+from model.storagepools import StoragePoolModel
+from model.storagevolumes import StorageVolumeModel, StorageVolumesModel
+from model import storagevolumes
+from model.templates import LibvirtVMTemplate
+from model.users import PAMUsersModel
+from model.groups import PAMGroupsModel
+from wok.objectstore import ObjectStore
+from wok.utils import add_task, get_next_clone_name, kimchi_log
+from vmtemplate import VMTemplate
+from wok.xmlutils.utils import xml_item_update
 
 
 fake_user = {'root': 'letmein!'}
@@ -79,9 +79,8 @@ class MockModel(Model):
         self._mock_swupdate = MockSoftwareUpdate()
         self._mock_repositories = MockRepositories()
 
-        kimchi.model.cpuinfo.get_topo_capabilities = \
-            MockModel.get_topo_capabilities
-        kimchi.model.vmifaces.getDHCPLeases = MockModel.getDHCPLeases
+        cpuinfo.get_topo_capabilities = MockModel.get_topo_capabilities
+        vmifaces.getDHCPLeases = MockModel.getDHCPLeases
         libvirt.virConnect.defineXML = MockModel.domainDefineXML
         libvirt.virDomain.XMLDesc = MockModel.domainXMLDesc
         libvirt.virDomain.undefine = MockModel.undefineDomain

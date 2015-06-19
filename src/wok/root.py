@@ -23,14 +23,14 @@ import os
 
 
 from distutils.version import LooseVersion
-from kimchi import auth
-from kimchi import template
-from kimchi.i18n import messages
-from kimchi.config import paths
-from kimchi.control import sub_nodes
-from kimchi.control.base import Resource
-from kimchi.control.utils import parse_request
-from kimchi.exception import MissingParameter, OperationFailed
+from wok import auth
+from wok import template
+from wok.i18n import messages
+from wok.config import paths
+from wok.control import sub_nodes
+from wok.control.base import Resource
+from wok.control.utils import parse_request
+from wok.exception import MissingParameter, OperationFailed
 
 
 class Root(Resource):

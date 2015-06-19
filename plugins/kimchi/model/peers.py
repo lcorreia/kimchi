@@ -21,8 +21,8 @@ import cherrypy
 import re
 import socket
 
-from kimchi.config import config
-from kimchi.utils import kimchi_log, run_command
+from wok.config import config
+from wok.utils import kimchi_log, run_command
 
 
 class PeersModel(object):

@@ -20,11 +20,11 @@
 import subprocess
 import time
 
-from kimchi.basemodel import Singleton
-from kimchi.config import kimchiLock
-from kimchi.exception import NotFoundError, OperationFailed
-from kimchi.utils import kimchi_log, run_command
-from kimchi.yumparser import get_yum_packages_list_update
+from wok.basemodel import Singleton
+from config import kimchiLock
+from wok.exception import NotFoundError, OperationFailed
+from wok.utils import kimchi_log, run_command
+from yumparser import get_yum_packages_list_update
 
 
 class SoftwareUpdate(object):

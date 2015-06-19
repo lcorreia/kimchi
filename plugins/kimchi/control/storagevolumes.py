@@ -17,9 +17,9 @@
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 
-import kimchi.template
-from kimchi.control.base import AsyncCollection, Collection, Resource
-from kimchi.control.utils import get_class_name, model_fn
+from wok import template
+from wok.control.base import AsyncCollection, Collection, Resource
+from wok.control.utils import get_class_name, model_fn
 
 
 class StorageVolumes(AsyncCollection):
@@ -81,4 +81,4 @@ class IsoVolumes(Collection):
         except AttributeError:
             pass
 
-        return kimchi.template.render(get_class_name(self), res_list)
+        return template.render(get_class_name(self), res_list)

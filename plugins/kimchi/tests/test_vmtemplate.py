@@ -22,9 +22,9 @@ import unittest
 import uuid
 
 
-from kimchi.osinfo import get_template_default
-from kimchi.vmtemplate import VMTemplate
-from kimchi.xmlutils.utils import xpath_get_text
+from wok.plugins.kimchi.osinfo import get_template_default
+from wok.plugins.kimchi.vmtemplate import VMTemplate
+from wok.xmlutils.utils import xpath_get_text
 
 
 class VMTemplateTests(unittest.TestCase):
