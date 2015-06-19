@@ -22,7 +22,7 @@ import re
 import socket
 
 from wok.config import config
-from wok.utils import kimchi_log, run_command
+from wok.utils import wok_log, run_command
 
 
 class PeersModel(object):
@@ -37,19 +37,19 @@ class PeersModel(object):
         self.url = hostname + ":" + port
 
         cmd = ["slptool", "register",
-               "service:kimchid://%s" % self.url]
+               "service:wokd://%s" % self.url]
         out, error, ret = run_command(cmd)
         if out and len(out) != 0:
-            kimchi_log.error("Unable to register server on openSLP."
+            wok_log.error("Unable to register server on openSLP."
                              " Details: %s" % out)
         cherrypy.engine.subscribe('exit', self._peer_deregister)
 
     def _peer_deregister(self):
         cmd = ["slptool", "deregister",
-               "service:kimchid://%s" % self.url]
+               "service:wokd://%s" % self.url]
         out, error, ret = run_command(cmd)
         if out and len(out) != 0:
-            kimchi_log.error("Unable to deregister server on openSLP."
+            wok_log.error("Unable to deregister server on openSLP."
                              " Details: %s" % out)
 
     def get_list(self):
@@ -57,14 +57,14 @@ class PeersModel(object):
         if config.get("server", "federation") == "off":
             return []
 
-        cmd = ["slptool", "findsrvs", "service:kimchid"]
+        cmd = ["slptool", "findsrvs", "service:wokd"]
         out, error, ret = run_command(cmd)
         if ret != 0:
             return []
 
         peers = []
         for server in out.strip().split("\n"):
-            match = re.match("service:kimchid://(.*?),.*", server)
+            match = re.match("service:wokd://(.*?),.*", server)
             peer = match.group(1)
             if peer != self.url:
                 peers.append("https://" + peer)

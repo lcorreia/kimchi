@@ -56,7 +56,7 @@ kimchi.template_add_main = function() {
                 $('#iso-search').show();
             }
         }, function(err) {
-            kimchi.message.error(err.responseJSON.reason);
+            wok.message.error(err.responseJSON.reason);
         });
     });
 
@@ -71,7 +71,7 @@ kimchi.template_add_main = function() {
         var settings = {
             content : i18n['KCHTMPL6002M']
         };
-        kimchi.confirm(settings, function() {
+        wok.confirm(settings, function() {
             $('#iso-search').hide();
             $('#iso-search-loading').show();
             deepScan('#iso-search');
@@ -82,7 +82,7 @@ kimchi.template_add_main = function() {
         var settings = {
             content : i18n['KCHTMPL6002M']
         };
-        kimchi.confirm(settings, function() {
+        wok.confirm(settings, function() {
             $('#iso-more').hide();
             $('#iso-more-loading').show();
             deepScan('#iso-more');
@@ -116,7 +116,7 @@ kimchi.template_add_main = function() {
                 showLocalIsoField(isos);
             } else {
                 if (isFinished) {
-                    kimchi.message.warn(i18n['KCHTMPL6001W']);
+                    wok.message.warn(i18n['KCHTMPL6001W']);
                 }
             }
             if (isFinished) {
@@ -124,7 +124,7 @@ kimchi.template_add_main = function() {
                 $(button).show();
             }
         }, function(err) {
-            kimchi.message.error(err.responseJSON.reason);
+            wok.message.error(err.responseJSON.reason);
             $(button + '-loading').hide();
             $(button).show();
         });
@@ -150,9 +150,9 @@ kimchi.template_add_main = function() {
             var isoId = volume.os_distro + '*' + volume.name + '*' + volume.os_version;
             if (!kimchi.isoInfo[isoId]) {
                 volume.isoId = isoId;
-                volume.capacity = kimchi.changetoProperUnit(volume.capacity, 1);
+                volume.capacity = wok.changetoProperUnit(volume.capacity, 1);
                 kimchi.isoInfo[isoId] = volume;
-                html += kimchi.substitute(template, volume);
+                html += wok.substitute(template, volume);
             }
         });
         $('#list-local-iso').append(html);
@@ -211,7 +211,7 @@ kimchi.template_add_main = function() {
     $('#btn-template-file-create').click(function() {
         var isoFile = $('#iso-file').val();
         if (!kimchi.template_check_path(isoFile)) {
-            kimchi.message.error.code('KCHAPI6003E');
+            wok.message.error.code('KCHAPI6003E');
             return;
         }
         var data = {
@@ -224,12 +224,12 @@ kimchi.template_add_main = function() {
     $('#iso-remote').css('opacity', 0.3).css('cursor', 'not-allowed');
 
     var enabledRemoteIso = function() {
-        if (kimchi.capabilities == undefined) {
+        if (wok.capabilities == undefined) {
             setTimeout(enabledRemoteIso, 2000);
             return;
         }
 
-        if (kimchi.capabilities.qemu_stream != true) {
+        if (wok.capabilities.qemu_stream != true) {
             return;
         }
 
@@ -269,7 +269,7 @@ kimchi.template_add_main = function() {
                 if (!kimchi.isoInfo[isoId]) {
                     volume.isoId = isoId;
                     kimchi.isoInfo[isoId] = volume;
-                    html += kimchi.substitute(template, volume);
+                    html += wok.substitute(template, volume);
                 }
             });
             $('#list-remote-iso').html(html);
@@ -279,7 +279,7 @@ kimchi.template_add_main = function() {
         } else {
             $('#load-remote-iso').hide()
             $('#iso-url-field').show();
-            kimchi.message.warn(i18n['KCHTMPL6001W']);
+            wok.message.warn(i18n['KCHTMPL6001W']);
         }
     };
 
@@ -365,7 +365,7 @@ kimchi.template_add_main = function() {
     $('#btn-template-url-create').click(function() {
         var isoUrl = $('#iso-url').val();
         if (!kimchi.template_check_url(isoUrl)) {
-            kimchi.message.error.code('KCHAPI6004E');
+            wok.message.error.code('KCHAPI6004E');
             return;
         }
         var data = {
@@ -379,11 +379,11 @@ kimchi.template_add_main = function() {
         kimchi.createTemplate(data, function() {
             if(callback) callback();
             kimchi.doListTemplates();
-            kimchi.window.close();
-            kimchi.topic('templateCreated').publish();
+            wok.window.close();
+            wok.topic('templateCreated').publish();
         }, function(err) {
             if(callback) callback();
-            kimchi.message.error(err.responseJSON.reason);
+            wok.message.error(err.responseJSON.reason);
         });
     };
 
@@ -403,12 +403,12 @@ kimchi.template_add_main = function() {
                     $('input[value="' + isoInfo.isoId + '"]').prop('checked', false);
                     $('.check-all>input').prop('checked', false);
                     kimchi.doListTemplates();
-                    kimchi.topic('templateCreated').publish(data);
+                    wok.topic('templateCreated').publish(data);
                     if (successNum === length) {
-                        kimchi.window.close();
+                        wok.window.close();
                     }
                 }, function(err) {
-                    kimchi.message.error(err.responseJSON.reason);
+                    wok.message.error(err.responseJSON.reason);
                 });
             };
             if (formData.iso instanceof Array) {

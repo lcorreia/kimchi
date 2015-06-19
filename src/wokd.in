@@ -32,8 +32,8 @@ import wok.config as config
 if not config.paths.installed:
     sys.path.append(config.paths.prefix)
 
-ACCESS_LOG = "kimchi-access.log"
-ERROR_LOG = "kimchi-error.log"
+ACCESS_LOG = "wok-access.log"
+ERROR_LOG = "wok-error.log"
 
 
 def main(options):
@@ -69,7 +69,7 @@ def main(options):
                       default=os.path.join(logDir, ERROR_LOG),
                       help="Error log file")
     parser.add_option('--environment', default=runningEnv,
-                      help="Running environment of kimchi server")
+                      help="Running environment of wok server")
     parser.add_option('--federation', default=federation,
                       help="Register and discover Kimchi peers in the same "
                            "network using openSLP. Check README-federation for"

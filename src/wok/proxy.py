@@ -34,13 +34,13 @@ from wok.config import paths
 def _create_proxy_config(options):
     """Create nginx configuration file based on current ports config
 
-    To allow flexibility in which port kimchi runs, we need the same
+    To allow flexibility in which port wok runs, we need the same
     flexibility with the nginx proxy. This method creates the config
     file dynamically by using 'nginx.conf.in' as a template, creating
-    the file 'kimchi.conf' which will be used to launch the proxy.
+    the file 'wok.conf' which will be used to launch the proxy.
 
     Arguments:
-    options - OptionParser object with Kimchi config options
+    options - OptionParser object with Wok config options
     """
     # User that will run the worker process of the proxy. Fedora,
     # RHEL and Suse creates an user called 'nginx' when installing
@@ -58,8 +58,8 @@ def _create_proxy_config(options):
 
     # No certificates specified by the user
     if not cert or not key:
-        cert = '%s/kimchi-cert.pem' % config_dir
-        key = '%s/kimchi-key.pem' % config_dir
+        cert = '%s/wok-cert.pem' % config_dir
+        key = '%s/wok-key.pem' % config_dir
         # create cert files if they don't exist
         if not os.path.exists(cert) or not os.path.exists(key):
             ssl_gen = sslcert.SSLCert()
@@ -73,19 +73,19 @@ def _create_proxy_config(options):
 
     # Read template file and create a new config file
     # with the specified parameters.
-    with open(os.path.join(nginx_config_dir, "kimchi.conf.in")) as template:
+    with open(os.path.join(nginx_config_dir, "wok.conf.in")) as template:
         data = template.read()
     data = Template(data)
     data = data.safe_substitute(user=user_proxy,
                                 proxy_port=options.port,
-                                kimchid_port=options.cherrypy_port,
+                                wokd_port=options.cherrypy_port,
                                 proxy_ssl_port=options.ssl_port,
                                 cert_pem=cert, cert_key=key,
                                 max_body_size=eval(options.max_body_size),
                                 dhparams_pem=dhparams_pem)
 
     # Write file to be used for nginx.
-    config_file = open(os.path.join(nginx_config_dir, "kimchi.conf"), "w")
+    config_file = open(os.path.join(nginx_config_dir, "wok.conf"), "w")
     config_file.write(data)
     config_file.close()
 
@@ -94,7 +94,7 @@ def start_proxy(options):
     """Start nginx reverse proxy."""
     _create_proxy_config(options)
     nginx_config_dir = paths.nginx_conf_dir
-    config_file = "%s/kimchi.conf" % nginx_config_dir
+    config_file = "%s/wok.conf" % nginx_config_dir
     cmd = ['nginx', '-c', config_file]
     subprocess.call(cmd)
 

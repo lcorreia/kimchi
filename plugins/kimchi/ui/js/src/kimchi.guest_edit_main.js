@@ -46,7 +46,7 @@ kimchi.guest_edit_main = function() {
             $.each(storages, function(index, storage) {
                 storage['vm'] = kimchi.selectedGuest;
                 rowHTML = $('#' + storage['type'] + '-row-tmpl').html();
-                var templated = kimchi.substitute(rowHTML, storage);
+                var templated = wok.substitute(rowHTML, storage);
                 container.append(templated);
             });
 
@@ -120,12 +120,12 @@ kimchi.guest_edit_main = function() {
                 settings['content'] = i18n['KCHVMCD6009M'];
 
             var dev = $(this).data('dev');
-            kimchi.confirm(settings, function() {
+            wok.confirm(settings, function() {
                 kimchi.deleteVMStorage({
                     vm: kimchi.selectedGuest,
                     dev: dev
                 }, function() {
-                    kimchi.topic('kimchi/vmCDROMDetached').publish();
+                    wok.topic('kimchi/vmCDROMDetached').publish();
                 });
             });
         });
@@ -140,13 +140,13 @@ kimchi.guest_edit_main = function() {
             };
 
             kimchi.replaceVMStorage(settings, function(result) {
-                kimchi.topic('kimchi/vmCDROMReplaced').publish({
+                wok.topic('kimchi/vmCDROMReplaced').publish({
                     result: result
                 });
             }, function(result) {
                 var errText = result['reason'] ||
                     result['responseJSON']['reason'];
-                kimchi.message.error(errText);
+                wok.message.error(errText);
             });
         });
 
@@ -183,7 +183,7 @@ kimchi.guest_edit_main = function() {
             if (data.id == -1) {
                 data.id = $('#form-guest-edit-interface > .body').children().size()
             }
-            var itemNode = $.parseHTML(kimchi.substitute($('#interface-tmpl').html(),data));
+            var itemNode = $.parseHTML(wok.substitute($('#interface-tmpl').html(),data));
             $(".body", "#form-guest-edit-interface").append(itemNode);
             $("select", itemNode).append(networkOptions);
             if(data.network!==""){
@@ -283,7 +283,7 @@ kimchi.guest_edit_main = function() {
             });
         });
         var addItem = function(data) {
-            var itemNode = $.parseHTML(kimchi.substitute($('#ldap-user-tmpl').html(),data));
+            var itemNode = $.parseHTML(wok.substitute($('#ldap-user-tmpl').html(),data));
             $(".body", "#form-guest-edit-permission .ldap").append(itemNode);
             $(".delete", itemNode).button({
                 icons: { primary: "ui-icon-trash" },
@@ -314,7 +314,7 @@ kimchi.guest_edit_main = function() {
         };
         //set up for PAM
         var userNodes = {}, groupNodes = {};
-        authType = kimchi.capabilities['auth']
+        authType = wok.capabilities['auth']
         if (authType == 'pam') {
             $("#form-guest-edit-permission .ldap").hide();
             kimchi.retrieveVM(kimchi.selectedGuest, function(vm){
@@ -367,7 +367,7 @@ kimchi.guest_edit_main = function() {
         var init = function(availUsers, availGroups, selUsers, selGroups){
             var initNode = function(key, isUserNode){
                 var nodeGroups = isUserNode ? userNodes : groupNodes;
-                nodeGroups[key] = $.parseHTML(kimchi.substitute($('#permission-item-pam').html(), {
+                nodeGroups[key] = $.parseHTML(wok.substitute($('#permission-item-pam').html(), {
                     val: key,
                     class: isUserNode? "user-icon" : "group-icon"
                 }));
@@ -469,7 +469,7 @@ kimchi.guest_edit_main = function() {
         });
     };
     var setupNode = function(arrPCIDevices, iconClass){
-        var pciEnabled = kimchi.capabilities.kernel_vfio;
+        var pciEnabled = wok.capabilities.kernel_vfio;
         var pciDeviceName, pciDeviceProduct, pciDeviceProductDesc, pciDeviceVendor, pciDeviceVendorDesc;        
         for(var i=0; i<arrPCIDevices.length; i++){
             pciDeviceName = arrPCIDevices[i].name;
@@ -481,7 +481,7 @@ kimchi.guest_edit_main = function() {
             if(pciDeviceVendor!=null){
                 pciDeviceVendorDesc = pciDeviceVendor.description;
             }
-            var itemNode = $.parseHTML(kimchi.substitute($('#pci-tmpl').html(),{
+            var itemNode = $.parseHTML(wok.substitute($('#pci-tmpl').html(),{
                   name: pciDeviceName,
                   product: pciDeviceProductDesc,
                   vendor: pciDeviceVendorDesc
@@ -562,7 +562,7 @@ kimchi.guest_edit_main = function() {
             }
         };
         var addItem = function(data, container) {
-            var itemNode = $.parseHTML(kimchi.substitute($('#snapshot-tmpl').html(),data));
+            var itemNode = $.parseHTML(wok.substitute($('#snapshot-tmpl').html(),data));
             $("."+container, "#form-guest-edit-snapshot").append(itemNode);
             $(".delete", itemNode).button({
                 icons: { primary: "ui-icon-trash" },
@@ -576,7 +576,7 @@ kimchi.guest_edit_main = function() {
                     setCurrentSnapshot();
                     $("button", "#form-guest-edit-snapshot").button("enable");
                 }, function(data){
-                    kimchi.message.error(data.responseJSON.reason);
+                    wok.message.error(data.responseJSON.reason);
                     $("button", "#form-guest-edit-snapshot").button("enable");
                 });
             });
@@ -594,9 +594,9 @@ kimchi.guest_edit_main = function() {
                     $("button", "#form-guest-edit-snapshot").button("enable");
                     setCurrentSnapshot(item.prop("id"));
                     kimchi.listVmsAuto();
-                    kimchi.window.close();
+                    wok.window.close();
                 }, function(data){
-                    kimchi.message.error(data.responseJSON.reason);
+                    wok.message.error(data.responseJSON.reason);
                     $(".icon", item).addClass("hide");
                     $("button", "#form-guest-edit-snapshot").button("enable");
                 });
@@ -615,7 +615,7 @@ kimchi.guest_edit_main = function() {
                     listGeneratingSnapshots();
                     $("button", "#form-guest-edit-snapshot").button("enable");
                 }, function(err){
-                    kimchi.message.error(err.message);
+                    wok.message.error(err.message);
                     listGeneratingSnapshots();
                     $("button", "#form-guest-edit-snapshot").button("enable");
                 });
@@ -667,7 +667,7 @@ kimchi.guest_edit_main = function() {
                 text: false
             }).click(function(event) {
                 event.preventDefault();
-                kimchi.window.open("guest-storage-add.html");
+                wok.window.open("guest-storage-add.html");
             });
         if ((kimchi.thisVMState === "running") || (kimchi.thisVMState === "paused")) {
             $("#form-guest-edit-general input").prop("disabled", true);
@@ -691,14 +691,14 @@ kimchi.guest_edit_main = function() {
         setupPCIDevice();
         setupSnapshot();
 
-        kimchi.topic('kimchi/vmCDROMAttached').subscribe(onAttached);
-        kimchi.topic('kimchi/vmCDROMReplaced').subscribe(onReplaced);
-        kimchi.topic('kimchi/vmCDROMDetached').subscribe(onDetached);
+        wok.topic('kimchi/vmCDROMAttached').subscribe(onAttached);
+        wok.topic('kimchi/vmCDROMReplaced').subscribe(onReplaced);
+        wok.topic('kimchi/vmCDROMDetached').subscribe(onDetached);
 
         kimchi.clearGuestEdit = function() {
-            kimchi.topic('kimchi/vmCDROMAttached').unsubscribe(onAttached);
-            kimchi.topic('kimchi/vmCDROMReplaced').unsubscribe(onReplaced);
-            kimchi.topic('kimchi/vmCDROMDetached').unsubscribe(onDetached);
+            wok.topic('kimchi/vmCDROMAttached').unsubscribe(onAttached);
+            wok.topic('kimchi/vmCDROMReplaced').unsubscribe(onReplaced);
+            wok.topic('kimchi/vmCDROMDetached').unsubscribe(onDetached);
         };
     };
 
@@ -716,16 +716,16 @@ kimchi.guest_edit_main = function() {
 
         kimchi.updateVM(kimchi.selectedGuest, data, function() {
             kimchi.listVmsAuto();
-            kimchi.window.close();
+            wok.window.close();
         }, function(err) {
-            kimchi.message.error(err.responseJSON.reason);
+            wok.message.error(err.responseJSON.reason);
             $(saveButton).prop('disabled', false);
         });
     }
 
     var permissionSubmit = function(event) {
         var content = { users: [], groups: [] };
-        authType = kimchi.capabilities['auth']
+        authType = wok.capabilities['auth']
         if (authType == 'pam') {
             $("#permission-sel-users").children().each(function(){
                 content.users.push($("label", this).text());
@@ -734,7 +734,7 @@ kimchi.guest_edit_main = function() {
                 content.groups.push($("label", this).text());
             });
             kimchi.updateVM(kimchi.selectedGuest, content, function(){
-                kimchi.window.close();
+                wok.window.close();
             });
         } else if (authType == 'ldap') {
             $(saveButton).prop('disabled', true);
@@ -754,7 +754,7 @@ kimchi.guest_edit_main = function() {
             });
             if (errors == 0) {
                 kimchi.updateVM(kimchi.selectedGuest, content, function(){
-                   kimchi.window.close();
+                   wok.window.close();
                 });
             } else {
                 $(saveButton).prop('disabled', false);

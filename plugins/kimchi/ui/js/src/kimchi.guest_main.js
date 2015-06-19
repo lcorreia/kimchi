@@ -55,7 +55,7 @@ kimchi.vmstart = function(event) {
             kimchi.listVmsAuto();
             }, function(err) {
                 button.removeClass('loading');
-                kimchi.message.error(err.responseJSON.reason);
+                wok.message.error(err.responseJSON.reason);
             }
         );
     } else {
@@ -76,7 +76,7 @@ kimchi.vmsuspend = function(event) {
             kimchi.listVmsAuto();
             }, function(err) {
                 button.removeClass('pause-gray');
-                kimchi.message.error(err.responseJSON.reason);
+                wok.message.error(err.responseJSON.reason);
             }
         );
     } else {
@@ -97,7 +97,7 @@ kimchi.vmresume = function(event) {
             kimchi.listVmsAuto();
             }, function(err) {
                 button.removeClass('resume-gray');
-                kimchi.message.error(err.responseJSON.reason);
+                wok.message.error(err.responseJSON.reason);
             }
         );
     } else {
@@ -123,12 +123,12 @@ kimchi.vmpoweroff = function(event) {
             confirm : i18n['KCHAPI6002M'],
             cancel : i18n['KCHAPI6003M']
         };
-        kimchi.confirm(settings, function() {
+        wok.confirm(settings, function() {
             kimchi.poweroffVM(vm_id, function(result) {
                 button.removeClass('loading');
                 kimchi.listVmsAuto();
             }, function(err) {
-                kimchi.message.error(err.responseJSON.reason);
+                wok.message.error(err.responseJSON.reason);
             });
         }, function() {
         });
@@ -147,11 +147,11 @@ kimchi.vmshutdown = function(event){
         confirm : i18n['KCHAPI6002M'],
         cancel : i18n['KCHAPI6003M']
     };
-    kimchi.confirm(settings, function() {
+    wok.confirm(settings, function() {
         kimchi.shutdownVM(vm_id, function(result) {
                 kimchi.listVmsAuto();
             }, function(err) {
-                kimchi.message.error(err.responseJSON.reason);
+                wok.message.error(err.responseJSON.reason);
             }
         );
     }, function() {
@@ -167,11 +167,11 @@ kimchi.vmreset = function(event){
         confirm : i18n['KCHAPI6002M'],
         cancel : i18n['KCHAPI6003M']
     };
-    kimchi.confirm(settings, function() {
+    wok.confirm(settings, function() {
         kimchi.resetVM(vm_id, function(result) {
                 kimchi.listVmsAuto();
             }, function(err) {
-                kimchi.message.error(err.responseJSON.reason);
+                wok.message.error(err.responseJSON.reason);
             }
         );
     }, function() {
@@ -187,11 +187,11 @@ kimchi.vmdelete = function(event) {
         confirm : i18n['KCHAPI6002M'],
         cancel : i18n['KCHAPI6003M']
     };
-    kimchi.confirm(settings, function() {
+    wok.confirm(settings, function() {
         kimchi.deleteVM(vm_id, function(result) {
             kimchi.listVmsAuto();
         }, function(err) {
-            kimchi.message.error(err.responseJSON.reason);
+            wok.message.error(err.responseJSON.reason);
         });
     }, function() {
     });
@@ -201,7 +201,7 @@ kimchi.vmedit = function(event) {
     var vm = $(this).closest('li[name=guest]');
     var vm_id=vm.attr("id");
     kimchi.selectedGuest = vm_id;
-    kimchi.window.open({
+    wok.window.open({
         url: 'guest-edit.html',
         close: function() {
             kimchi.clearGuestEdit();
@@ -252,7 +252,7 @@ kimchi.listVmsAuto = function() {
                 guests.push($.extend({}, kimchi.sampleGuestObject, {name: guestName, isCreating: true}));
                 if(kimchi.trackingTasks.indexOf(tasks[i].id)==-1)
                     kimchi.trackTask(tasks[i].id, null, function(err){
-                        kimchi.message.error(err.message);
+                        wok.message.error(err.message);
                     }, null);
             }
         }, null, true);
@@ -267,7 +267,7 @@ kimchi.listVmsAuto = function() {
                 guests.push($.extend({}, kimchi.sampleGuestObject, {name: guestName, isCloning: true}));
                 if(kimchi.trackingTasks.indexOf(tasks[i].id)==-1)
                     kimchi.trackTask(tasks[i].id, null, function(err){
-                        kimchi.message.error(err.message);
+                        wok.message.error(err.message);
                     }, null);
             }
         }, null, true);
@@ -299,7 +299,7 @@ kimchi.listVmsAuto = function() {
         kimchi.vmTimeout = window.setTimeout("kimchi.listVmsAuto();", 5000);
     }, function(errorResponse, textStatus, errorThrown) {
         if(errorResponse.responseJSON && errorResponse.responseJSON.reason) {
-            kimchi.message.error(errorResponse.responseJSON.reason);
+            wok.message.error(errorResponse.responseJSON.reason);
         }
         kimchi.vmTimeout = window.setTimeout("kimchi.listVmsAuto();", 5000);
     });
@@ -439,7 +439,7 @@ kimchi.createGuestLi = function(vmObject, prevScreenImage, openMenu) {
         guestActions.find("[name=vm-delete]").on({click : kimchi.vmdelete});
         guestActions.find("[name=vm-clone]").click(function(){
             var guest = $(this).closest('li[name=guest]').attr("id");
-            kimchi.confirm({
+            wok.confirm({
                 title : i18n['KCHAPI6006M'],
                 content : i18n['KCHVM6010M'],
                 confirm : i18n['KCHAPI6002M'],
@@ -489,10 +489,10 @@ kimchi.guestSetRequestHeader = function(xhr) {
 };
 
 kimchi.guest_main = function() {
-    if(kimchi.tabMode['guests'] === 'admin') {
+    if(wok.tabMode['guests'] === 'admin') {
         $('.tools').attr('style','display');
         $("#vm-add").on("click", function(event) {
-            kimchi.window.open('guest-add.html');
+            wok.window.open('guest-add.html');
         });
     }
     kimchi.guestTemplate = $('#guest-tmpl').html();

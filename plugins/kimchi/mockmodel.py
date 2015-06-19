@@ -45,7 +45,7 @@ from model.templates import LibvirtVMTemplate
 from model.users import PAMUsersModel
 from model.groups import PAMGroupsModel
 from wok.objectstore import ObjectStore
-from wok.utils import add_task, get_next_clone_name, kimchi_log
+from wok.utils import add_task, get_next_clone_name, wok_log
 from vmtemplate import VMTemplate
 from wok.xmlutils.utils import xml_item_update
 
@@ -288,10 +288,10 @@ class MockModel(Model):
         conn.storagePoolDefineXML(ET.tostring(root), 0)
 
     def _mock_host_shutdown(self, *name):
-        kimchi_log.info("The host system will be shutted down")
+        wok_log.info("The host system will be shutted down")
 
     def _mock_host_reboot(self, *name):
-        kimchi_log.info("The host system will be rebooted")
+        wok_log.info("The host system will be rebooted")
 
     def _mock_storagevolumes_create(self, pool, params):
         vol_source = ['url', 'capacity']

@@ -41,7 +41,7 @@ import wok.server
 from wok.config import config, paths
 from wok.auth import User, USER_NAME, USER_GROUPS, USER_ROLES, tabs
 from wok.exception import NotFoundError, OperationFailed
-from wok.utils import kimchi_log
+from wok.utils import wok_log
 
 _ports = {}
 
@@ -227,12 +227,12 @@ def wait_task(task_lookup, taskid, timeout=10):
     for i in range(0, timeout):
         task_info = task_lookup(taskid)
         if task_info['status'] == "running":
-            kimchi_log.info("Waiting task %s, message: %s",
+            wok_log.info("Waiting task %s, message: %s",
                             taskid, task_info['message'])
             time.sleep(1)
         else:
             return
-    kimchi_log.error("Timeout while process long-run task, "
+    wok_log.error("Timeout while process long-run task, "
                      "try to increase timeout value.")
 
 

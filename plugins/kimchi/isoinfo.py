@@ -29,7 +29,7 @@ import urllib2
 
 
 from wok.exception import IsoFormatError
-from wok.utils import check_url_path, kimchi_log
+from wok.utils import check_url_path, wok_log
 
 
 iso_dir = [
@@ -178,7 +178,7 @@ class IsoImage(object):
                 return (distro, version)
 
         msg = "probe_iso: Unable to identify ISO %s with Volume ID: %s"
-        kimchi_log.debug(msg, self.path, self.volume_id)
+        wok_log.debug(msg, self.path, self.volume_id)
 
         return ('unknown', 'unknown')
 

@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-kimchi.message = function(msg, level, node) {
+wok.message = function(msg, level, node) {
     var container = node || $('#messageField');
     if ($(container).size() < 1) {
         container = $('<div id="messageField"/>').appendTo(document.body);
@@ -61,7 +61,7 @@ kimchi.message = function(msg, level, node) {
  * @param cancelCallback
  *            The callback function of click the cancel and X button.
  */
-kimchi.confirm = function(settings, confirmCallback, cancelCallback) {
+wok.confirm = function(settings, confirmCallback, cancelCallback) {
     if ($('#confirmbox-container ').size() < 1) {
         $(document.body).append('<div id="confirmbox-container" class="bgmask"></div>');
     }
@@ -101,16 +101,16 @@ kimchi.confirm = function(settings, confirmCallback, cancelCallback) {
     });
 };
 
-kimchi.message.warn = function(msg, node) {
-    kimchi.message(msg, 'warn', node);
+wok.message.warn = function(msg, node) {
+    wok.message(msg, 'warn', node);
 };
-kimchi.message.error = function(msg, node) {
-    kimchi.message(msg, 'error', node);
+wok.message.error = function(msg, node) {
+    wok.message(msg, 'error', node);
 };
-kimchi.message.error.code = function(code) {
+wok.message.error.code = function(code) {
     msg = code + ": " + i18n[code]
-    kimchi.message(msg, 'error');
+    wok.message(msg, 'error');
 };
-kimchi.message.success = function(msg, node) {
-    kimchi.message(msg, 'success', node);
+wok.message.success = function(msg, node) {
+    wok.message(msg, 'success', node);
 };

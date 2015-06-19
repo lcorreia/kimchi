@@ -79,7 +79,7 @@ kimchi.setupISCSI = function(){
         }, function(data){
             $('input', "#iSCSITarget").attr("placeholder", i18n['KCHPOOL6008M']);
             callback();
-            kimchi.message.error(data.responseJSON.reason);
+            wok.message.error(data.responseJSON.reason);
         });
     };
     var triggerLoadTarget = function(){
@@ -128,7 +128,7 @@ kimchi.initStorageAddPage = function() {
             valid_types = ['part', 'disk', 'mpath'];
             $.each(data, function(index, value) {
                 if (valid_types.indexOf(value.type) != -1) {
-                    listHtml += kimchi.substitute(deviceHtml, value);
+                    listHtml += wok.substitute(deviceHtml, value);
                 }
             });
             $('.host-partition', '#form-pool-add').html(listHtml);
@@ -198,7 +198,7 @@ kimchi.initStorageAddPage = function() {
             }
         });
         $('#nfsserverId').on("change keyup",function() {
-            if ($(this).val() !== '' && kimchi.isServer($(this).val())) {
+            if ($(this).val() !== '' && wok.isServer($(this).val())) {
                 $('#nfspathId').prop('disabled',false);
                 $(this).removeClass("invalid-field");
             } else {
@@ -247,9 +247,9 @@ kimchi.initStorageAddPage = function() {
         $(this).toggleClass("invalid-field",!/^[0-9]*$/.test($(this).val()));
     });
     $('#iscsiserverId').keyup(function(event) {
-        $(this).toggleClass("invalid-field",!kimchi.isServer($(this).val().trim()));
+        $(this).toggleClass("invalid-field",!wok.isServer($(this).val().trim()));
     }).change(function(event) {
-        $(this).toggleClass("invalid-field",!kimchi.isServer($(this).val().trim()));
+        $(this).toggleClass("invalid-field",!wok.isServer($(this).val().trim()));
     });
     kimchi.setupISCSI();
 };
@@ -298,7 +298,7 @@ kimchi.validateForm = function() {
 kimchi.validateDirForm = function () {
     var path = $('#pathId').val();
     if (!/(^\/.*)$/.test(path)) {
-        kimchi.message.error.code('KCHAPI6003E');
+        wok.message.error.code('KCHAPI6003E');
         return false;
     }
     return true;
@@ -311,7 +311,7 @@ kimchi.validateNfsForm = function () {
         return false;
     }
     if (!/((\/([0-9a-zA-Z-_\.]+)))$/.test(nfspath)) {
-        kimchi.message.error.code('KCHPOOL6005E');
+        wok.message.error.code('KCHPOOL6005E');
         return false;
     }
     $('#nfs-mount-loading').removeClass('hidden');
@@ -328,8 +328,8 @@ kimchi.validateIscsiForm = function() {
 };
 
 kimchi.validateServer = function(serverField) {
-    if(!kimchi.isServer(serverField)) {
-        kimchi.message.error.code('KCHPOOL6009E');
+    if(!wok.isServer(serverField)) {
+        wok.message.error.code('KCHPOOL6009E');
         return false;
     }
     return true;
@@ -337,7 +337,7 @@ kimchi.validateServer = function(serverField) {
 
 kimchi.validateLogicalForm = function () {
     if ($("input[name=devices]:checked").length === 0) {
-        kimchi.message.error.code('KCHPOOL6006E');
+        wok.message.error.code('KCHPOOL6006E');
         return false;
     } else {
         return true;
@@ -388,9 +388,9 @@ kimchi.addPool = function(event) {
             $('#pool-loading').show();
             kimchi.createStoragePool(formData, function() {
                     kimchi.doListStoragePools();
-                    kimchi.window.close();
+                    wok.window.close();
                 }, function(err) {
-                    kimchi.message.error(err.responseJSON.reason);
+                    wok.message.error(err.responseJSON.reason);
                     $('input', '#form-pool-add').removeAttr('disabled');
                     $('#pool-loading').hide();
                     $('#pool-doAdd').show();
@@ -403,7 +403,7 @@ kimchi.addPool = function(event) {
                 confirm : i18n['KCHAPI6002M'],
                 cancel : i18n['KCHAPI6003M']
             };
-            kimchi.confirm(settings, function() {
+            wok.confirm(settings, function() {
                 storagePoolAddingFunc();
             }, function() {
             });

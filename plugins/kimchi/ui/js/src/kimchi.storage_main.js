@@ -22,17 +22,17 @@ kimchi.doListStoragePools = function() {
             var listHtml = '';
             $.each(result, function(index, value) {
                 value.usage = Math.round(value.allocated / value.capacity * 100) || 0;
-                value.capacity = kimchi.changetoProperUnit(value.capacity,1);
-                value.allocated = kimchi.changetoProperUnit(value.allocated,1);
+                value.capacity = wok.changetoProperUnit(value.capacity,1);
+                value.allocated = wok.changetoProperUnit(value.allocated,1);
                 value.enableExt = value.type==="logical" ? "" : "hide-content";
                 if ('kimchi-iso' !== value.type) {
-                    listHtml += kimchi.substitute(storageHtml, value);
+                    listHtml += wok.substitute(storageHtml, value);
                 }
             });
             if($('#storageGrid').hasClass('grid'))
                 $('#storageGrid').grid('destroy');
             $('#storagepoolsList').html(listHtml);
-            if(kimchi.tabMode['storage'] === 'admin') {
+            if(wok.tabMode['storage'] === 'admin') {
                 $('.storage-button').attr('style','display');
             } else {
                 $('.storage-allocate').addClass('storage-allocate-padding-user');
@@ -46,7 +46,7 @@ kimchi.doListStoragePools = function() {
             $('#storagepoolsList').html('');
         }
     }, function(err) {
-        kimchi.message.error(err.responseJSON.reason);
+        wok.message.error(err.responseJSON.reason);
     });
 }
 
@@ -97,7 +97,7 @@ kimchi.storageBindClick = function() {
         }
     });
 
-    if(kimchi.tabMode['storage'] === 'admin') {
+    if(wok.tabMode['storage'] === 'admin') {
         $('.pool-delete').on('click', function(event) {
             var $pool = $(this);
             var settings = {
@@ -106,12 +106,12 @@ kimchi.storageBindClick = function() {
                 confirm : i18n['KCHAPI6002M'],
                 cancel : i18n['KCHAPI6003M']
             };
-            kimchi.confirm(settings, function() {
+            wok.confirm(settings, function() {
                 var poolName = $pool.data('name');
                 kimchi.deleteStoragePool(poolName, function() {
                     kimchi.doListStoragePools();
                 }, function(err) {
-                    kimchi.message.error(err.responseJSON.reason);
+                    wok.message.error(err.responseJSON.reason);
                 });
             });
         });
@@ -121,7 +121,7 @@ kimchi.storageBindClick = function() {
             kimchi.changePoolState(poolName, 'activate', function() {
                 kimchi.doListStoragePools();
             }, function(err) {
-                kimchi.message.error(err.responseJSON.reason);
+                wok.message.error(err.responseJSON.reason);
             });
         });
 
@@ -134,11 +134,11 @@ kimchi.storageBindClick = function() {
                 cancel : i18n['KCHAPI6003M']
             };
             if (!$(this).data('persistent')) {
-                kimchi.confirm(settings, function() {
+                wok.confirm(settings, function() {
                     kimchi.changePoolState(poolName, 'deactivate', function() {
                         kimchi.doListStoragePools();
                     }, function(err) {
-                        kimchi.message.error(err.responseJSON.reason);
+                        wok.message.error(err.responseJSON.reason);
                     });
                 }, function() {
                     return false;
@@ -148,7 +148,7 @@ kimchi.storageBindClick = function() {
                 kimchi.changePoolState(poolName, 'deactivate', function() {
                     kimchi.doListStoragePools();
                 }, function(err) {
-                    kimchi.message.error(err.responseJSON.reason);
+                    wok.message.error(err.responseJSON.reason);
                 });
             }
         });
@@ -156,7 +156,7 @@ kimchi.storageBindClick = function() {
         $('.pool-add-volume').on('click', function(event) {
             var poolName = $(this).data('name');
             kimchi.selectedSP = poolName;
-            kimchi.window.open('storagepool-add-volume.html');
+            wok.window.open('storagepool-add-volume.html');
         });
 
         $('.storage-action').on('click', function() {
@@ -201,9 +201,9 @@ kimchi._generateVolumeHTML = function(volume) {
         return '';
     }
     var volumeHtml = $('#volumeTmpl').html();
-    volume.capacity = kimchi.changetoProperUnit(volume.capacity,1);
-    volume.allocation = kimchi.changetoProperUnit(volume.allocation,1);
-    return kimchi.substitute(volumeHtml, volume);
+    volume.capacity = wok.changetoProperUnit(volume.capacity,1);
+    volume.allocation = wok.changetoProperUnit(volume.allocation,1);
+    return wok.substitute(volumeHtml, volume);
 };
 
 kimchi.doListVolumes = function(poolObj) {
@@ -222,11 +222,11 @@ kimchi.doListVolumes = function(poolObj) {
                 }
 
                 kimchi.trackTask(tasks[i].id, function(result) {
-                    kimchi.topic('kimchi/volumeTransferFinished').publish(result);
+                    wok.topic('kimchi/volumeTransferFinished').publish(result);
                 }, function(result) {
-                    kimchi.topic('kimchi/volumeTransferError').publish(result);
+                    wok.topic('kimchi/volumeTransferError').publish(result);
                 }, function(result) {
-                    kimchi.topic('kimchi/volumeTransferProgress').publish(result);
+                    wok.topic('kimchi/volumeTransferProgress').publish(result);
                 });
             }
         }, null, true);
@@ -274,14 +274,14 @@ kimchi.doListVolumes = function(poolObj) {
         }
 
         $.each(ongoingVolumesMap, function(volumeName, task) {
-            kimchi.topic('kimchi/volumeTransferProgress').publish(task);
+            wok.topic('kimchi/volumeTransferProgress').publish(task);
         });
 
         poolObj.removeClass('in');
         kimchi.changeArrow(handleArrow);
         slide.slideDown('slow');
     }, function(err) {
-        kimchi.message.error(err.responseJSON.reason);
+        wok.message.error(err.responseJSON.reason);
     });
 }
 
@@ -300,7 +300,7 @@ kimchi.initLogicalPoolExtend = function() {
                 if (data.length > 0) {
                     for(var i=0;i<data.length;i++){
                         if (data[i].type === 'part' || data[i].type === 'disk') {
-                            $('.host-partition', '#logicalPoolExtend').append(kimchi.substitute($('#logicalPoolExtendTmpl').html(), data[i]));
+                            $('.host-partition', '#logicalPoolExtend').append(wok.substitute($('#logicalPoolExtendTmpl').html(), data[i]));
                         }
                     }
                 } else {
@@ -325,8 +325,8 @@ kimchi.initLogicalPoolExtend = function() {
                 kimchi.updateStoragePool($("#logicalPoolExtend").dialog("option", "poolName"),{disks: devicePaths},function(data){
                     var item = $("#"+$("#logicalPoolExtend").dialog("option", "poolName"));
                     $(".usage", $(".storage-name", item)).text((Math.round(data.allocated/data.capacity*100)||0)+"%");
-                    $(".storage-text", $(".storage-capacity", item)).text(kimchi.changetoProperUnit(data.capacity,1));
-                    $(".storage-text", $(".storage-allocate", item)).text(kimchi.changetoProperUnit(data.allocated,1));
+                    $(".storage-text", $(".storage-capacity", item)).text(wok.changetoProperUnit(data.capacity,1));
+                    $(".storage-text", $(".storage-allocate", item)).text(wok.changetoProperUnit(data.allocated,1));
                 });
                 $(this).dialog("close");
             }
@@ -335,23 +335,23 @@ kimchi.initLogicalPoolExtend = function() {
 }
 
 kimchi.storage_main = function() {
-    if(kimchi.tabMode['storage'] === 'admin') {
+    if(wok.tabMode['storage'] === 'admin') {
         $('.tools').attr('style','display');
         $('#storage-pool-add').on('click', function() {
-            kimchi.window.open('storagepool-add.html');
+            wok.window.open('storagepool-add.html');
         });
         $('.list-title .title-actions').attr('style','display');
     }
     kimchi.doListStoragePools();
     kimchi.initLogicalPoolExtend();
 
-    kimchi.topic('kimchi/storageVolumeAdded').subscribe(function() {
+    wok.topic('kimchi/storageVolumeAdded').subscribe(function() {
         pool = kimchi.selectedSP;
         var poolNode = $('.storage-li[data-name="' + pool + '"]');
         kimchi.doListVolumes(poolNode);
     });
 
-    kimchi.topic('kimchi/volumeTransferProgress').subscribe(function(result) {
+    wok.topic('kimchi/volumeTransferProgress').subscribe(function(result) {
         var extractProgressData = function(data) {
             var sizeArray = /(\d+)\/(\d+)/g.exec(data) || [0, 0, 0];
             var downloaded = sizeArray[1];
@@ -362,7 +362,7 @@ kimchi.storage_main = function() {
                     percent = downloaded / total * 100;
                 }
             }
-            var formatted = kimchi.formatMeasurement(downloaded);
+            var formatted = wok.formatMeasurement(downloaded);
             var size = (1.0 * formatted['v']).toFixed(1) + formatted['s'];
             return {
                 size: size,
@@ -386,7 +386,7 @@ kimchi.storage_main = function() {
         $('.progress-status', volumeBox).text(i18n['KCHPOOL6014M']);
     });
 
-    kimchi.topic('kimchi/volumeTransferFinished').subscribe(function(result) {
+    wok.topic('kimchi/volumeTransferFinished').subscribe(function(result) {
         var uriElements = result.target_uri.split('/');
         var poolName = uriElements[2];
         var volumeName = uriElements.pop();
@@ -396,11 +396,11 @@ kimchi.storage_main = function() {
             var html = kimchi._generateVolumeHTML(volume);
             $(volumeBox).replaceWith(html);
         }, function(err) {
-            kimchi.message.error(err.responseJSON.reason);
+            wok.message.error(err.responseJSON.reason);
         });
     });
 
-    kimchi.topic('kimchi/volumeTransferError').subscribe(function(result) {
+    wok.topic('kimchi/volumeTransferError').subscribe(function(result) {
         // Error message from Async Task status
         if (result['message']) {
             var errText = result['message'];
@@ -409,7 +409,7 @@ kimchi.storage_main = function() {
         else {
             var errText = result['responseJSON']['reason'];
         }
-        result && kimchi.message.error(errText);
+        result && wok.message.error(errText);
 
         var uriElements = result.target_uri.split('/');
         var poolName = uriElements[2];

@@ -25,7 +25,7 @@ from parted import Device as PDevice
 from parted import Disk as PDisk
 
 from wok.exception import OperationFailed
-from wok.utils import kimchi_log
+from wok.utils import wok_log
 
 
 def _get_dev_node_path(maj_min):
@@ -82,7 +82,7 @@ def _is_dev_leaf(devNodePath):
     except OperationFailed as e:
         # lsblk is known to fail on multipath devices
         # Assume these devices contain children
-        kimchi_log.error(
+        wok_log.error(
             "Error getting device info for %s: %s", devNodePath, e)
         return False
 
@@ -97,7 +97,7 @@ def _is_dev_extended_partition(devType, devNodePath):
     try:
         extended_part = PDisk(device).getExtendedPartition()
     except NotImplementedError as e:
-        kimchi_log.warning(
+        wok_log.warning(
             "Error getting extended partition info for dev %s type %s: %s",
             devNodePath, devType, e.message)
         # Treate disk with unsupported partiton table as if it does not
@@ -180,7 +180,7 @@ def get_partition_details(name):
     try:
         dev = _get_lsblk_devs(keys, [dev_path])[0]
     except OperationFailed as e:
-        kimchi_log.error(
+        wok_log.error(
             "Error getting partition info for %s: %s", name, e)
         return {}
 

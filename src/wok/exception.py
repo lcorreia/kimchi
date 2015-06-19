@@ -25,7 +25,7 @@ from wok.i18n import messages as _messages
 from wok.template import get_lang, validate_language
 
 
-class KimchiException(Exception):
+class WokException(Exception):
     def __init__(self, code='', args={}):
         self.code = code
 
@@ -38,7 +38,7 @@ class KimchiException(Exception):
                 # In case the value formats itself to an ascii string.
                 args[key] = unicode(str(value), 'utf-8')
             except UnicodeEncodeError:
-                # In case the value is a KimchiException or it formats
+                # In case the value is a WokException or it formats
                 # itself to a unicode string.
                 args[key] = unicode(value)
 
@@ -66,37 +66,37 @@ class KimchiException(Exception):
         return translation.gettext(text)
 
 
-class NotFoundError(KimchiException):
+class NotFoundError(WokException):
     pass
 
 
-class OperationFailed(KimchiException):
+class OperationFailed(WokException):
     pass
 
 
-class MissingParameter(KimchiException):
+class MissingParameter(WokException):
     pass
 
 
-class InvalidParameter(KimchiException):
+class InvalidParameter(WokException):
     pass
 
 
-class InvalidOperation(KimchiException):
+class InvalidOperation(WokException):
     pass
 
 
-class IsoFormatError(KimchiException):
+class IsoFormatError(WokException):
     pass
 
 
-class ImageFormatError(KimchiException):
+class ImageFormatError(WokException):
     pass
 
 
-class TimeoutExpired(KimchiException):
+class TimeoutExpired(WokException):
     pass
 
 
-class UnauthorizedError(KimchiException):
+class UnauthorizedError(WokException):
     pass

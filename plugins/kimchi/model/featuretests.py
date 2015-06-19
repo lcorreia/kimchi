@@ -26,7 +26,7 @@ import subprocess
 from lxml.builder import E
 
 from wok.rollbackcontext import RollbackContext
-from wok.utils import kimchi_log, run_command, servermethod
+from wok.utils import wok_log, run_command, servermethod
 
 FEATURETEST_VM_NAME = "FEATURETEST_VM"
 FEATURETEST_POOL_NAME = "FEATURETEST_POOL"
@@ -132,7 +132,7 @@ class FeatureTests(object):
             dom.undefine()
             return True
         except libvirt.libvirtError, e:
-            kimchi_log.error(e.message)
+            wok_log.error(e.message)
             return False
         finally:
             FeatureTests.enable_libvirt_error_logging()
@@ -147,7 +147,7 @@ class FeatureTests(object):
             FeatureTests.disable_libvirt_error_logging()
             conn.findStoragePoolSources('netfs', _get_xml(), 0)
         except libvirt.libvirtError as e:
-            kimchi_log.error(e.message)
+            wok_log.error(e.message)
             if e.get_error_code() == 38:
                 # if libvirt cannot find showmount,
                 # it returns 38--general system call failure
@@ -189,7 +189,7 @@ class FeatureTests(object):
     def kernel_support_vfio():
         out, err, rc = run_command(['modprobe', 'vfio-pci'])
         if rc != 0:
-            kimchi_log.warning("Unable to load Kernal module vfio-pci.")
+            wok_log.warning("Unable to load Kernal module vfio-pci.")
             return False
         return True
 

@@ -53,7 +53,7 @@ var kimchi = {
      */
     getCapabilities : function(suc, err, done) {
         done = typeof done !== 'undefined' ? done: function(){};
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : "config/capabilities",
             type : "GET",
             contentType : "application/json",
@@ -68,7 +68,7 @@ var kimchi = {
      * Get the i18 strings.
      */
     getI18n: function(suc, err, url, sync) {
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : url ? url : 'i18n.json',
             type : 'GET',
             resend: true,
@@ -83,7 +83,7 @@ var kimchi = {
      * Get the host static information.
      */
     getHost: function(suc, err) {
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : 'host',
             type : 'GET',
             resend: true,
@@ -98,11 +98,11 @@ var kimchi = {
      * Get the dynamic host stats (usually used for monitoring).
      */
     getHostStats : function(suc, err) {
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : 'host/stats',
             type : 'GET',
             contentType : 'application/json',
-            headers: {'Kimchi-Robot': 'kimchi-robot'},
+            headers: {'Wok-Robot': 'wok-robot'},
             dataType : 'json',
             success : suc,
             error: err
@@ -113,12 +113,12 @@ var kimchi = {
      * Get the historic host stats.
      */
     getHostStatsHistory : function(suc, err) {
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : 'host/stats/history',
             type : 'GET',
             resend: true,
             contentType : 'application/json',
-            headers: {'Kimchi-Robot': 'kimchi-robot'},
+            headers: {'Wok-Robot': 'wok-robot'},
             dataType : 'json',
             success : suc,
             error: err
@@ -137,7 +137,7 @@ var kimchi = {
      * suc: callback if succeed err: callback if failed
      */
     createVM : function(settings, suc, err) {
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : "vms",
             type : "POST",
             contentType : "application/json",
@@ -153,7 +153,7 @@ var kimchi = {
      * if failed
      */
     createTemplate : function(settings, suc, err) {
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : "templates",
             type : "POST",
             contentType : "application/json",
@@ -165,7 +165,7 @@ var kimchi = {
     },
 
     deleteTemplate : function(tem, suc, err) {
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : 'templates/' + encodeURIComponent(tem),
             type : 'DELETE',
             contentType : 'application/json',
@@ -176,7 +176,7 @@ var kimchi = {
     },
 
     cloneTemplate : function(tem, suc, err) {
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : 'templates/' + encodeURIComponent(tem) + "/clone",
             type : 'POST',
             contentType : 'application/json',
@@ -187,7 +187,7 @@ var kimchi = {
     },
 
     listTemplates : function(suc, err) {
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : 'templates',
             type : 'GET',
             contentType : 'application/json',
@@ -201,7 +201,7 @@ var kimchi = {
      * Retrieve the information of a template by the given name.
      */
     retrieveTemplate : function(templateName, suc, err) {
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : "templates/" + encodeURIComponent(templateName),
             type : 'GET',
             contentType : 'application/json',
@@ -231,7 +231,7 @@ var kimchi = {
      * The unit is MBytes suc: callback if succeed err: callback if failed
      */
     createStoragePool : function(settings, suc, err) {
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : 'storagepools',
             type : 'POST',
             contentType : 'application/json',
@@ -248,12 +248,12 @@ var kimchi = {
             dataType : 'json',
             data : JSON.stringify(content)
         }).done(suc).fail(err ? err : function(data) {
-            kimchi.message.error(data.responseJSON.reason);
+            wok.message.error(data.responseJSON.reason);
         });
     },
 
     startVM : function(vm, suc, err) {
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : 'vms/' + encodeURIComponent(vm) + '/start',
             type : 'POST',
             contentType : 'application/json',
@@ -264,7 +264,7 @@ var kimchi = {
     },
 
     poweroffVM : function(vm, suc, err) {
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : 'vms/' + encodeURIComponent(vm) + '/poweroff',
             type : 'POST',
             contentType : 'application/json',
@@ -275,7 +275,7 @@ var kimchi = {
     },
 
     shutdownVM : function(vm, suc, err) {
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : 'vms/' + encodeURIComponent(vm) + '/shutdown',
             type : 'POST',
             contentType : 'application/json',
@@ -286,7 +286,7 @@ var kimchi = {
     },
 
     resetVM : function(vm, suc, err) {
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : 'vms/' + encodeURIComponent(vm) + '/reset',
             type : 'POST',
             contentType : 'application/json',
@@ -297,7 +297,7 @@ var kimchi = {
     },
 
     suspendVM : function(vm, suc, err) {
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : 'vms/' + encodeURIComponent(vm) + '/suspend',
             type : 'POST',
             contentType : 'application/json',
@@ -308,7 +308,7 @@ var kimchi = {
     },
 
     resumeVM : function(vm, suc, err) {
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : 'vms/' + encodeURIComponent(vm) + '/resume',
             type : 'POST',
             contentType : 'application/json',
@@ -352,7 +352,7 @@ var kimchi = {
     },
 
     deleteVM : function(vm, suc, err) {
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : 'vms/' + encodeURIComponent(vm),
             type : 'DELETE',
             contentType : 'application/json',
@@ -363,13 +363,13 @@ var kimchi = {
     },
 
     vncToVM : function(vm) {
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : 'config',
             type : 'GET',
             dataType : 'json'
         }).done(function(data, textStatus, xhr) {
             proxy_port = data['display_proxy_port'];
-            kimchi.requestJSON({
+            wok.requestJSON({
                 url : "vms/" + encodeURIComponent(vm) + "/connect",
                 type : "POST",
                 dataType : "json"
@@ -384,24 +384,24 @@ var kimchi = {
                  * contain = which is not safe in a URL query component.
                  * So remove it when needed as base64 can work well without it.
                  * */
-                url += "&path=?token=" + kimchi.urlSafeB64Encode(vm).replace(/=*$/g, "");
-                url += "&kimchi=" + location.port;
+                url += "&path=?token=" + wok.urlSafeB64Encode(vm).replace(/=*$/g, "");
+                url += "&wok=" + location.port;
                 url += '&encrypt=1';
                 window.open(url);
             });
         }).error(function() {
-            kimchi.message.error.code('KCHAPI6002E');
+            wok.message.error.code('KCHAPI6002E');
         });
     },
 
     spiceToVM : function(vm) {
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : 'config',
             type : 'GET',
             dataType : 'json'
         }).done(function(data, textStatus, xhr) {
             proxy_port = data['display_proxy_port'];
-            kimchi.requestJSON({
+            wok.requestJSON({
                 url : "vms/" + encodeURIComponent(vm) + "/connect",
                 type : "POST",
                 dataType : "json"
@@ -416,22 +416,22 @@ var kimchi = {
                  * contain = which is not safe in a URL query component.
                  * So remove it when needed as base64 can work well without it.
                  * */
-                url += "&token=" + kimchi.urlSafeB64Encode(vm).replace(/=*$/g, "");
-                url += "&kimchi=" + location.port;
+                url += "&token=" + wok.urlSafeB64Encode(vm).replace(/=*$/g, "");
+                url += "&wok=" + location.port;
                 url += '&encrypt=1';
                 window.open(url);
             });
         }).error(function() {
-            kimchi.message.error.code('KCHAPI6002E');
+            wok.message.error.code('KCHAPI6002E');
         });
     },
 
     listVMs : function(suc, err) {
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : 'vms',
             type : 'GET',
             contentType : 'application/json',
-            headers: {'Kimchi-Robot': 'kimchi-robot'},
+            headers: {'Wok-Robot': 'wok-robot'},
             dataType : 'json',
             resend: true,
             success : suc,
@@ -440,7 +440,7 @@ var kimchi = {
     },
 
     listTemplates : function(suc, err) {
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : 'templates',
             type : 'GET',
             contentType : 'application/json',
@@ -452,7 +452,7 @@ var kimchi = {
     },
 
     listStoragePools : function(suc, err) {
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : 'storagepools',
             type : 'GET',
             contentType : 'application/json',
@@ -475,7 +475,7 @@ var kimchi = {
     },
 
     listIsos : function(suc, err) {
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : 'storagepools/kimchi_isos/storagevolumes',
             type : 'GET',
             contentType : 'application/json',
@@ -486,7 +486,7 @@ var kimchi = {
     },
 
     listDistros : function(suc, err) {
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : 'config/distros',
             type : 'GET',
             contentType : 'application/json',
@@ -548,7 +548,7 @@ var kimchi = {
     },
 
     getTask : function(taskId, suc, err) {
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : 'tasks/' + encodeURIComponent(taskId),
             type : 'GET',
             contentType : 'application/json',
@@ -559,7 +559,7 @@ var kimchi = {
     },
 
     getTasksByFilter : function(filter, suc, err, sync) {
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : 'tasks?' + filter,
             type : 'GET',
             contentType : 'application/json',
@@ -626,7 +626,7 @@ var kimchi = {
      },
 
     listNetworks : function(suc, err) {
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : 'networks',
             type : 'GET',
             contentType : 'application/json',
@@ -634,27 +634,27 @@ var kimchi = {
             resend : true,
             success : suc,
             error : err ? err : function(data) {
-                kimchi.message.error(data.responseJSON.reason);
+                wok.message.error(data.responseJSON.reason);
             }
         });
     },
 
     toggleNetwork : function(name, on, suc, err) {
         var action = on ? "activate" : "deactivate";
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : 'networks/' + encodeURIComponent(name) + '/' + action,
             type : 'POST',
             contentType : 'application/json',
             dataType : 'json',
             success : suc,
             error : err ? err : function(data) {
-                kimchi.message.error(data.responseJSON.reason);
+                wok.message.error(data.responseJSON.reason);
             }
         });
     },
 
     createNetwork : function(network, suc, err) {
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : 'networks',
             type : 'POST',
             contentType : 'application/json',
@@ -662,13 +662,13 @@ var kimchi = {
             data : JSON.stringify(network),
             success : suc,
             error : err ? err : function(data) {
-                kimchi.message.error(data.responseJSON.reason);
+                wok.message.error(data.responseJSON.reason);
             }
         });
     },
 
     getInterfaces : function(suc, err) {
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : 'interfaces',
             type : 'GET',
             contentType : 'application/json',
@@ -676,26 +676,26 @@ var kimchi = {
             resend : true,
             success : suc,
             error : err ? err : function(data) {
-                kimchi.message.error(data.responseJSON.reason);
+                wok.message.error(data.responseJSON.reason);
             }
         });
     },
 
     deleteNetwork : function(name, suc, err) {
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : 'networks/' + encodeURIComponent(name),
             type : 'DELETE',
             contentType : 'application/json',
             dataType : 'json',
             success : suc,
             error : err ? err : function(data) {
-                kimchi.message.error(data.responseJSON.reason);
+                wok.message.error(data.responseJSON.reason);
             }
         });
     },
 
     listReports : function(suc, err) {
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : 'debugreports',
             type : 'GET',
             contentType : 'application/json',
@@ -738,7 +738,7 @@ var kimchi = {
             kimchi.trackTask(taskID, suc, err, progress);
         };
 
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : 'debugreports',
             type : "POST",
             contentType : "application/json",
@@ -763,7 +763,7 @@ var kimchi = {
 
     deleteReport: function(settings, suc, err) {
         var reportName = encodeURIComponent(settings['name']);
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : 'debugreports/' + reportName,
             type : 'DELETE',
             contentType : 'application/json',
@@ -780,7 +780,7 @@ var kimchi = {
     shutdown: function(settings, suc, err) {
         var reboot = settings && settings['reboot'] === true;
         var url = 'host/' + (reboot ? 'reboot' : 'shutdown');
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : url,
             type : 'POST',
             contentType : 'application/json',
@@ -791,7 +791,7 @@ var kimchi = {
     },
 
     listHostPartitions : function(suc, err) {
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : 'host/partitions',
             type : 'GET',
             contentType : 'application/json',
@@ -803,21 +803,21 @@ var kimchi = {
 
     getStorageServers: function(type, suc, err) {
         var url = 'storageservers?_target_type=' + type;
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : url,
             type : 'GET',
             contentType : 'application/json',
             dataType : 'json',
             success : suc,
             error : err ? err : function(data) {
-                kimchi.message.error(data.responseJSON.reason);
+                wok.message.error(data.responseJSON.reason);
             }
         });
     },
 
     getStorageTargets: function(server,type, suc, err) {
         var url = 'storageservers/' + server + '/storagetargets?_target_type=' + type;
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : url,
             type : 'GET',
             contentType : 'application/json',
@@ -830,7 +830,7 @@ var kimchi = {
 
     getStoragePool: function(poolName, suc, err) {
         var url = kimchi.url + 'storagepools/' + encodeURIComponent(poolName);
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : url,
             type : 'GET',
             contentType : 'application/json',
@@ -843,7 +843,7 @@ var kimchi = {
 
     getStoragePoolVolume: function(poolName, volumeName, suc, err) {
         var url = 'storagepools/' + encodeURIComponent(poolName) + '/storagevolumes/' + encodeURIComponent(volumeName);
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : url,
             type : 'GET',
             contentType : 'application/json',
@@ -857,7 +857,7 @@ var kimchi = {
     addVMStorage : function(settings, suc, err) {
         var vm = encodeURIComponent(settings['vm']);
         delete settings['vm'];
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : 'vms/' + vm + '/storages',
             type : 'POST',
             contentType : 'application/json',
@@ -871,7 +871,7 @@ var kimchi = {
     retrieveVMStorage : function(settings, suc, err) {
         var vm = encodeURIComponent(settings['vm']);
         var dev = encodeURIComponent(settings['dev']);
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : "vms/" + vm + '/storages/' + dev,
             type : 'GET',
             contentType : 'application/json',
@@ -884,7 +884,7 @@ var kimchi = {
     replaceVMStorage : function(settings, suc, err) {
         var vm = encodeURIComponent(settings['vm']);
         var dev = encodeURIComponent(settings['dev']);
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : 'vms/' + vm + '/storages/' + dev,
             type : 'PUT',
             contentType : 'application/json',
@@ -900,7 +900,7 @@ var kimchi = {
     deleteVMStorage : function(settings, suc, err) {
         var vm = settings['vm'];
         var dev = settings['dev'];
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : 'vms/' + encodeURIComponent(vm) +
                       '/storages/' + encodeURIComponent(dev),
             type : 'DELETE',
@@ -918,7 +918,7 @@ var kimchi = {
         if(type) {
             url += '?type=' + type;
         }
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : url,
             type : 'GET',
             contentType : 'application/json',
@@ -929,7 +929,7 @@ var kimchi = {
     },
 
     listSoftwareUpdates : function(suc, err) {
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : 'host/packagesupdate',
             type : 'GET',
             contentType : 'application/json',
@@ -969,7 +969,7 @@ var kimchi = {
             }
         };
 
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : 'host/swupdate',
             type : "POST",
             contentType : "application/json",
@@ -980,7 +980,7 @@ var kimchi = {
     },
 
     createRepository : function(settings, suc, err) {
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : "host/repositories",
             type : "POST",
             contentType : "application/json",
@@ -993,7 +993,7 @@ var kimchi = {
 
     retrieveRepository : function(repository, suc, err) {
         var reposID = encodeURIComponent(repository);
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : "host/repositories/" + reposID,
             type : 'GET',
             contentType : 'application/json',
@@ -1031,7 +1031,7 @@ var kimchi = {
 
     deleteRepository : function(repository, suc, err) {
         var reposID = encodeURIComponent(repository);
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : 'host/repositories/' + reposID,
             type : 'DELETE',
             contentType : 'application/json',
@@ -1042,7 +1042,7 @@ var kimchi = {
     },
 
     listRepositories : function(suc, err) {
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : 'host/repositories',
             type : 'GET',
             contentType : 'application/json',
@@ -1055,34 +1055,34 @@ var kimchi = {
 
     getHostFCDevices: function(suc, err) {
         var url = 'host/devices?_cap=fc_host';
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : url,
             type : 'GET',
             contentType : 'application/json',
             dataType : 'json',
             success : suc,
             error : err ? err : function(data) {
-                kimchi.message.error(data.responseJSON.reason);
+                wok.message.error(data.responseJSON.reason);
             }
         });
     },
 
     getGuestInterfaces: function(name, suc, err) {
         var url = 'vms/'+encodeURIComponent(name)+'/ifaces';
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : url,
             type : 'GET',
             contentType : 'application/json',
             dataType : 'json',
             success : suc,
             error : err || function(data) {
-                kimchi.message.error(data.responseJSON.reason);
+                wok.message.error(data.responseJSON.reason);
             }
         });
     },
 
     createGuestInterface : function(name, interface, suc, err) {
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : 'vms/'+encodeURIComponent(name)+'/ifaces',
             type : 'POST',
             contentType : 'application/json',
@@ -1090,20 +1090,20 @@ var kimchi = {
             data : JSON.stringify(interface),
             success : suc,
             error : err || function(data) {
-                kimchi.message.error(data.responseJSON.reason);
+                wok.message.error(data.responseJSON.reason);
             }
         });
     },
 
     deleteGuestInterface : function(vm, mac, suc, err) {
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : 'vms/'+encodeURIComponent(vm)+'/ifaces/'+encodeURIComponent(mac),
             type : 'DELETE',
             contentType : 'application/json',
             dataType : 'json',
             success : suc,
             error : err ? err : function(data) {
-                kimchi.message.error(data.responseJSON.reason);
+                wok.message.error(data.responseJSON.reason);
             }
         });
     },
@@ -1117,13 +1117,13 @@ var kimchi = {
             dataType : 'json',
             success: suc,
             error: err ? err : function(data) {
-                kimchi.message.error(data.responseJSON.reason);
+                wok.message.error(data.responseJSON.reason);
             }
         });
     },
 
     getUserById : function(data, suc, err) {
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : 'users?_user_id=' + data.user_id,
             type : 'GET',
             contentType : 'application/json',
@@ -1132,13 +1132,13 @@ var kimchi = {
             async : false,
             success : suc && suc(data),
             error : err ? err : function(data) {
-                kimchi.message.error(data.responseJSON.reason);
+                wok.message.error(data.responseJSON.reason);
             }
         });
     },
 
     getUsers : function(suc, err) {
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : 'users',
             type : 'GET',
             contentType : 'application/json',
@@ -1146,13 +1146,13 @@ var kimchi = {
             resend : true,
             success : suc,
             error : err ? err : function(data) {
-                kimchi.message.error(data.responseJSON.reason);
+                wok.message.error(data.responseJSON.reason);
             }
         });
     },
 
     getGroups : function(suc, err) {
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : 'groups',
             type : 'GET',
             contentType : 'application/json',
@@ -1160,13 +1160,13 @@ var kimchi = {
             resend : true,
             success : suc,
             error : err ? err : function(data) {
-                kimchi.message.error(data.responseJSON.reason);
+                wok.message.error(data.responseJSON.reason);
             }
         });
     },
 
     getHostPCIDevices : function(suc, err) {
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : 'host/devices?_passthrough=true&_cap=pci',
             type : 'GET',
             contentType : 'application/json',
@@ -1174,13 +1174,13 @@ var kimchi = {
             resend : true,
             success : suc,
             error : err ? err : function(data) {
-                kimchi.message.error(data.responseJSON.reason);
+                wok.message.error(data.responseJSON.reason);
             }
         });
     },
 
     getAvailableHostPCIDevices : function(suc, err) {
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : 'host/devices?_passthrough=true&_cap=pci&_available_only=true',
             type : 'GET',
             contentType : 'application/json',
@@ -1188,13 +1188,13 @@ var kimchi = {
             resend : true,
             success : suc,
             error : err ? err : function(data) {
-                kimchi.message.error(data.responseJSON.reason);
+                wok.message.error(data.responseJSON.reason);
             }
         });
     },
 
     getPCIDeviceCompanions : function(pcidev, suc, err) {
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : 'host/devices?_passthrough_affected_by=' + pcidev,
             type : 'GET',
             contentType : 'application/json',
@@ -1202,7 +1202,7 @@ var kimchi = {
             resend : true,
             success : suc,
             error : err ? err : function(data) {
-                kimchi.message.error(data.responseJSON.reason);
+                wok.message.error(data.responseJSON.reason);
             }
         });
     },
@@ -1210,7 +1210,7 @@ var kimchi = {
     getISCSITargets : function(server, port, suc, err) {
         server = encodeURIComponent(server);
         port = port ? '&_server_port='+encodeURIComponent(port) : '';
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : 'storageservers/'+server+'/storagetargets?_target_type=iscsi'+port,
             type : 'GET',
             contentType : 'application/json',
@@ -1218,13 +1218,13 @@ var kimchi = {
             resend : true,
             success : suc,
             error : err ? err : function(data) {
-                kimchi.message.error(data.responseJSON.reason);
+                wok.message.error(data.responseJSON.reason);
             }
         });
     },
 
     getPeers : function(suc, err) {
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : 'peers',
             type : 'GET',
             contentType : 'application/json',
@@ -1232,13 +1232,13 @@ var kimchi = {
             resend : true,
             success : suc,
             error : err ? err : function(data) {
-                kimchi.message.error(data.responseJSON.reason);
+                wok.message.error(data.responseJSON.reason);
             }
         });
     },
 
     getVMPCIDevices : function(id, suc, err) {
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : 'vms/'+encodeURIComponent(id)+'/hostdevs',
             type : 'GET',
             contentType : 'application/json',
@@ -1246,13 +1246,13 @@ var kimchi = {
             resend : true,
             success : suc,
             error : err ? err : function(data) {
-                kimchi.message.error(data.responseJSON.reason);
+                wok.message.error(data.responseJSON.reason);
             }
         });
     },
 
     addVMPCIDevice : function(vm, device, suc, err) {
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : 'vms/'+ encodeURIComponent(vm) +'/hostdevs',
             type : 'POST',
             contentType : 'application/json',
@@ -1260,20 +1260,20 @@ var kimchi = {
             data : JSON.stringify(device),
             success : suc,
             error : err ? err : function(data) {
-                kimchi.message.error(data.responseJSON.reason);
+                wok.message.error(data.responseJSON.reason);
             }
         });
     },
 
     removeVMPCIDevice : function(vm, device, suc, err) {
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : 'vms/'+ encodeURIComponent(vm) +'/hostdevs/' + encodeURIComponent(device),
             type : 'DELETE',
             contentType : 'application/json',
             dataType : 'json',
             success : suc,
             error : err ? err : function(data) {
-                kimchi.message.error(data.responseJSON.reason);
+                wok.message.error(data.responseJSON.reason);
             }
         });
     },
@@ -1282,7 +1282,7 @@ var kimchi = {
      * Create a new volume with capacity
      */
     createVolumeWithCapacity: function(poolName, settings, suc, err) {
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : 'storagepools/' + encodeURIComponent(poolName) + '/storagevolumes',
             type : 'POST',
             contentType : "application/json",
@@ -1299,7 +1299,7 @@ var kimchi = {
     uploadVolumeToSP: function(poolName, volumeName, settings, suc, err) {
         var url = 'storagepools/' + encodeURIComponent(poolName) + '/storagevolumes/' + encodeURIComponent(volumeName);
         var fd = settings['formData'];
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : url,
             type : 'PUT',
             data : fd,
@@ -1317,7 +1317,7 @@ var kimchi = {
     downloadVolumeToSP: function(settings, suc, err) {
         var sp = encodeURIComponent(settings['sp']);
         delete settings['sp'];
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : 'storagepools/' + sp + '/storagevolumes',
             type : 'POST',
             data : JSON.stringify(settings),
@@ -1329,20 +1329,20 @@ var kimchi = {
     },
 
     cloneGuest: function(vm, suc, err) {
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : 'vms/'+encodeURIComponent(vm)+"/clone",
             type : 'POST',
             contentType : 'application/json',
             dataType : 'json',
             success : suc,
             error : err ? err : function(data) {
-                kimchi.message.error(data.responseJSON.reason);
+                wok.message.error(data.responseJSON.reason);
             }
         });
     },
 
     listSnapshots : function(vm, suc, err) {
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : 'vms/'+encodeURIComponent(vm)+'/snapshots',
             type : 'GET',
             contentType : 'application/json',
@@ -1350,13 +1350,13 @@ var kimchi = {
             resend : true,
             success : suc,
             error : err ? err : function(data) {
-                kimchi.message.error(data.responseJSON.reason);
+                wok.message.error(data.responseJSON.reason);
             }
         });
     },
 
     getCurrentSnapshot : function(vm, suc, err, sync) {
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : 'vms/'+encodeURIComponent(vm)+'/snapshots/current',
             type : 'GET',
             contentType : 'application/json',
@@ -1365,52 +1365,52 @@ var kimchi = {
             resend : true,
             success : suc,
             error : err ? err : function(data) {
-                kimchi.message.error(data.responseJSON.reason);
+                wok.message.error(data.responseJSON.reason);
             }
         });
     },
 
     revertSnapshot : function(vm, snapshot, suc, err) {
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : 'vms/'+encodeURIComponent(vm)+'/snapshots/'+encodeURIComponent(snapshot)+'/revert',
             type : 'POST',
             contentType : 'application/json',
             dataType : 'json',
             success : suc,
             error : err ? err : function(data) {
-                kimchi.message.error(data.responseJSON.reason);
+                wok.message.error(data.responseJSON.reason);
             }
         });
     },
 
     createSnapshot : function(vm, suc, err) {
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : 'vms/'+encodeURIComponent(vm)+'/snapshots',
             type : 'POST',
             contentType : 'application/json',
             dataType : 'json',
             success : suc,
             error : err ? err : function(data) {
-                kimchi.message.error(data.responseJSON.reason);
+                wok.message.error(data.responseJSON.reason);
             }
         });
     },
 
     deleteSnapshot : function(vm, snapshot, suc, err) {
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : 'vms/'+encodeURIComponent(vm)+'/snapshots/'+encodeURIComponent(snapshot),
             type : 'DELETE',
             contentType : 'application/json',
             dataType : 'json',
             success : suc,
             error : err ? err : function(data) {
-                kimchi.message.error(data.responseJSON.reason);
+                wok.message.error(data.responseJSON.reason);
             }
         });
     },
 
     getCPUInfo : function(suc, err) {
-        kimchi.requestJSON({
+        wok.requestJSON({
             url : 'host/cpuinfo',
             type : 'GET',
             contentType : 'application/json',
@@ -1418,7 +1418,7 @@ var kimchi = {
             resend : true,
             success : suc,
             error : err ? err : function(data) {
-                kimchi.message.error(data.responseJSON.reason);
+                wok.message.error(data.responseJSON.reason);
             }
         });
     }

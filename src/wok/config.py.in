@@ -29,8 +29,8 @@ from ConfigParser import SafeConfigParser
 
 from kimchi.xmlutils.utils import xpath_get_text
 
-__version__ = "@kimchiversion@"
-__release__ = "@kimchirelease@"
+__version__ = "@wokversion@"
+__release__ = "@wokrelease@"
 __with_spice__ = "@withspice@"
 
 DEFAULT_LOG_LEVEL = "debug"
@@ -113,11 +113,11 @@ class Paths(object):
 
         if self.installed:
             self.nginx_conf_dir = '@sysconfdir@/nginx/conf.d'
-            self.state_dir = '@localstatedir@/lib/kimchi'
-            self.log_dir = '@localstatedir@/log/kimchi'
-            self.conf_dir = '@sysconfdir@/kimchi'
-            self.src_dir = '@kimchidir@'
-            self.plugins_dir = '@kimchidir@/plugins'
+            self.state_dir = '@localstatedir@/lib/wok'
+            self.log_dir = '@localstatedir@/log/wok'
+            self.conf_dir = '@sysconfdir@/wok'
+            self.src_dir = '@wokdir@'
+            self.plugins_dir = '@wokdir@/plugins'
             self.mo_dir = '@prefix@/share/locale'
             self.spice_css_file = os.path.join(self.spice_dir, 'spice.css')
         else:
@@ -125,7 +125,7 @@ class Paths(object):
             self.state_dir = self.add_prefix('data')
             self.log_dir = self.add_prefix('log')
             self.conf_dir = self.add_prefix('src')
-            self.src_dir = self.add_prefix('src/kimchi')
+            self.src_dir = self.add_prefix('src/wok')
             self.plugins_dir = self.add_prefix('plugins')
             self.mo_dir = self.add_prefix('mo')
             self.spice_css_file = os.path.join(self.spice_dir, 'css/spice.css')
@@ -158,8 +158,8 @@ class PluginPaths(Paths):
         self.plugin_dir = os.path.join('plugins', name)
 
         if self.installed:
-            self.conf_dir = '@sysconfdir@/kimchi/plugins.d'
-            self.src_dir = os.path.join('@kimchidir@', self.plugin_dir)
+            self.conf_dir = '@sysconfdir@/wok/plugins.d'
+            self.src_dir = os.path.join('@wokdir@', self.plugin_dir)
         else:
             self.conf_dir = self.add_prefix(self.plugin_dir)
             self.src_dir = self.add_prefix(self.plugin_dir)
@@ -188,30 +188,30 @@ class UIConfig(dict):
         self.update(ui_configs)
 
 
-class KimchiConfig(dict):
+class WokConfig(dict):
     # session time out is 10 minutes
     SESSIONSTIMEOUT = 10
 
-    kimchi_config = {
+    wok_config = {
         '/': {
             'tools.trailing_slash.on': False,
             'request.methods_with_bodies': ('POST', 'PUT'),
             'tools.nocache.on': True,
             'tools.proxy.on': True,
             'tools.sessions.on': True,
-            'tools.sessions.name': 'kimchi',
+            'tools.sessions.name': 'wok',
             'tools.sessions.secure': True,
             'tools.sessions.httponly': True,
             'tools.sessions.locking': 'explicit',
             'tools.sessions.storage_type': 'ram',
             'tools.sessions.timeout': SESSIONSTIMEOUT,
-            'tools.kimchiauth.on': False
+            'tools.wokauth.on': False
         },
         '/novnc': {
             'tools.staticdir.on': True,
             'tools.staticdir.dir': paths.novnc_dir,
             'tools.nocache.on': True,
-            'tools.kimchiauth.on': True
+            'tools.wokauth.on': True
         },
         '/spice_auto.html': {
             'tools.staticfile.on': True,
@@ -235,8 +235,8 @@ class KimchiConfig(dict):
                                          paths.ui_dir,
             'tools.nocache.on': True,
         },
-        '/kimchi-ui.html': {
-            'tools.kimchiauth.on': True
+        '/wok-ui.html': {
+            'tools.wokauth.on': True
         },
         '/data/screenshots': {
             'tools.staticdir.on': True,
@@ -273,8 +273,8 @@ class KimchiConfig(dict):
     }
 
     def __init__(self):
-        super(KimchiConfig, self).__init__(self)
-        self.update(self.kimchi_config)
+        super(WokConfig, self).__init__(self)
+        self.update(self.wok_config)
         self.update(UIConfig(paths))
 
 
@@ -317,7 +317,7 @@ def _get_config():
     config.add_section("display")
     config.set("display", "display_proxy_port", "64667")
 
-    config_file = os.path.join(paths.conf_dir, 'kimchi.conf')
+    config_file = os.path.join(paths.conf_dir, 'wok.conf')
     if os.path.exists(config_file):
         config.read(config_file)
     return config

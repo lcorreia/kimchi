@@ -29,8 +29,8 @@ from glob import iglob
 
 def get_lang():
     cookie = cherrypy.request.cookie
-    if "kimchiLang" in cookie.keys():
-        return [cookie["kimchiLang"].value]
+    if "wokLang" in cookie.keys():
+        return [cookie["wokLang"].value]
 
     lang = cherrypy.request.headers.get("Accept-Language", "en_US")
 

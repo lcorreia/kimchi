@@ -15,13 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-kimchi.user = (function() {
+wok.user = (function() {
     var getUserName = function() {
-        return kimchi.cookie.get('username');
+        return wok.cookie.get('username');
     };
 
     var setUserName = function(userName) {
-        kimchi.cookie.set('username', userName, 365);
+        wok.cookie.set('username', userName, 365);
     };
 
     var showUser = function(toShow) {

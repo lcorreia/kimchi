@@ -24,7 +24,7 @@ from lxml.builder import E
 
 from config import CapabilitiesModel
 from storageservers import STORAGE_SERVERS
-from wok.utils import kimchi_log, patch_find_nfs_target
+from wok.utils import wok_log, patch_find_nfs_target
 
 
 class StorageTargetsModel(object):
@@ -51,7 +51,7 @@ class StorageTargetsModel(object):
                     ret = conn.findStoragePoolSources(target_type, xml, 0)
                 except libvirt.libvirtError as e:
                     err = "Query storage pool source fails because of %s"
-                    kimchi_log.warning(err, e.get_error_message())
+                    wok_log.warning(err, e.get_error_message())
                     continue
 
                 targets = self._parse_target_source_result(target_type, ret)
@@ -78,7 +78,7 @@ class StorageTargetsModel(object):
 
         except libvirt.libvirtError as e:
             err = "Query storage pool source fails because of %s"
-            kimchi_log.warning(err, e.get_error_message())
+            wok_log.warning(err, e.get_error_message())
 
         # Filter target_list to not not show the used paths
         target_list = [elem for elem in target_list

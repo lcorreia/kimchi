@@ -26,7 +26,7 @@
  *     false if the node is not entirely visible, or
  *     undefined if the given parameter is invalid.
  */
-kimchi.isElementInViewport = function(el) {
+wok.isElementInViewport = function(el) {
     if (!el || !el.getBoundingClientRect) {
         return undefined;
     }
@@ -47,7 +47,7 @@ kimchi.isElementInViewport = function(el) {
  * @param digits after the decimal point.
  * @returns str with unit.
  */
-kimchi.changetoProperUnit = function(numOrg, digits, base) {
+wok.changetoProperUnit = function(numOrg, digits, base) {
     if (numOrg === undefined) {
         return "";
     }
@@ -65,7 +65,7 @@ kimchi.changetoProperUnit = function(numOrg, digits, base) {
 };
 
 /**
- * kimchi.formatMeasurement util.
+ * wok.formatMeasurement util.
  *
  * Refer to "Units of information" (
  *   http://en.wikipedia.org/wiki/Units_of_information
@@ -158,15 +158,15 @@ kimchi.changetoProperUnit = function(numOrg, digits, base) {
         return new Formatted(fixed ? number.toFixed(fixed) : number, unit);
     };
 
-    kimchi.formatMeasurement = format;
+    wok.formatMeasurement = format;
 })();
 
-kimchi.isUnsignedNumeric = function(number) {
+wok.isUnsignedNumeric = function(number) {
     var reg = /^d+(.d+)?$/
     return reg.test(number);
 }
 
-kimchi.isServer = function(server) {
+wok.isServer = function(server) {
     var domain = "([0-9a-z_!~*'()-]+\.)*([0-9a-z][0-9a-z-]{0,61})?[0-9a-z]\.[a-z]{2,6}";
     var ip = "(\\d{1,3}\.){3}\\d{1,3}";
     regex = new RegExp('^' + domain + '|' + ip + '$');
@@ -177,17 +177,17 @@ kimchi.isServer = function(server) {
     }
 };
 
-kimchi.escapeStr = function(str) {
+wok.escapeStr = function(str) {
     if (str)
         return str.replace(/([ #;?%&,.+*~\\':"!^$[\]()<=>`{|}\/@])/g,'\\$&');
 
     return str;
 };
 
-kimchi.urlSafeB64Decode = function(str) {
+wok.urlSafeB64Decode = function(str) {
     return $.base64.atob(str.replace(/-/g, '+').replace(/_/g, '/'), true);
 }
 
-kimchi.urlSafeB64Encode = function(str) {
+wok.urlSafeB64Encode = function(str) {
     return $.base64.btoa(str, true).replace(/\+/g, '-').replace(/\//g, '_');
 }

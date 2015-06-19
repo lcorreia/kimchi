@@ -17,7 +17,7 @@
  */
 kimchi.guest_add_main = function() {
     var showTemplates = function() {
-        kimchi.topic('templateCreated').unsubscribe(showTemplates);
+        wok.topic('templateCreated').unsubscribe(showTemplates);
         kimchi.listTemplates(function(result) {
             if (result && result.length) {
                 $('#prompt-create-template').addClass('hidden');
@@ -25,16 +25,16 @@ kimchi.guest_add_main = function() {
                 var html = '';
                 var tmpl = $('#tmpl-template').html();
                 $.each(result, function(index, value) {
-                    html += kimchi.substitute(tmpl, value);
+                    html += wok.substitute(tmpl, value);
                 });
                 $('#templateTile').html(html);
                 return;
             }
 
             $('#btn-create-template').on('click', function(event) {
-                kimchi.topic('templateCreated').subscribe(showTemplates);
+                wok.topic('templateCreated').subscribe(showTemplates);
 
-                kimchi.window.open('template-add.html');
+                wok.window.open('template-add.html');
 
                 event.preventDefault();
             });
@@ -42,7 +42,7 @@ kimchi.guest_add_main = function() {
             $('#prompt-choose-template').addClass('hidden');
             $('#prompt-create-template').removeClass('hidden');
         }, function(err) {
-            kimchi.message.error(err.responseJSON.reason);
+            wok.message.error(err.responseJSON.reason);
         });
     };
 
@@ -66,14 +66,14 @@ kimchi.guest_add_main = function() {
         var formData = $('#form-vm-add').serializeObject();
         kimchi.createVM(formData, function() {
             kimchi.listVmsAuto();
-            kimchi.window.close();
+            wok.window.close();
         }, function(jqXHR, textStatus, errorThrown) {
             $('#vm-doAdd').attr('style', 'display');
             $('#vm-doAdding').attr('style', 'display:none');
             var reason = jqXHR &&
                 jqXHR['responseJSON'] &&
                 jqXHR['responseJSON']['reason'];
-            kimchi.message.error(reason);
+            wok.message.error(reason);
         });
 
         return false;

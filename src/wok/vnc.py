@@ -28,7 +28,7 @@ from websockify import WebSocketProxy
 from wok.config import config, paths
 
 
-WS_TOKENS_DIR = '/var/lib/kimchi/vnc-tokens'
+WS_TOKENS_DIR = '/var/lib/wok/vnc-tokens'
 
 
 def new_ws_proxy():
@@ -41,8 +41,8 @@ def new_ws_proxy():
     cert = config.get('server', 'ssl_cert')
     key = config.get('server', 'ssl_key')
     if not (cert and key):
-        cert = '%s/kimchi-cert.pem' % paths.conf_dir
-        key = '%s/kimchi-key.pem' % paths.conf_dir
+        cert = '%s/wok-cert.pem' % paths.conf_dir
+        key = '%s/wok-key.pem' % paths.conf_dir
 
     params = {'web': os.path.join(paths.ui_dir, 'pages/websockify'),
               'listen_port': config.get('display', 'display_proxy_port'),

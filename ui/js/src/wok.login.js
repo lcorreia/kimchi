@@ -15,13 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-kimchi.login_main = function() {
+wok.login_main = function() {
 
-    var selectedLanguage = kimchi.lang.get();
+    var selectedLanguage = wok.lang.get();
     $('#userLang').val(selectedLanguage);
 
     $('#userLang').on('change', function() {
-        kimchi.lang.set($(this).val());
+        wok.lang.set($(this).val());
         location.reload();
     });
 
@@ -40,23 +40,23 @@ kimchi.login_main = function() {
         $("#logging").show();
 
         var userName = userNameBox.val();
-        userName && kimchi.user.setUserName(userName);
+        userName && wok.user.setUserName(userName);
         var settings = {
             username: userName,
             password: passwordBox.val()
         };
 
-        kimchi.login(settings, function(data) {
+        wok.login(settings, function(data) {
             var query = window.location.search;
             var next  = /.*next=(.*?)(&|$)/g.exec(query);
             if (next) {
                 var next_url = decodeURIComponent(next[1]);
             }
             else {
-                var lastPage = kimchi.cookie.get('lastPage');
+                var lastPage = wok.cookie.get('lastPage');
                 var next_url = lastPage ? lastPage.replace(/\"/g,'') : "/";
             }
-            kimchi.cookie.set('roles',JSON.stringify(data.roles));
+            wok.cookie.set('roles',JSON.stringify(data.roles));
             window.location.replace(window.location.pathname.replace(/\/+login.html/, '') + next_url)
         }, function() {
             $("#messUserPass").show();

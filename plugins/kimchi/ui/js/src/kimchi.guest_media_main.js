@@ -28,14 +28,14 @@ kimchi.guest_media_main = function() {
 
             $.each(storages, function(index, storage) {
                 storage['vm'] = kimchi.selectedGuest;
-                var templated = kimchi.substitute(rowHTML, storage);
+                var templated = wok.substitute(rowHTML, storage);
                 container.append(templated);
             });
 
             var replaceCDROM = function(event) {
                 event.preventDefault();
                 kimchi.selectedGuestStorage = $(this).data('dev');
-                kimchi.window.open("guest-cdrom-edit.html");
+                wok.window.open("guest-cdrom-edit.html");
             };
 
             $('input[type="text"][name="cdrom"]', container).on('click', replaceCDROM);
@@ -48,9 +48,9 @@ kimchi.guest_media_main = function() {
     var onReplaced = function(params) {
         refreshCDROMs();
     };
-    kimchi.topic('kimchi/vmCDROMReplaced').subscribe(onReplaced);
+    wok.topic('kimchi/vmCDROMReplaced').subscribe(onReplaced);
 
     kimchi.clearGuestMedia = function() {
-        kimchi.topic('kimchi/vmCDROMReplaced').unsubscribe(onReplaced);
+        wok.topic('kimchi/vmCDROMReplaced').unsubscribe(onReplaced);
     };
 };

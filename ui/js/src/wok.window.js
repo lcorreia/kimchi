@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-kimchi.window = (function() {
+wok.window = (function() {
     var _windows = [];
     var _listeners = {};
     var open = function(settings) {
@@ -39,7 +39,7 @@ kimchi.window = (function() {
         $(windowNode).css(settings['style'] || '');
 
         $(windowNode).appendTo('body').on('click', '.window .close', function() {
-            kimchi.window.close();
+            wok.window.close();
         });
 
         if (settings['url']) {

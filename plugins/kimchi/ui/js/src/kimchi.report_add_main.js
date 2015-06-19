@@ -29,7 +29,7 @@ kimchi.report_add_main = function() {
         var reportName = nameTextbox.val();
         var validator = RegExp("^[_A-Za-z0-9-]*$");
         if (!validator.test(reportName)) {
-            kimchi.message.error.code('KCHDR6011M');
+            wok.message.error.code('KCHDR6011M');
             return false;
         }
         var formData = addReportForm.serializeObject();
@@ -39,13 +39,13 @@ kimchi.report_add_main = function() {
                 return;
             }
             taskAccepted = true;
-            kimchi.window.close();
-            kimchi.topic('kimchi/debugReportAdded').publish();
+            wok.window.close();
+            wok.topic('kimchi/debugReportAdded').publish();
         };
 
         kimchi.createReport(formData, function(result) {
             onTaskAccepted();
-            kimchi.topic('kimchi/debugReportAdded').publish();
+            wok.topic('kimchi/debugReportAdded').publish();
         }, function(result) {
             // Error message from Async Task status
             if (result['message']) {
@@ -55,7 +55,7 @@ kimchi.report_add_main = function() {
             else {
                 var errText = result['responseJSON']['reason'];
             }
-            result && kimchi.message.error(errText);
+            result && wok.message.error(errText);
 
             taskAccepted &&
                 $('.grid-body-view table tr:first-child',

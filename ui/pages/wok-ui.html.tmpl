@@ -39,7 +39,7 @@
 <script src="$href('libs/jquery-ui.min.js')"></script>
 <script src="$href('libs/jquery-ui-i18n.min.js')"></script>
 <script src="$href('base64/jquery.base64.js')"></script>
-<script src="$href('js/kimchi.min.js')"></script>
+<script src="$href('js/wok.min.js')"></script>
 
 <!-- This is used for detecting if the UI needs to be built -->
 <style type="text/css">
@@ -67,7 +67,7 @@
 }
 </style>
 </head>
-<body onload="kimchi.main()">
+<body onload="wok.main()">
 <div class="container">
 <header class="topbar">
     <h1 id="logo"><img alt="Project Kimchi" src="images/theme-default/logo-white.png"></h1>
@@ -113,12 +113,12 @@
 
 <div id="buildme">
     <div><p>Oops!  It looks like I am running from a source tree and you forgot to build!
-    Please run the following command from the kimchi directory and reload this page:</p>
+    Please run the following command from the wok and kimchi directories and reload this page:</p>
     <p><code>make</code></p>
     </div>
 </div>
 
-<script id="about-tmpl" type="kimchi/template">
+<script id="about-tmpl" type="wok/template">
     <div class="window about-window">
         <header>
             <h1 class="title"><img alt="Kimchi logo" src="images/logo.ico"/> $_("About")</h1>

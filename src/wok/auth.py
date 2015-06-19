@@ -259,8 +259,8 @@ def check_auth_session():
     cherrypy.session.release_lock()
     if session is not None:
         debug("Session authenticated for user %s" % session)
-        kimchiRobot = cherrypy.request.headers.get('Kimchi-Robot')
-        if kimchiRobot == "kimchi-robot":
+        wokRobot = cherrypy.request.headers.get('Wok-Robot')
+        if wokRobot == "wok-robot":
             if (time.time() - cherrypy.session[REFRESH] >
                     cherrypy.session.timeout * 60):
                 cherrypy.session[USER_NAME] = None
@@ -327,8 +327,8 @@ def logout():
     cherrypy.lib.sessions.close()
 
 
-def kimchiauth():
-    debug("Entering kimchiauth...")
+def wokauth():
+    debug("Entering wokauth...")
     session_missing = cherrypy.session.missing
     if check_auth_session():
         return
@@ -346,7 +346,7 @@ def kimchiauth():
         raise cherrypy.HTTPError(401, "sessionTimeout")
 
     if not from_browser():
-        cherrypy.response.headers['WWW-Authenticate'] = 'Basic realm=kimchi'
+        cherrypy.response.headers['WWW-Authenticate'] = 'Basic realm=wok'
 
     e = InvalidOperation('KCHAUTH0002E')
     raise cherrypy.HTTPError(401, e.message.encode('utf-8'))

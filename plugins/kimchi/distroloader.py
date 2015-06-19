@@ -25,7 +25,7 @@ import os
 
 import config
 from wok.exception import NotFoundError, OperationFailed
-from wok.utils import kimchi_log
+from wok.utils import wok_log
 
 
 ARCHS = {'x86_64': ['x86_64', 'amd64', 'i686', 'x86', 'i386'],
@@ -43,7 +43,7 @@ class DistroLoader(object):
         msg_args = {'filename': fname}
         if not os.path.isfile(fname):
             msg = "DistroLoader: failed to find distro file: %s" % fname
-            kimchi_log.error(msg)
+            wok_log.error(msg)
             raise NotFoundError("KCHDL0001E", msg_args)
         try:
             with open(fname) as f:
@@ -51,7 +51,7 @@ class DistroLoader(object):
             return data
         except ValueError:
             msg = "DistroLoader: failed to parse distro file: %s" % fname
-            kimchi_log.error(msg)
+            wok_log.error(msg)
             raise OperationFailed("KCHDL0002E", msg_args)
 
     def get(self):

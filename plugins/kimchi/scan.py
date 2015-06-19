@@ -27,7 +27,7 @@ import time
 
 
 from isoinfo import IsoImage, probe_iso
-from wok.utils import kimchi_log
+from wok.utils import wok_log
 
 
 SCAN_IGNORE = ['/tmp/kimchi-scan-*']
@@ -58,7 +58,7 @@ class Scanner(object):
                     self.clean_cb(transient_pool)
         except OSError as e:
             msg = "Exception %s occured when cleaning stale pool, ignore"
-            kimchi_log.debug(msg % e.message)
+            wok_log.debug(msg % e.message)
 
     def scan_dir_prepare(self, name):
         # clean stale scan storage pools

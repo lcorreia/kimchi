@@ -19,11 +19,11 @@
 /**
  * pub/sub
  * Usage:
- *   Publish - kimchi.topic('eventname').publish(params);
- *   Subscribe - kimchi.topic('eventname').subscribe(listener);
- *   Unsubscribe - kimchi.topic('eventname').unsubscribe(listener);
+ *   Publish - wok.topic('eventname').publish(params);
+ *   Subscribe - wok.topic('eventname').subscribe(listener);
+ *   Unsubscribe - wok.topic('eventname').unsubscribe(listener);
  */
-kimchi.topic = (function() {
+wok.topic = (function() {
 
     var topics = {};
 

@@ -22,7 +22,7 @@ from pprint import pformat
 from pprint import pprint
 
 from libvirtconnection import LibvirtConnection
-from wok.utils import kimchi_log
+from wok.utils import wok_log
 from wok.xmlutils.utils import dictize
 
 
@@ -42,7 +42,7 @@ def _get_dev_info_tree(dev_infos):
         try:
             parent = devs[dev_info['parent']]
         except KeyError:
-            kimchi_log.error('Parent %s of device %s does not exist.',
+            wok_log.error('Parent %s of device %s does not exist.',
                              dev_info['parent'], dev_info['name'])
             continue
 
@@ -97,7 +97,7 @@ def _get_same_iommugroup_devices(dev_infos, device_info):
             try:
                 parent_info = dev_dict[parent]
             except KeyError:
-                kimchi_log.error("Parent %s of device %s does not exist",
+                wok_log.error("Parent %s of device %s does not exist",
                                  parent, dev_info['name'])
                 break
 
@@ -185,7 +185,7 @@ def get_dev_info(node_dev):
     if dev_type in ('net', 'pci', 'scsi_host', 'storage', 'usb_device'):
         return globals()['_get_%s_dev_info' % dev_type](info)
 
-    kimchi_log.error("Unknown device type: %s", dev_type)
+    wok_log.error("Unknown device type: %s", dev_type)
     return info
 
 

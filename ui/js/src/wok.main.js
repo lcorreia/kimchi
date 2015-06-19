@@ -15,21 +15,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-kimchi.tabMode = {};
+wok.tabMode = {};
 
-kimchi.capabilities = undefined;
-kimchi.getCapabilities(function(result) {
-    kimchi.capabilities = result;
+wok.capabilities = undefined;
+wok.getCapabilities(function(result) {
+    wok.capabilities = result;
 
-    if(kimchi.capabilities.federation=="on")
+    if(wok.capabilities.federation=="on")
         $('#peers').removeClass('hide-content');
 }, function() {
-    kimchi.capabilities = {};
+    wok.capabilities = {};
 });
 
-kimchi.main = function() {
-    kimchi.isLoggingOut = false;
-    kimchi.popable();
+wok.main = function() {
+    wok.isLoggingOut = false;
+    wok.popable();
 
     var genTabs = function(tabs) {
         var tabsHtml = [];
@@ -38,7 +38,7 @@ kimchi.main = function() {
             var path = tab['path'];
             var mode = tab['mode'];
             if (mode != 'none') {
-                var helpPath = kimchi.checkHelpFile(path);
+                var helpPath = wok.checkHelpFile(path);
                 var disableHelp = (helpPath.length == 0 ? "disableHelp" : helpPath);
                 tabsHtml.push(
                     '<li>',
@@ -60,11 +60,11 @@ kimchi.main = function() {
             var titleKey = $tab.find('title').text();
             var title = i18n[titleKey] ? i18n[titleKey] : titleKey;
             var path = $tab.find('path').text();
-            var roles = kimchi.cookie.get('roles');
+            var roles = wok.cookie.get('roles');
             if (roles) {
                 var role = JSON.parse(roles)[titleKey.toLowerCase()];
                 var mode = $tab.find('[role="' + role + '"]').attr('mode');
-                kimchi.tabMode[titleKey.toLowerCase()] = mode;
+                wok.tabMode[titleKey.toLowerCase()] = mode;
                 tabs.push({
                     title: title,
                     path: path,
@@ -96,15 +96,15 @@ kimchi.main = function() {
     var DEFAULT_HASH;
     var buildTabs = function(callback) {
         var tabs = retrieveTabs(tabConfigUrl);
-        kimchi.listPlugins(function(plugins) {
+        wok.listPlugins(function(plugins) {
             $(plugins).each(function(i, p) {
-                var url = kimchi.substitute(pluginConfigUrl, {
+                var url = wok.substitute(pluginConfigUrl, {
                     plugin: p
                 });
-                var i18nUrl = kimchi.substitute(pluginI18nUrl, {
+                var i18nUrl = wok.substitute(pluginI18nUrl, {
                     plugin: p
                 });
-                kimchi.getI18n(function(i18nObj){ $.extend(i18n, i18nObj)},
+                wok.getI18n(function(i18nObj){ $.extend(i18n, i18nObj)},
                                function(i18nObj){ //i18n is not define by plugin
                                }, i18nUrl, true);
                 tabs.push.apply(tabs, retrieveTabs(url));
@@ -121,12 +121,12 @@ kimchi.main = function() {
 
             callback && callback();
         }, function(data) {
-           kimchi.message.error(data.responseJSON.reason);
+           wok.message.error(data.responseJSON.reason);
         }, true);
     };
 
     var onLanguageChanged = function(lang) {
-        kimchi.lang.set(lang);
+        wok.lang.set(lang);
         location.reload();
     };
 
@@ -140,7 +140,7 @@ kimchi.main = function() {
      *      Move the page tab indicator to the right position;
      *      Load the page content via Ajax.
      */
-    var onKimchiRedirect = function(url) {
+    var onWokRedirect = function(url) {
         /*
          * Find the corresponding tab node and animate the arrow indicator to
          * point to the tab. If nothing found, inform user the URL is invalid
@@ -170,7 +170,7 @@ kimchi.main = function() {
         }
         else {
             $('#btn-help').css('cursor', "pointer");
-            $('#btn-help').on("click", kimchi.openHelp);
+            $('#btn-help').on("click", wok.openHelp);
         }
         // Load page content.
         loadPage(url);
@@ -209,13 +209,13 @@ kimchi.main = function() {
             location.hash = DEFAULT_HASH;
         }
         else {
-            kimchi.topic('redirect').publish(hashString + '.html');
+            wok.topic('redirect').publish(hashString + '.html');
         }
     };
 
     /**
      * Register listeners including:
-     * 1) Kimchi redirect event
+     * 1) wok redirect event
      * 2) hashchange event
      * 3) Tab list click event
      * 4) Log-out button click event
@@ -225,8 +225,8 @@ kimchi.main = function() {
      */
     var searchingPeers = false;
     var initListeners = function() {
-        kimchi.topic('languageChanged').subscribe(onLanguageChanged);
-        kimchi.topic('redirect').subscribe(onKimchiRedirect);
+        wok.topic('languageChanged').subscribe(onLanguageChanged);
+        wok.topic('redirect').subscribe(onWokRedirect);
 
         /*
          * If hash value is changed, then we know the user is intended to load
@@ -246,7 +246,7 @@ kimchi.main = function() {
              * We use the HTML file name for hash, like: guests for guests.html
              * and templates for templates.html.
              *     Retrieve hash value from the given URL and update location's
-             * hash part. It has 2 effects: one is to publish Kimchi "redirect"
+             * hash part. It has 2 effects: one is to publish Wok "redirect"
              * event to trigger listener, the other is to put an entry into the
              * browser's address history to make pages be bookmark-able.
              */
@@ -256,22 +256,22 @@ kimchi.main = function() {
 
         // Perform logging out via Ajax request.
         $('#btn-logout').on('click', function() {
-            kimchi.logout(function() {
-                kimchi.isLoggingOut = true;
+            wok.logout(function() {
+                wok.isLoggingOut = true;
                 document.location.href = "login.html";
             }, function(err) {
-                kimchi.message.error(err.responseJSON.reason);
+                wok.message.error(err.responseJSON.reason);
             });
         });
 
         // Set handler for about button
         $('#btn-about').on('click', function(event) {
-            kimchi.window.open({"content": $('#about-tmpl').html()});
+            wok.window.open({"content": $('#about-tmpl').html()});
             event.preventDefault();
             });
 
         // Set handler for help button
-        $('#btn-help').on('click', kimchi.openHelp);
+        $('#btn-help').on('click', wok.openHelp);
 
         // Set handler to peers drop down
         $('#peers').on('click', function() {
@@ -302,47 +302,47 @@ kimchi.main = function() {
     var initUI = function() {
         var errorMsg = "";
         $(document).bind('ajaxError', function(event, jqXHR, ajaxSettings, errorThrown) {
-            if (!ajaxSettings['kimchi']) {
+            if (!ajaxSettings['wok']) {
                 return;
             }
 
             if (jqXHR['status'] === 401) {
                 var isSessionTimeout = jqXHR['responseText'].indexOf("sessionTimeout")!=-1;
-                kimchi.user.showUser(false);
-                kimchi.previousAjax = ajaxSettings;
+                wok.user.showUser(false);
+                wok.previousAjax = ajaxSettings;
                 $(".empty-when-logged-off").empty();
                 $(".remove-when-logged-off").remove();
                 document.location.href= isSessionTimeout ? 'login.html?error=sessionTimeout' : 'login.html';
                 return;
             }
-            else if((jqXHR['status'] == 0) && ("error"==jqXHR.statusText) && !kimchi.isLoggingOut && errorMsg == "") {
+            else if((jqXHR['status'] == 0) && ("error"==jqXHR.statusText) && !wok.isLoggingOut && errorMsg == "") {
                errorMsg = i18n['KCHAPI6007E'].replace("%1", jqXHR.state());
-               kimchi.message.error(errorMsg);
+               wok.message.error(errorMsg);
             }
             if(ajaxSettings['originalError']) {
                 ajaxSettings['originalError'](jqXHR, jqXHR.statusText, errorThrown);
             }
         });
 
-        kimchi.user.showUser(true);
+        wok.user.showUser(true);
         initListeners();
         updatePage();
     };
 
     // Load i18n translation strings first and then render the page.
-    kimchi.getI18n(
+    wok.getI18n(
         function(i18nStrings){ //success
             i18n = i18nStrings;
             buildTabs(initUI);
             },
         function(data){ //error
-            kimchi.message.error(data.responseJSON.reason);
+            wok.message.error(data.responseJSON.reason);
             });
 };
 
 
-kimchi.checkHelpFile = function(path) {
-    var lang = kimchi.lang.get();
+wok.checkHelpFile = function(path) {
+    var lang = wok.lang.get();
     var url = ""
     // Find help page path according to tab name
     if (/^tabs/.test(path))
@@ -360,9 +360,9 @@ kimchi.checkHelpFile = function(path) {
 };
 
 
-kimchi.openHelp = function(e) {
+wok.openHelp = function(e) {
     var tab = $('#nav-menu a.current');
     var url = $(tab).parent().find("input[name='helpPath']").val();
-    window.open(url, "Kimchi Help");
+    window.open(url, "Wok Help");
     e.preventDefault();
 };

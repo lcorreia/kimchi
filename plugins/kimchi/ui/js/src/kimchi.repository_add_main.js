@@ -81,13 +81,13 @@ kimchi.repository_add_main = function() {
         }
 
         kimchi.createRepository(formData, function() {
-            kimchi.topic('kimchi/repositoryAdded').publish();
-            kimchi.window.close();
+            wok.topic('kimchi/repositoryAdded').publish();
+            wok.window.close();
         }, function(jqXHR, textStatus, errorThrown) {
             var reason = jqXHR &&
                 jqXHR['responseJSON'] &&
                 jqXHR['responseJSON']['reason'];
-            kimchi.message.error(reason);
+            wok.message.error(reason);
         });
         return false;
     };

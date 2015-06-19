@@ -22,7 +22,7 @@ import platform
 from xml.etree import ElementTree as ET
 
 from wok.exception import InvalidParameter, InvalidOperation
-from wok.utils import kimchi_log, run_command
+from wok.utils import wok_log, run_command
 
 ARCH = 'power' if platform.machine().startswith('ppc') else 'x86'
 
@@ -59,11 +59,11 @@ class CPUInfoModel(object):
             connect = self.conn.get()
             libvirt_topology = get_topo_capabilities(connect)
         except Exception as e:
-            kimchi_log.info("Unable to get CPU topology capabilities: %s"
+            wok_log.info("Unable to get CPU topology capabilities: %s"
                             % e.message)
             return
         if libvirt_topology is None:
-            kimchi_log.info("cpu_info topology not supported.")
+            wok_log.info("cpu_info topology not supported.")
             return
 
         if ARCH == 'power':

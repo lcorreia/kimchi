@@ -29,7 +29,7 @@ from storagevolumes import StorageVolumeModel
 from utils import get_vm_config_flag
 from ..osinfo import lookup
 from diskutils import get_disk_used_by, set_disk_used_by
-from wok.utils import kimchi_log
+from wok.utils import wok_log
 from ..xmlutils.disk import get_device_node, get_disk_xml
 from ..xmlutils.disk import get_vm_disk_info, get_vm_disks
 
@@ -191,7 +191,7 @@ class VMStorageModel(object):
             if path is not None:
                 used_by = get_disk_used_by(self.objstore, self.conn, path)
             else:
-                kimchi_log.error("Unable to decrement volume used_by on"
+                wok_log.error("Unable to decrement volume used_by on"
                                  " delete because no path could be found.")
             dom.detachDeviceFlags(etree.tostring(disk),
                                   get_vm_config_flag(dom, 'all'))
@@ -202,7 +202,7 @@ class VMStorageModel(object):
             used_by.remove(vm_name)
             set_disk_used_by(self.objstore, path, used_by)
         else:
-            kimchi_log.error("Unable to update %s:%s used_by on delete."
+            wok_log.error("Unable to update %s:%s used_by on delete."
                              % (vm_name, dev_name))
 
     def update(self, vm_name, dev_name, params):
@@ -246,6 +246,6 @@ class VMStorageModel(object):
                 set_disk_used_by(self.objstore, new_disk_path,
                                  new_disk_used_by)
         except Exception as e:
-            kimchi_log.error("Unable to update dev used_by on update due to"
+            wok_log.error("Unable to update dev used_by on update due to"
                              " %s:" % e.message)
         return dev

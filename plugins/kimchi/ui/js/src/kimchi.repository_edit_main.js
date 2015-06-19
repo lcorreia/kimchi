@@ -21,10 +21,10 @@ kimchi.repository_edit_main = function() {
 
     var saveButton = $('#repository-edit-button-save');
 
-    if(kimchi.capabilities['repo_mngt_tool']=="yum") {
+    if(wok.capabilities['repo_mngt_tool']=="yum") {
         editForm.find('input.deb').prop('disabled', true);
     }
-    else if(kimchi.capabilities['repo_mngt_tool']=="deb") {
+    else if(wok.capabilities['repo_mngt_tool']=="deb") {
         editForm.find('input.yum').prop('disabled', true);
     }
 
@@ -57,13 +57,13 @@ kimchi.repository_edit_main = function() {
         }
 
         kimchi.updateRepository(kimchi.selectedRepository, formData, function() {
-            kimchi.topic('kimchi/repositoryUpdated').publish();
-            kimchi.window.close();
+            wok.topic('kimchi/repositoryUpdated').publish();
+            wok.window.close();
         }, function(jqXHR, textStatus, errorThrown) {
             var reason = jqXHR &&
                 jqXHR['responseJSON'] &&
                 jqXHR['responseJSON']['reason'];
-            kimchi.message.error(reason);
+            wok.message.error(reason);
         });
 
         return false;

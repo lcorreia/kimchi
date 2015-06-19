@@ -41,7 +41,7 @@ from wok.exception import InvalidParameter, TimeoutExpired
 
 
 MAX_REDIRECTION_ALLOWED = 5
-kimchi_log = cherrypy.log.error_log
+wok_log = cherrypy.log.error_log
 task_id = 0
 
 
@@ -107,7 +107,7 @@ def get_enabled_plugins():
         if os.path.isdir(os.path.join(plugin_dir, name)):
             plugin_config = _load_plugin_conf(name)
             try:
-                if plugin_config['kimchi']['enable']:
+                if plugin_config['wok']['enable']:
                     yield (name, plugin_config)
             except (TypeError, KeyError):
                 continue
@@ -212,28 +212,28 @@ def run_command(cmd, timeout=None, silent=False):
             timer.start()
 
         out, error = proc.communicate()
-        kimchi_log.debug("Run command: '%s'", " ".join(cmd))
+        wok_log.debug("Run command: '%s'", " ".join(cmd))
 
         if out:
-            kimchi_log.debug("out:\n%s", out)
+            wok_log.debug("out:\n%s", out)
 
         if proc.returncode != 0:
             msg = "rc: %s error: %s returned from cmd: %s" %\
                   (proc.returncode, error, ' '.join(cmd))
 
             if silent:
-                kimchi_log.debug(msg)
+                wok_log.debug(msg)
 
             else:
-                kimchi_log.error(msg)
+                wok_log.error(msg)
         elif error:
-            kimchi_log.debug("error: %s returned from cmd: %s",
+            wok_log.debug("error: %s returned from cmd: %s",
                              error, ' '.join(cmd))
 
         if timeout_flag[0]:
             msg = ("subprocess is killed by signal.SIGKILL for "
                    "timeout %s seconds" % timeout)
-            kimchi_log.error(msg)
+            wok_log.error(msg)
 
             msg_args = {'cmd': " ".join(cmd), 'seconds': str(timeout)}
             raise TimeoutExpired("KCHUTILS0002E", msg_args)
@@ -243,13 +243,13 @@ def run_command(cmd, timeout=None, silent=False):
         raise
     except OSError as e:
         msg = "Impossible to execute '%s'" % ' '.join(cmd)
-        kimchi_log.debug("%s", msg)
+        wok_log.debug("%s", msg)
 
         return None, "%s %s" % (msg, e), -1
     except Exception as e:
         msg = "Failed to run command: %s." % " ".join(cmd)
         msg = msg if proc is None else msg + "\n  error code: %s."
-        kimchi_log.error("%s %s", msg, e)
+        wok_log.error("%s %s", msg, e)
 
         if proc:
             return out, error, proc.returncode
@@ -273,7 +273,7 @@ def patch_find_nfs_target(nfs_server):
     try:
         out = run_command(cmd, 10)[0]
     except TimeoutExpired:
-        kimchi_log.warning("server %s query timeout, may not have any path "
+        wok_log.warning("server %s query timeout, may not have any path "
                            "exported", nfs_server)
         return list()
 
@@ -311,7 +311,7 @@ def probe_file_permission_as_user(file, user):
             with open(file):
                 q.put((True, None))
         except Exception as e:
-            kimchi_log.debug(traceback.format_exc())
+            wok_log.debug(traceback.format_exc())
             q.put((False, e))
 
     queue = Queue()

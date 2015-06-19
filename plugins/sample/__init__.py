@@ -48,7 +48,7 @@ class Drawings(Root):
 
     @expose
     def index(self):
-        return 'This is a sample plugin for Kimchi'
+        return 'This is a sample plugin for Wok'
 
 
 class Description(Resource):

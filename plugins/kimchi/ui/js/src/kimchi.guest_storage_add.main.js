@@ -69,7 +69,7 @@ kimchi.guest_storage_add_main = function() {
                         });
                     }
                 });
-                kimchi.select('guest-add-storage-pool-list', options);
+                wok.select('guest-add-storage-pool-list', options);
         }
     });
 
@@ -117,13 +117,13 @@ kimchi.guest_storage_add_main = function() {
         poolTextbox.change();
     }
     var selectType = $(typeTextbox).val();
-    kimchi.select('guest-storage-type-list', types);
+    wok.select('guest-storage-type-list', types);
 
     var validateCDROM = function(settings) {
         if (/^((https|http|ftp|ftps|tftp|\/).*)+$/.test(settings['path']))
             return true;
         else {
-            kimchi.message.error.code('KCHVMSTOR0001E');
+            wok.message.error.code('KCHVMSTOR0001E');
             return false;
         }
     }
@@ -132,7 +132,7 @@ kimchi.guest_storage_add_main = function() {
         if (settings['pool'] && settings['vol'])
             return true;
         else {
-            kimchi.message.error.code('KCHVMSTOR0002E');
+            wok.message.error.code('KCHVMSTOR0002E');
             return false;
         }
     }
@@ -169,14 +169,14 @@ kimchi.guest_storage_add_main = function() {
         $(submitButton).addClass('loading').text(i18n['KCHVMCD6003M']);
 
         kimchi.addVMStorage(settings, function(result) {
-            kimchi.window.close();
-            kimchi.topic('kimchi/vmCDROMAttached').publish({
+            wok.window.close();
+            wok.topic('kimchi/vmCDROMAttached').publish({
                 result: result
             });
         }, function(result) {
             var errText = result['reason'] ||
                 result['responseJSON']['reason'];
-            kimchi.message.error(errText);
+            wok.message.error(errText);
 
             $.each([submitButton, pathTextbox, poolTextbox, volTextbox], function(i, c) {
                 $(c).prop('disabled', false);

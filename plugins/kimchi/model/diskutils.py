@@ -20,7 +20,7 @@
 
 from wok.exception import OperationFailed, NotFoundError
 from vms import VMModel, VMsModel
-from wok.utils import kimchi_log
+from wok.utils import wok_log
 from ..xmlutils.disk import get_vm_disk_info, get_vm_disks
 
 """
@@ -35,7 +35,7 @@ def get_disk_used_by(objstore, conn, path):
             try:
                 used_by = session.get('storagevolume', path)['used_by']
             except (KeyError, NotFoundError):
-                kimchi_log.info('Volume %s not found in obj store.' % path)
+                wok_log.info('Volume %s not found in obj store.' % path)
                 used_by = []
                 # try to find this volume in existing vm
                 vms_list = VMsModel.get_vms(conn)
@@ -54,7 +54,7 @@ def get_disk_used_by(objstore, conn, path):
                     #   used_by to be out of sync, data corruption could
                     #   occour if a disk is added to two guests
                     #   unknowingly.
-                    kimchi_log.error('Unable to store storage volume id in'
+                    wok_log.error('Unable to store storage volume id in'
                                      ' objectstore due error: %s',
                                      e.message)
                     raise OperationFailed('KCHVOL0017E',

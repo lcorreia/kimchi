@@ -28,13 +28,13 @@ kimchi.report_rename_main = function() {
         // if the user hasn't changed the report's name,
         // nothing should be done.
         if (reportName == kimchi.selectedReport) {
-            kimchi.message.error.code('KCHDR6013M');
+            wok.message.error.code('KCHDR6013M');
             return false;
         }
 
         var validator = RegExp("^[A-Za-z0-9-]*$");
         if (!validator.test(reportName)) {
-            kimchi.message.error.code('KCHDR6011M');
+            wok.message.error.code('KCHDR6011M');
             return false;
         }
         var formData = renameReportForm.serializeObject();
@@ -43,15 +43,15 @@ kimchi.report_rename_main = function() {
         kimchi.renameReport(kimchi.selectedReport, formData, function(result) {
             submitButton.prop('disabled', false);
             nameTextbox.prop('disabled', false);
-            kimchi.window.close();
-            kimchi.topic('kimchi/debugReportRenamed').publish({
+            wok.window.close();
+            wok.topic('kimchi/debugReportRenamed').publish({
                 result: result
             });
         }, function(result) {
             var errText = result &&
                 result['responseJSON'] &&
                 result['responseJSON']['reason'];
-            kimchi.message.error(errText);
+            wok.message.error(errText);
             submitButton.prop('disabled', false);
             nameTextbox.prop('disabled', false).focus();
         });

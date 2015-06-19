@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-kimchi.popable = function() {
+wok.popable = function() {
     $(document).click(function(e) {
         $('.popable').each(function(i, n) {
             n === e.target || $.contains(n, e.target) ||
@@ -28,7 +28,7 @@ kimchi.popable = function() {
 
         // Scroll the popup menu into viewport if invisible.
         !$(popup).is(':visible') ||
-            kimchi.isElementInViewport(popup) ||
+            wok.isElementInViewport(popup) ||
             popup.scrollIntoView();
     });
 };

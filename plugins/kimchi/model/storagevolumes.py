@@ -37,7 +37,7 @@ from diskutils import get_disk_used_by, set_disk_used_by
 from storagepools import StoragePoolModel
 from tasks import TaskModel
 from wok.utils import add_task, get_next_clone_name, get_unique_file_name
-from wok.utils import kimchi_log
+from wok.utils import wok_log
 from wok.xmlutils.utils import xpath_get_text
 
 
@@ -238,7 +238,7 @@ class StorageVolumesModel(object):
                     if virt_vol:
                         virt_vol.delete(0)
                 except libvirt.libvirtError, virt_e:
-                    kimchi_log.error(virt_e.message)
+                    wok_log.error(virt_e.message)
                 finally:
                     raise OperationFailed('KCHVOL0007E', {'name': name,
                                                           'pool': pool_name,
@@ -547,7 +547,7 @@ class IsoVolumesModel(object):
                 volumes = pool.listVolumes()
             except Exception, e:
                 # Skip inactive pools
-                kimchi_log.debug("Shallow scan: skipping pool %s because of "
+                wok_log.debug("Shallow scan: skipping pool %s because of "
                                  "error: %s", (pool_name, e.message))
                 continue
 

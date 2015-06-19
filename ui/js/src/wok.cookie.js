@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-kimchi.cookie = {
+wok.cookie = {
     set: function(key, value, expireDays) {
         value = encodeURIComponent(value);
         value += '; secure'

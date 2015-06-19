@@ -80,9 +80,9 @@ class Server(object):
         # thus it is safe to unsubscribe.
         cherrypy.engine.timeout_monitor.unsubscribe()
         cherrypy.tools.nocache = cherrypy.Tool('on_end_resource', set_no_cache)
-        cherrypy.tools.kimchiauth = cherrypy.Tool('before_handler',
-                                                  auth.kimchiauth)
-        # Setting host to 127.0.0.1. This makes kimchi runs
+        cherrypy.tools.wokauth = cherrypy.Tool('before_handler',
+                                                   auth.wokauth)
+        # Setting host to 127.0.0.1. This makes wok run
         # as a localhost app, inaccessible to the outside
         # directly. You must go through the proxy.
         cherrypy.server.socket_host = '127.0.0.1'
@@ -139,7 +139,7 @@ class Server(object):
             if node.url_auth:
                 cfg = self.configObj
                 ident = "/%s" % ident
-                cfg[ident] = {'tools.kimchiauth.on': True}
+                cfg[ident] = {'tools.wokauth.on': True}
 
         self.app = cherrypy.tree.mount(KimchiRoot(model_instance, dev_env),
                                        config=self.configObj)
@@ -155,9 +155,9 @@ class Server(object):
             try:
                 plugin_class = ('plugins.%s.%s' %
                                 (plugin_name,
-                                 plugin_config['kimchi']['plugin_class']))
-                script_name = plugin_config['kimchi']['uri']
-                del plugin_config['kimchi']
+                                 plugin_config['wok']['plugin_class']))
+                script_name = plugin_config['wok']['uri']
+                del plugin_config['wok']
 
                 plugin_config.update(PluginConfig(plugin_name))
             except KeyError:

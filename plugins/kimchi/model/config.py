@@ -33,7 +33,7 @@ from featuretests import FEATURETEST_VM_NAME
 from ..repositories import Repositories
 from ..screenshot import VMScreenshot
 from ..swupdate import SoftwareUpdate
-from wok.utils import check_url_path, kimchi_log, run_command
+from wok.utils import check_url_path, wok_log, run_command
 
 
 class ConfigModel(object):
@@ -85,7 +85,7 @@ class CapabilitiesModel(object):
         FeatureTests.enable_libvirt_error_logging()
 
     def _set_capabilities(self):
-        kimchi_log.info("*** Running feature tests ***")
+        wok_log.info("*** Running feature tests ***")
         conn = self.conn.get()
         self.qemu_stream = FeatureTests.qemu_supports_iso_stream()
         self.nfs_target_probe = FeatureTests.libvirt_support_nfs_probe(conn)
@@ -98,14 +98,14 @@ class CapabilitiesModel(object):
             if FeatureTests.libvirt_supports_iso_stream(conn, p):
                 self.libvirt_stream_protocols.append(p)
 
-        kimchi_log.info("*** Feature tests completed ***")
+        wok_log.info("*** Feature tests completed ***")
     _set_capabilities.priority = 90
 
     def _qemu_support_spice(self):
         qemu_path = find_qemu_binary(find_emulator=True)
         out, err, rc = run_command(['ldd', qemu_path])
         if rc != 0:
-            kimchi_log.error('Failed to find qemu binary dependencies: %s',
+            wok_log.error('Failed to find qemu binary dependencies: %s',
                              err)
             return False
         for line in out.split('\n'):

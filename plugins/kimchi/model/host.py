@@ -38,7 +38,7 @@ from tasks import TaskModel
 from vms import DOM_STATE_MAP, VMModel, VMsModel
 from ..repositories import Repositories
 from ..swupdate import SoftwareUpdate
-from wok.utils import add_task, kimchi_log
+from wok.utils import add_task, wok_log
 from wok.xmlutils.utils import xpath_get_text
 
 
@@ -138,7 +138,7 @@ class HostModel(object):
         if pkgs == 0:
             raise OperationFailed('KCHPKGUPD0001E')
 
-        kimchi_log.debug('Host is going to be updated.')
+        wok_log.debug('Host is going to be updated.')
         taskid = add_task('/host/swupdate', swupdate.doUpdate, self.objstore,
                           None)
         return self.task.lookup(taskid)
@@ -149,7 +149,7 @@ class HostModel(object):
         if len(running_vms) > 0:
             raise OperationFailed("KCHHOST0001E")
 
-        kimchi_log.info('Host is going to shutdown.')
+        wok_log.info('Host is going to shutdown.')
         os.system('shutdown -h now')
 
     def reboot(self, args=None):
@@ -158,7 +158,7 @@ class HostModel(object):
         if len(running_vms) > 0:
             raise OperationFailed("KCHHOST0002E")
 
-        kimchi_log.info('Host is going to reboot.')
+        wok_log.info('Host is going to reboot.')
         os.system('reboot')
 
     def _get_vms_list_by_state(self, state):

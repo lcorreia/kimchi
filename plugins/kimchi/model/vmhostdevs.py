@@ -31,7 +31,7 @@ from host import DeviceModel, DevicesModel
 from utils import get_vm_config_flag
 from vms import DOM_STATE_MAP, VMModel
 from wok.rollbackcontext import RollbackContext
-from wok.utils import kimchi_log, run_command
+from wok.utils import wok_log, run_command
 import platform
 
 
@@ -108,7 +108,7 @@ class VMHostDevsModel(object):
             out, err, rc = run_command(['setsebool', '-P',
                                         'virt_use_sysfs=on'])
             if rc != 0:
-                kimchi_log.warning("Unable to turn on sebool virt_use_sysfs")
+                wok_log.warning("Unable to turn on sebool virt_use_sysfs")
 
     def _attach_pci_device(self, vmid, dev_info):
         self._validate_pci_passthrough_env()
@@ -160,7 +160,7 @@ class VMHostDevsModel(object):
                 try:
                     dom.attachDeviceFlags(xmlstr, device_flags)
                 except libvirt.libvirtError:
-                    kimchi_log.error(
+                    wok_log.error(
                         'Failed to attach host device %s to VM %s: \n%s',
                         pci_info['name'], vmid, xmlstr)
                     raise

@@ -15,13 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-kimchi.widget.Grid = function(opts) {
+wok.widget.Grid = function(opts) {
     this.opts = $.extend({}, this.opts, opts);
     this.createDOM();
     this.reload();
 };
 
-kimchi.widget.Grid.prototype = (function() {
+wok.widget.Grid.prototype = (function() {
     var htmlStr = [
         '<div id="{id}" class="grid">',
             '<div class="grid-content">',
@@ -237,7 +237,7 @@ kimchi.widget.Grid.prototype = (function() {
 
     var startResizing = function(container, event) {
         var grid = event.data.grid;
-        kimchi.widget.Grid.beingResized = grid;
+        wok.widget.Grid.beingResized = grid;
         if(!($('body').hasClass('resizing')
                 && $(grid.resizer).hasClass('hidden'))) {
             return;
@@ -263,7 +263,7 @@ kimchi.widget.Grid.prototype = (function() {
     };
 
     var endResizing = function(event) {
-        var grid = kimchi.widget.Grid.beingResized;
+        var grid = wok.widget.Grid.beingResized;
         if(!$('body').hasClass('resizing')) {
             return;
         }
@@ -282,7 +282,7 @@ kimchi.widget.Grid.prototype = (function() {
         );
         fixTableLayout.call(grid);
         grid.columnBeingResized = null;
-        kimchi.widget.Grid.beingResized = null;
+        wok.widget.Grid.beingResized = null;
     };
 
     var resizeColumnWidth = function(index, width) {
@@ -376,7 +376,7 @@ kimchi.widget.Grid.prototype = (function() {
         var container = $('#' + containerID);
         var gridID = this['opts']['id'];
         var rowSelection = this['opts']['rowSelection'] || 'single';
-        var domNode = $(kimchi.substitute(htmlStr, {
+        var domNode = $(wok.substitute(htmlStr, {
             id: gridID,
             loading: i18n['KCHGRD6001M'],
             message: i18n['KCHGRD6002M'],

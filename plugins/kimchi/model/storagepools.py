@@ -31,7 +31,7 @@ from config import CapabilitiesModel
 from host import DeviceModel
 from libvirtstoragepool import StoragePoolDef
 from ..osinfo import defaults as tmpl_defaults
-from wok.utils import add_task, kimchi_log, run_command
+from wok.utils import add_task, wok_log, run_command
 from ..utils import pool_name_from_uri
 from wok.xmlutils.utils import xpath_get_text
 
@@ -92,8 +92,8 @@ class StoragePoolsModel(object):
                 pool_path = pools[pool_name].get('path')
                 if pool_path is None:
                     msg = "Fatal: Unable to find storage pool %s. " + error_msg
-                    kimchi_log.error(msg % pool_name)
-                    kimchi_log.error("Details: %s", e.message)
+                    wok_log.error(msg % pool_name)
+                    wok_log.error("Details: %s", e.message)
                     sys.exit(1)
 
                 # Try to create the pool
@@ -105,8 +105,8 @@ class StoragePoolsModel(object):
                 except libvirt.libvirtError, e:
                     msg = "Fatal: Unable to create storage pool %s. "
                     msg += error_msg
-                    kimchi_log.error(msg % pool_name)
-                    kimchi_log.error("Details: %s", e.message)
+                    wok_log.error(msg % pool_name)
+                    wok_log.error("Details: %s", e.message)
                     sys.exit(1)
 
                 # Build and set autostart value to pool
@@ -126,8 +126,8 @@ class StoragePoolsModel(object):
                 except libvirt.libvirtError, e:
                     msg = "Fatal: Unable to craete storage pool %s. "
                     msg += error_msg
-                    kimchi_log.error(msg % pool_name)
-                    kimchi_log.error("Details: %s", e.message)
+                    wok_log.error(msg % pool_name)
+                    wok_log.error("Details: %s", e.message)
                     sys.exit(1)
 
     def get_list(self):
@@ -192,7 +192,7 @@ class StoragePoolsModel(object):
 
             pool = conn.storagePoolDefineXML(xml, 0)
         except libvirt.libvirtError as e:
-            kimchi_log.error("Problem creating Storage Pool: %s", e)
+            wok_log.error("Problem creating Storage Pool: %s", e)
             raise OperationFailed("KCHPOOL0007E",
                                   {'name': name, 'err': e.get_error_message()})
 
@@ -212,7 +212,7 @@ class StoragePoolsModel(object):
             output, error, returncode = run_command(['setsebool', '-P',
                                                     'virt_use_nfs=1'])
             if error or returncode:
-                kimchi_log.error("Unable to set virt_use_nfs=1. If you use "
+                wok_log.error("Unable to set virt_use_nfs=1. If you use "
                                  "SELinux, this may prevent NFS pools from "
                                  "being used.")
         return name
@@ -226,7 +226,7 @@ class StoragePoolsModel(object):
                 session.delete('scanning', pool_name)
         except Exception, e:
             err = "Exception %s occured when cleaning scan result"
-            kimchi_log.debug(err % e.message)
+            wok_log.debug(err % e.message)
 
     def _do_deep_scan(self, params):
         scan_params = dict(ignore_list=[])
@@ -241,7 +241,7 @@ class StoragePoolsModel(object):
                     scan_params['ignore_list'].append(res['path'])
             except Exception, e:
                 err = "Exception %s occured when get ignore path"
-                kimchi_log.debug(err % e.message)
+                wok_log.debug(err % e.message)
 
         params['path'] = self.scanner.scan_dir_prepare(params['name'])
         scan_params['pool_path'] = params['path']
@@ -283,9 +283,9 @@ class StoragePoolModel(object):
             # If something (say a busy pool) prevents the refresh,
             # throwing an Exception here would prevent all pools from
             # displaying information -- so return None for busy
-            kimchi_log.error("ERROR: Storage Pool get vol count: %s "
+            wok_log.error("ERROR: Storage Pool get vol count: %s "
                              % e.get_error_message())
-            kimchi_log.error("ERROR: Storage Pool get vol count error no: %s "
+            wok_log.error("ERROR: Storage Pool get vol count error no: %s "
                              % e.get_error_code())
             return 0
         except Exception as e:
@@ -338,7 +338,7 @@ class StoragePoolModel(object):
         # FIXME: nfs workaround - prevent any libvirt operation
         # for a nfs if the corresponding NFS server is down.
         if pool_type == 'netfs' and not self._nfs_status_online(pool):
-            kimchi_log.debug("NFS pool %s is offline, reason: NFS "
+            wok_log.debug("NFS pool %s is offline, reason: NFS "
                              "server %s is unreachable.", name,
                              source['addr'])
             # Mark state as '4' => inaccessible.
@@ -377,7 +377,7 @@ class StoragePoolModel(object):
             lsblk_cmd = ['lsblk', disk]
             output, error, returncode = run_command(lsblk_cmd)
             if returncode != 0:
-                kimchi_log.error('%s is not a valid disk/partition. Could not '
+                wok_log.error('%s is not a valid disk/partition. Could not '
                                  'add it to the pool %s.', disk, pool_name)
                 raise OperationFailed('KCHPOOL0027E', {'disk': disk,
                                                        'pool': pool_name})
@@ -387,7 +387,7 @@ class StoragePoolModel(object):
         output, error, returncode = run_command(vgextend_cmd)
         if returncode != 0:
             msg = "Could not add disks to pool %s, error: %s"
-            kimchi_log.error(msg, pool_name, error)
+            wok_log.error(msg, pool_name, error)
             raise OperationFailed('KCHPOOL0028E', {'pool': pool_name,
                                                    'err': error})
         # refreshing pool state

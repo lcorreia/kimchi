@@ -26,10 +26,10 @@ import subprocess
 import time
 
 from .. import config
-from wok.exception import InvalidParameter, KimchiException, NotFoundError
+from wok.exception import InvalidParameter, WokException, NotFoundError
 from wok.exception import OperationFailed
 from tasks import TaskModel
-from wok.utils import add_task, kimchi_log
+from wok.utils import add_task, wok_log
 from wok.utils import run_command
 
 
@@ -95,7 +95,7 @@ class DebugReportsModel(object):
                     break
             # Some error in sosreport happened
             if reportFile is None:
-                kimchi_log.error('Debug report file not found. See sosreport '
+                wok_log.error('Debug report file not found. See sosreport '
                                  'output for detail:\n%s', output)
                 fname = (patterns[0] % name).split('/')[-1]
                 raise OperationFailed('KCHDR0004E', {'name': fname})
@@ -107,19 +107,19 @@ class DebugReportsModel(object):
             # Moving report
             msg = 'Moving debug report file "%s" to "%s"' % (reportFile,
                                                              target)
-            kimchi_log.info(msg)
+            wok_log.info(msg)
             shutil.move(reportFile, target)
             # Deleting md5
             msg = 'Deleting report md5 file: "%s"' % (md5_report_file)
-            kimchi_log.info(msg)
+            wok_log.info(msg)
             with open(md5_report_file) as f:
                 md5 = f.read().strip()
-                kimchi_log.info('Md5 file content: "%s"', md5)
+                wok_log.info('Md5 file content: "%s"', md5)
             os.remove(md5_report_file)
             cb('OK', True)
             return
 
-        except KimchiException as e:
+        except WokException as e:
             log_error(e)
             raise
 
@@ -151,7 +151,7 @@ class DebugReportsModel(object):
                 if retcode == 0:
                     return helper_tool['fn']
             except Exception, e:
-                kimchi_log.info('Exception running command: %s', e)
+                wok_log.info('Exception running command: %s', e)
 
         return None
 
@@ -189,7 +189,7 @@ class DebugReportModel(object):
             raise InvalidParameter('KCHDR0008E', {'name': params['name']})
 
         shutil.move(file_source, file_target)
-        kimchi_log.info('%s renamed to %s' % (file_source, file_target))
+        wok_log.info('%s renamed to %s' % (file_source, file_target))
         return params['name']
 
     def delete(self, name):

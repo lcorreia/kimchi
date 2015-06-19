@@ -38,7 +38,7 @@ kimchi.doListTemplates = function() {
                 }else{
                     value.location = "images/theme-default/icon-remote.png";
                 }
-                listHtml += kimchi.substitute(templateHtml, value);
+                listHtml += wok.substitute(templateHtml, value);
             });
             $('#templateList').html(listHtml);
             kimchi.templateBindClick();
@@ -48,7 +48,7 @@ kimchi.doListTemplates = function() {
         }
         $('html').removeClass('processing');
     }, function(err) {
-        kimchi.message.error(err.responseJSON.reason);
+        wok.message.error(err.responseJSON.reason);
         $('html').removeClass('processing');
     });
 };
@@ -57,7 +57,7 @@ kimchi.templateBindClick = function() {
     $('.template-edit').on('click', function(event) {
         var templateName = $(this).data('template');
         kimchi.selectedTemplate = templateName;
-        kimchi.window.open("template-edit.html");
+        wok.window.open("template-edit.html");
     });
     $('.template-clone').on('click', function(event) {
         kimchi.selectedTemplate = $(this).data('template');
@@ -65,7 +65,7 @@ kimchi.templateBindClick = function() {
         kimchi.cloneTemplate(kimchi.selectedTemplate, function() {
                 kimchi.doListTemplates();
             }, function(err) {
-                kimchi.message.error(err.responseJSON.reason);
+                wok.message.error(err.responseJSON.reason);
                 kimchi.doListTemplates();
             });
     });
@@ -77,12 +77,12 @@ kimchi.templateBindClick = function() {
             confirm : i18n['KCHAPI6002M'],
             cancel : i18n['KCHAPI6003M']
         };
-        kimchi.confirm(settings, function() {
+        wok.confirm(settings, function() {
             var templateName = $template.data('template');
             kimchi.deleteTemplate(templateName, function() {
                 kimchi.doListTemplates();
             }, function(err) {
-                kimchi.message.error(err.responseJSON.reason);
+                wok.message.error(err.responseJSON.reason);
             });
         }, function() {
         });
@@ -93,10 +93,10 @@ kimchi.hideTitle = function() {
 };
 
 kimchi.template_main = function() {
-    if(kimchi.tabMode['templates'] === 'admin') {
+    if(wok.tabMode['templates'] === 'admin') {
         $('.tools').attr('style','display');
         $("#template-add").on("click", function(event) {
-            kimchi.window.open({
+            wok.window.open({
                 url: 'template-add.html',
                 close: function() {
                     if (kimchi.deepScanHandler) {

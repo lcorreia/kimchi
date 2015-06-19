@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-kimchi.lang = {
+wok.lang = {
     all: function() {
         return {
           'en_US': 'English (US)',
@@ -39,12 +39,12 @@ kimchi.lang = {
      * 3) DEFAULT (en_US).
      */
     get: function() {
-        return kimchi.cookie.get('kimchiLang') ||
+        return wok.cookie.get('wokLang') ||
             $('html').prop('lang') ||
             'en_US';
     },
 
     set: function(lang) {
-        kimchi.cookie.set('kimchiLang', lang, 365);
+        wok.cookie.set('wokLang', lang, 365);
     }
 };

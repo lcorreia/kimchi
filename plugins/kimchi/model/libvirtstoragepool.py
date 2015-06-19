@@ -27,7 +27,7 @@ import libvirt
 from wok.exception import InvalidParameter, OperationFailed, TimeoutExpired
 from ..iscsi import TargetClient
 from wok.rollbackcontext import RollbackContext
-from wok.utils import kimchi_log, parse_cmd_output, run_command
+from wok.utils import wok_log, parse_cmd_output, run_command
 
 
 class StoragePoolDef(object):
@@ -165,7 +165,7 @@ class ScsiPoolDef(StoragePoolDef):
             msg = "Libvirt version <= 1.0.5. Setting SCSI host name as '%s'; "\
                   "setting SCSI adapter type as 'scsi_host'; "\
                   "ignoring wwnn and wwpn." % tmp_name
-            kimchi_log.info(msg)
+            wok_log.info(msg)
         # Path for Fibre Channel scsi hosts
         self.poolArgs['path'] = '/dev/disk/by-path'
         if not self.poolArgs['source']['adapter']['type']:

@@ -23,7 +23,7 @@ import sys
 import guestfs
 
 from wok.exception import ImageFormatError, InvalidParameter, TimeoutExpired
-from wok.utils import run_command, kimchi_log
+from wok.utils import run_command, wok_log
 
 
 def probe_img_info(path):
@@ -32,7 +32,7 @@ def probe_img_info(path):
     try:
         out = run_command(cmd, 10)[0]
     except TimeoutExpired:
-        kimchi_log.warning("Cannot decide format of base img %s", path)
+        wok_log.warning("Cannot decide format of base img %s", path)
         return None
 
     info = json.loads(out)

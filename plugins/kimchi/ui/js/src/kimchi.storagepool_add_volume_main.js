@@ -63,7 +63,7 @@ kimchi.sp_add_volume_main = function() {
         var msg = result['message'] || (
             result['responseJSON'] && result['responseJSON']['reason']
         );
-        kimchi.message.error(msg);
+        wok.message.error(msg);
     };
 
     var fetchRemoteFile = function() {
@@ -73,8 +73,8 @@ kimchi.sp_add_volume_main = function() {
             sp: kimchi.selectedSP,
             url: volumeURL
         }, function(result) {
-            kimchi.window.close();
-            kimchi.topic('kimchi/storageVolumeAdded').publish();
+            wok.window.close();
+            wok.topic('kimchi/storageVolumeAdded').publish();
         }, onError);
     };
 
@@ -91,7 +91,7 @@ kimchi.sp_add_volume_main = function() {
                 capacity: blobFile.size,
                 upload: true
             }, function(result) {
-                kimchi.window.close();
+                wok.window.close();
                 trackVolCreation(result.id);
             }, onError);
         };
@@ -117,14 +117,14 @@ kimchi.sp_add_volume_main = function() {
             var reader = new FileReader();
             reader.onloadend = function(e) {
                 if (e.loaded == 0)
-                    kimchi.message.error.code('KCHAPI6008E');
+                    wok.message.error.code('KCHAPI6008E');
                 else
                     createUploadVol();
             };
 
             reader.readAsBinaryString(blob);
         } catch (err) {
-            kimchi.message.error.code('KCHAPI6008E');
+            wok.message.error.code('KCHAPI6008E');
             return;
         }
 
@@ -134,14 +134,14 @@ kimchi.sp_add_volume_main = function() {
                 var reader = new FileReader();
                 reader.onloadend = function(e) {
                     if (e.loaded == 0)
-                        kimchi.message.error.code('KCHAPI6009E');
+                        wok.message.error.code('KCHAPI6009E');
                     else
                         uploadRequest(blob);
                 };
 
                 reader.readAsBinaryString(blob);
             } catch (err) {
-                kimchi.message.error.code('KCHAPI6009E');
+                wok.message.error.code('KCHAPI6009E');
                 return;
             }
         }
@@ -156,7 +156,7 @@ kimchi.sp_add_volume_main = function() {
                             trackVolCreation(taskid);
                         }, 2000);
                     } else {
-                        kimchi.topic('kimchi/storageVolumeAdded').publish();
+                        wok.topic('kimchi/storageVolumeAdded').publish();
                         doUpload();
                     }
                 }

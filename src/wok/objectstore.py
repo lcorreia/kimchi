@@ -30,7 +30,7 @@ except ImportError:
 
 from wok import config
 from wok.exception import NotFoundError
-from wok.utils import kimchi_log
+from wok.utils import wok_log
 
 
 class ObjectStoreSession(object):
@@ -129,5 +129,5 @@ class ObjectStore(object):
         if type is not None and issubclass(type, sqlite3.DatabaseError):
                 # Logs the error and return False, which makes __exit__ raise
                 # exception again
-                kimchi_log.error(traceback.format_exc())
+                wok_log.error(traceback.format_exc())
                 return False

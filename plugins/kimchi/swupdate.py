@@ -23,7 +23,7 @@ import time
 from wok.basemodel import Singleton
 from config import kimchiLock
 from wok.exception import NotFoundError, OperationFailed
-from wok.utils import kimchi_log, run_command
+from wok.utils import wok_log, run_command
 from yumparser import get_yum_packages_list_update
 
 
@@ -49,18 +49,18 @@ class SoftwareUpdate(object):
         # correct package management system
         try:
             __import__('yum')
-            kimchi_log.info("Loading YumUpdate features.")
+            wok_log.info("Loading YumUpdate features.")
             self._pkg_mnger = YumUpdate()
         except ImportError:
             try:
                 __import__('apt')
-                kimchi_log.info("Loading AptUpdate features.")
+                wok_log.info("Loading AptUpdate features.")
                 self._pkg_mnger = AptUpdate()
             except ImportError:
                 zypper_help = ["zypper", "--help"]
                 (stdout, stderr, returncode) = run_command(zypper_help)
                 if returncode == 0:
-                    kimchi_log.info("Loading ZypperUpdate features.")
+                    wok_log.info("Loading ZypperUpdate features.")
                     self._pkg_mnger = ZypperUpdate()
                 else:
                     raise Exception("There is no compatible package manager "

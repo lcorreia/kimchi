@@ -32,7 +32,7 @@ from wok.exception import InvalidOperation, InvalidParameter
 from wok.exception import MissingParameter, NotFoundError, OperationFailed
 from ..osinfo import defaults as tmpl_defaults
 from wok.rollbackcontext import RollbackContext
-from wok.utils import kimchi_log, run_command
+from wok.utils import wok_log, run_command
 from ..xmlutils.network import create_vlan_tagged_bridge_xml
 from ..xmlutils.network import to_network_xml
 from wok.xmlutils.utils import xpath_get_text
@@ -59,9 +59,9 @@ class NetworksModel(object):
                 net = conn.networkLookupByName(net_name)
             except libvirt.libvirtError, e:
                 msg = "Fatal: Unable to find network %s."
-                kimchi_log.error(msg, net_name)
-                kimchi_log.error(error_msg)
-                kimchi_log.error("Details: %s", e.message)
+                wok_log.error(msg, net_name)
+                wok_log.error(error_msg)
+                wok_log.error("Details: %s", e.message)
                 sys.exit(1)
 
             if net.isActive() == 0:
@@ -69,9 +69,9 @@ class NetworksModel(object):
                     net.create()
                 except libvirt.libvirtError as e:
                     msg = "Fatal: Unable to activate network %s."
-                    kimchi_log.error(msg, net_name)
-                    kimchi_log.error(error_msg)
-                    kimchi_log.error("Details: %s", e.message)
+                    wok_log.error(msg, net_name)
+                    wok_log.error(error_msg)
+                    wok_log.error("Details: %s", e.message)
                     sys.exit(1)
 
     def create(self, params):
@@ -211,7 +211,7 @@ class NetworksModel(object):
             try:
                 bridges.append(net.bridgeName())
             except libvirt.libvirtError, e:
-                kimchi_log.error(e.message)
+                wok_log.error(e.message)
 
         if br_name in bridges:
             raise InvalidOperation("KCHNET0010E", {'iface': br_name})

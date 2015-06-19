@@ -78,7 +78,7 @@ kimchi.host_main = function() {
                     'class': 'repository-baseurl'
                 }];
         }
-        repositoriesGrid = new kimchi.widget.Grid({
+        repositoriesGrid = new wok.widget.Grid({
             container: 'repositories-grid-container',
             id: 'repositories-grid',
             title: i18n['KCHREPO6003M'],
@@ -86,7 +86,7 @@ kimchi.host_main = function() {
                 id: 'repositories-grid-add-button',
                 label: i18n['KCHREPO6012M'],
                 onClick: function(event) {
-                    kimchi.window.open({url:'repository-add.html', class: repo_type});
+                    wok.window.open({url:'repository-add.html', class: repo_type});
                 }
             }, {
                 id: 'repositories-grid-enable-button',
@@ -101,7 +101,7 @@ kimchi.host_main = function() {
                     var enable = !repository['enabled'];
                     $(this).prop('disabled', true);
                     kimchi.enableRepository(name, enable, function() {
-                        kimchi.topic('kimchi/repositoryUpdated').publish();
+                        wok.topic('kimchi/repositoryUpdated').publish();
                     });
                 }
             }, {
@@ -114,7 +114,7 @@ kimchi.host_main = function() {
                         return;
                     }
                     kimchi.selectedRepository = repository['repo_id'];
-                    kimchi.window.open({url:'repository-edit.html', class: repo_type});
+                    wok.window.open({url:'repository-edit.html', class: repo_type});
                 }
             }, {
                 id: 'repositories-grid-remove-button',
@@ -133,11 +133,11 @@ kimchi.host_main = function() {
                         cancel : i18n['KCHAPI6003M']
                     };
 
-                    kimchi.confirm(settings, function() {
+                    wok.confirm(settings, function() {
                         kimchi.deleteRepository(
                             repository['repo_id'],
                             function(result) {
-                                kimchi.topic('kimchi/repositoryDeleted').publish(result);
+                                wok.topic('kimchi/repositoryDeleted').publish(result);
                             }, function(error) {
                             }
                         );
@@ -203,7 +203,7 @@ kimchi.host_main = function() {
     };
 
     var initSoftwareUpdatesGrid = function(softwareUpdates) {
-        softwareUpdatesGrid = new kimchi.widget.Grid({
+        softwareUpdatesGrid = new wok.widget.Grid({
             container: 'software-updates-grid-container',
             id: softwareUpdatesGridID,
             title: i18n['KCHUPD6001M'],
@@ -217,19 +217,19 @@ kimchi.host_main = function() {
                     var progressArea = $('#' + progressAreaID)[0];
                     $('#software-updates-progress-container').removeClass('hidden');
                     $(progressArea).text('');
-                    !kimchi.isElementInViewport(progressArea) &&
+                    !wok.isElementInViewport(progressArea) &&
                         progressArea.scrollIntoView();
                     $(updateButton).text(i18n['KCHUPD6007M']).prop('disabled', true);
 
                     kimchi.updateSoftware(function(result) {
                         reloadProgressArea(result);
                         $(updateButton).text(i18n['KCHUPD6006M']).prop('disabled', false);
-                        kimchi.topic('kimchi/softwareUpdated').publish({
+                        wok.topic('kimchi/softwareUpdated').publish({
                             result: result
                         });
                     }, function(error) {
                         var message = error && error['responseJSON'] && error['responseJSON']['reason'];
-                        kimchi.message.error(message || i18n['KCHUPD6009M']);
+                        wok.message.error(message || i18n['KCHUPD6009M']);
                         $(updateButton).text(i18n['KCHUPD6006M']).prop('disabled', false);
                     }, reloadProgressArea);
                 }
@@ -287,14 +287,14 @@ kimchi.host_main = function() {
     var enableReportButtons = function(toEnable) {
         var buttonID = '#{grid}-{btn}-button';
         $.each(['rename', 'remove', 'download'], function(i, n) {
-            $(kimchi.substitute(buttonID, {
+            $(wok.substitute(buttonID, {
                 grid: reportGridID,
                 btn: n
             })).prop('disabled', !toEnable);
         });
     };
     var initReportGrid = function(reports) {
-        reportGrid = new kimchi.widget.Grid({
+        reportGrid = new wok.widget.Grid({
             container: 'available-reports-grid-container',
             id: reportGridID,
             title: i18n['KCHDR6002M'],
@@ -302,7 +302,7 @@ kimchi.host_main = function() {
                 id: reportGridID + '-generate-button',
                 label: i18n['KCHDR6006M'],
                 onClick: function(event) {
-                    kimchi.window.open('report-add.html');
+                    wok.window.open('report-add.html');
                 }
             }, {
                 id: reportGridID + '-rename-button',
@@ -315,7 +315,7 @@ kimchi.host_main = function() {
                     }
 
                     kimchi.selectedReport = report['name'];
-                    kimchi.window.open('report-rename.html');
+                    wok.window.open('report-rename.html');
                 }
             }, {
                 id: reportGridID + '-remove-button',
@@ -334,13 +334,13 @@ kimchi.host_main = function() {
                         cancel : i18n['KCHAPI6003M']
                     };
 
-                    kimchi.confirm(settings, function() {
+                    wok.confirm(settings, function() {
                         kimchi.deleteReport({
                             name: report['name']
                         }, function(result) {
                             listDebugReports();
                         }, function(error) {
-                           kimchi.message.error(error.responseJSON.reason);
+                           wok.message.error(error.responseJSON.reason);
                         });
                     });
                 }
@@ -401,7 +401,7 @@ kimchi.host_main = function() {
                 }
 
                 kimchi.trackTask(tasks[i].id, function(result) {
-                    kimchi.topic('kimchi/debugReportAdded').publish();
+                    wok.topic('kimchi/debugReportAdded').publish();
                 }, function(result) {
                     // Error message from Async Task status
                     if (result['message']) {
@@ -411,8 +411,8 @@ kimchi.host_main = function() {
                     else {
                         var errText = result['responseJSON']['reason'];
                     }
-                    result && kimchi.message.error(errText);
-                    kimchi.topic('kimchi/debugReportAdded').publish();
+                    result && wok.message.error(errText);
+                    wok.topic('kimchi/debugReportAdded').publish();
                 }, null);
             }
         }, null, true);
@@ -462,7 +462,7 @@ kimchi.host_main = function() {
             cancel : i18n['KCHAPI6003M']
         };
 
-        kimchi.confirm(settings, function() {
+        wok.confirm(settings, function() {
             kimchi.shutdown(params);
             $(shutdownButtonID).prop('disabled', true);
             $(restartButtonID).prop('disabled', true);
@@ -470,7 +470,7 @@ kimchi.host_main = function() {
             kimchi.listVMs(function(vms) {
                 for(var i = 0; i < vms.length; i++) {
                     if(vms[i]['state'] === 'running') {
-                        kimchi.message.error.code('KCHHOST6001E');
+                        wok.message.error.code('KCHHOST6001E');
                         $(shutdownButtonID).prop('disabled', false);
                         $(restartButtonID).prop('disabled', false);
                         return;
@@ -505,37 +505,37 @@ kimchi.host_main = function() {
         });
 
         var setupUI = function() {
-            if (kimchi.capabilities == undefined) {
+            if (wok.capabilities == undefined) {
                 setTimeout(setupUI, 2000);
                 return;
             }
 
-            if((kimchi.capabilities['repo_mngt_tool']) && (kimchi.capabilities['repo_mngt_tool']!="None")) {
-                initRepositoriesGrid(kimchi.capabilities['repo_mngt_tool']);
-                $('#repositories-section').switchClass('hidden', kimchi.capabilities['repo_mngt_tool']);
-                kimchi.topic('kimchi/repositoryAdded')
+            if((wok.capabilities['repo_mngt_tool']) && (wok.capabilities['repo_mngt_tool']!="None")) {
+                initRepositoriesGrid(wok.capabilities['repo_mngt_tool']);
+                $('#repositories-section').switchClass('hidden', wok.capabilities['repo_mngt_tool']);
+                wok.topic('kimchi/repositoryAdded')
                     .subscribe(listRepositories);
-                kimchi.topic('kimchi/repositoryUpdated')
+                wok.topic('kimchi/repositoryUpdated')
                     .subscribe(listRepositories);
-                kimchi.topic('kimchi/repositoryDeleted')
+                wok.topic('kimchi/repositoryDeleted')
                     .subscribe(listRepositories);
             }
 
-            if(kimchi.capabilities['update_tool']) {
+            if(wok.capabilities['update_tool']) {
                 $('#software-update-section').removeClass('hidden');
                 initSoftwareUpdatesGrid();
-                kimchi.topic('kimchi/softwareUpdated')
+                wok.topic('kimchi/softwareUpdated')
                     .subscribe(listSoftwareUpdates);
                 $('#software-updates-progress-container').accordion({
                     collapsible: true
                 });
             }
 
-            if(kimchi.capabilities['system_report_tool']) {
+            if(wok.capabilities['system_report_tool']) {
                 listDebugReports();
-                kimchi.topic('kimchi/debugReportAdded')
+                wok.topic('kimchi/debugReportAdded')
                     .subscribe(listDebugReports);
-                kimchi.topic('kimchi/debugReportRenamed')
+                wok.topic('kimchi/debugReportRenamed')
                     .subscribe(listDebugReports);
             }
         };
@@ -545,10 +545,10 @@ kimchi.host_main = function() {
     kimchi.getHost(function(data) {
         var htmlTmpl = $('#host-tmpl').html();
         data['logo'] = data['logo'] || '';
-        data['memory'] = kimchi.formatMeasurement(data['memory'], {
+        data['memory'] = wok.formatMeasurement(data['memory'], {
             fixed: 2
         });
-        var templated = kimchi.substitute(htmlTmpl, data);
+        var templated = wok.substitute(htmlTmpl, data);
         $('#host-content-container').html(templated);
 
         initPage();
@@ -801,22 +801,22 @@ kimchi.host_main = function() {
         }
 
         var trackedCharts = {
-            cpu: new kimchi.widget.LineChart({
+            cpu: new wok.widget.LineChart({
                 id: 'chart-cpu',
                 node: 'container-chart-cpu',
                 type: 'percent'
             }),
-            memory: new kimchi.widget.LineChart({
+            memory: new wok.widget.LineChart({
                 id: 'chart-memory',
                 node: 'container-chart-memory',
                 type: 'value'
             }),
-            diskIO: new kimchi.widget.LineChart({
+            diskIO: new wok.widget.LineChart({
                 id: 'chart-disk-io',
                 node: 'container-chart-disk-io',
                 type: 'value'
             }),
-            networkIO: new kimchi.widget.LineChart({
+            networkIO: new wok.widget.LineChart({
                 id: 'chart-network-io',
                 node: 'container-chart-network-io',
                 type: 'value'
@@ -839,18 +839,18 @@ kimchi.host_main = function() {
             }
 
         repositoriesGrid && repositoriesGrid.destroy();
-        kimchi.topic('kimchi/repositoryAdded')
+        wok.topic('kimchi/repositoryAdded')
             .unsubscribe(listRepositories);
-        kimchi.topic('kimchi/repositoryUpdated')
+        wok.topic('kimchi/repositoryUpdated')
             .unsubscribe(listRepositories);
-        kimchi.topic('kimchi/repositoryDeleted')
+        wok.topic('kimchi/repositoryDeleted')
             .unsubscribe(listRepositories);
 
         softwareUpdatesGrid && softwareUpdatesGrid.destroy();
-        kimchi.topic('kimchi/softwareUpdated').unsubscribe(listSoftwareUpdates);
+        wok.topic('kimchi/softwareUpdated').unsubscribe(listSoftwareUpdates);
 
         reportGrid && reportGrid.destroy();
-        kimchi.topic('kimchi/debugReportAdded').unsubscribe(listDebugReports);
-        kimchi.topic('kimchi/debugReportRenamed').unsubscribe(listDebugReports);
+        wok.topic('kimchi/debugReportAdded').unsubscribe(listDebugReports);
+        wok.topic('kimchi/debugReportRenamed').unsubscribe(listDebugReports);
     });
 };

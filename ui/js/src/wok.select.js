@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-kimchi.select = function(id, options) {
+wok.select = function(id, options) {
     var listControl = $('#'+ id);
     var targetId = listControl.data('target');
     var labelId = listControl.data('label');

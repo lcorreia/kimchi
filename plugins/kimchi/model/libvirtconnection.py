@@ -23,7 +23,7 @@ import time
 import cherrypy
 import libvirt
 
-from wok.utils import kimchi_log
+from wok.utils import wok_log
 
 
 class LibvirtConnection(object):
@@ -75,7 +75,7 @@ class LibvirtConnection(object):
                               libvirt.VIR_ERR_NO_CONNECT,
                               libvirt.VIR_ERR_INVALID_CONN)
                     if edom in EDOMAINS and ecode in ECODES:
-                        kimchi_log.error('Connection to libvirt broken. '
+                        wok_log.error('Connection to libvirt broken. '
                                          'Recycling. ecode: %d edom: %d' %
                                          (ecode, edom))
                         with LibvirtConnection._connectionLock:
@@ -95,9 +95,9 @@ class LibvirtConnection(object):
                         conn = libvirt.open(self.uri)
                         break
                     except libvirt.libvirtError:
-                        kimchi_log.error('Unable to connect to libvirt.')
+                        wok_log.error('Unable to connect to libvirt.')
                         if not retries:
-                            kimchi_log.error("Unable to establish connection "
+                            wok_log.error("Unable to establish connection "
                                              "with libvirt. Please check "
                                              "your libvirt URI which is often "
                                              "defined in "

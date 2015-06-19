@@ -33,7 +33,7 @@ except ImportError:
 
 
 import config
-from wok.utils import kimchi_log
+from wok.utils import wok_log
 
 
 (fd, pipe) = tempfile.mkstemp()
@@ -164,7 +164,7 @@ class VMScreenshot(object):
             try:
                 self._generate_scratch(thumbnail)
             except:
-                kimchi_log.error("screenshot_creation: Unable to create "
+                wok_log.error("screenshot_creation: Unable to create "
                                  "screenshot image %s." % thumbnail)
         else:
             self._create_black_image(thumbnail)
@@ -178,7 +178,7 @@ class VMScreenshot(object):
                 # work around pic truncate validation in thumbnail generation
                 im.thumbnail(self.THUMBNAIL_SIZE)
             except Exception as e:
-                kimchi_log.warning("Image load with warning: %s." % e)
+                wok_log.warning("Image load with warning: %s." % e)
             im.save(thumbnail, "PNG")
 
         self.info['thumbnail'] = thumbnail

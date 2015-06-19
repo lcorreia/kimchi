@@ -19,7 +19,7 @@
 kimchi.NETWORK_TYPE_BRIDGE = "bridged";
 
 kimchi.initNetwork = function() {
-    if(kimchi.tabMode['network'] === 'admin') {
+    if(wok.tabMode['network'] === 'admin') {
         $('.tools').attr('style','display');
         $('#network-content .header span:last-child').attr('style','display');
         kimchi.initNetworkCreation();
@@ -57,7 +57,7 @@ kimchi.initNetworkListView = function() {
 kimchi.addNetworkItem = function(network) {
     var itemNode = $.parseHTML(kimchi.getNetworkItemHtml(network));
     $("#networkBody").append(itemNode);
-    if(kimchi.tabMode["network"] === "admin") {
+    if(wok.tabMode["network"] === "admin") {
         $(".column-action").attr("style","display");
     } else {
         $(".column-space").addClass('column-space-no-border-right');
@@ -78,7 +78,7 @@ kimchi.getNetworkItemHtml = function(network) {
     }
 
     var disable_in_use = network.in_use ? "ui-state-disabled" : "";
-    var networkItem = kimchi.substitute($('#networkItem').html(), {
+    var networkItem = wok.substitute($('#networkItem').html(), {
         name : network.name,
         state : network.state,
         type : network.type,
@@ -94,7 +94,7 @@ kimchi.getNetworkItemHtml = function(network) {
 };
 
 kimchi.stopNetwork = function(network,menu) {
-    $(".network-state", $("#" + kimchi.escapeStr(network.name))).switchClass("up", "nw-loading");
+    $(".network-state", $("#" + wok.escapeStr(network.name))).switchClass("up", "nw-loading");
     $("[nwAct='stop']", menu).addClass("ui-state-disabled");
     kimchi.toggleNetwork(network.name, false, function() {
         $("[nwAct='start']", menu).removeClass("hide-action-item");
@@ -104,23 +104,23 @@ kimchi.stopNetwork = function(network,menu) {
             $("[nwAct='delete']", menu).removeClass("ui-state-disabled");
             $(":first-child", $("[nwAct='delete']", menu)).removeAttr("disabled");
         }
-        $(".network-state", $("#" + kimchi.escapeStr(network.name))).switchClass("nw-loading", "down");
+        $(".network-state", $("#" + wok.escapeStr(network.name))).switchClass("nw-loading", "down");
     }, function(err) {
-        $(".network-state", $("#" + kimchi.escapeStr(network.name))).switchClass("nw-loading", "up");
+        $(".network-state", $("#" + wok.escapeStr(network.name))).switchClass("nw-loading", "up");
         if (!network.in_use) {
             $("[nwAct='stop']", menu).removeClass("ui-state-disabled");
         }
-        kimchi.message.error(err.responseJSON.reason);
+        wok.message.error(err.responseJSON.reason);
     });
 }
 
 kimchi.addNetworkActions = function(network) {
-    $(".menu-container", "#" + kimchi.escapeStr(network.name)).menu();
+    $(".menu-container", "#" + wok.escapeStr(network.name)).menu();
 
-    $('#' + kimchi.escapeStr(network.name)).on('click', '.menu-container li', function(evt) {
+    $('#' + wok.escapeStr(network.name)).on('click', '.menu-container li', function(evt) {
         var menu = $(evt.currentTarget).parent();
         if ($(evt.currentTarget).attr("nwAct") === "start") {
-            $(".network-state", $("#" + kimchi.escapeStr(network.name))).switchClass("down", "nw-loading");
+            $(".network-state", $("#" + wok.escapeStr(network.name))).switchClass("down", "nw-loading");
             $("[nwAct='start']", menu).addClass("ui-state-disabled");
             $("[nwAct='delete']", menu).addClass("ui-state-disabled");
             $(":first-child", $("[nwAct='delete']", menu)).attr("disabled", true);
@@ -132,15 +132,15 @@ kimchi.addNetworkActions = function(network) {
                 if (network.in_use) {
                     $("[nwAct='stop']", menu).addClass("ui-state-disabled");
                 }
-                $(".network-state", $("#" + kimchi.escapeStr(network.name))).switchClass("nw-loading", "up");
+                $(".network-state", $("#" + wok.escapeStr(network.name))).switchClass("nw-loading", "up");
             }, function(err) {
-                $(".network-state", $("#" + kimchi.escapeStr(network.name))).switchClass("nw-loading","down");
+                $(".network-state", $("#" + wok.escapeStr(network.name))).switchClass("nw-loading","down");
                 $("[nwAct='start']", menu).removeClass("ui-state-disabled");
                 if (!network.in_use) {
                     $("[nwAct='delete']", menu).removeClass("ui-state-disabled");
                 }
                 $(":first-child", $("[nwAct='delete']", menu)).removeAttr("disabled");
-                kimchi.message.error(err.responseJSON.reason);
+                wok.message.error(err.responseJSON.reason);
             });
         } else if ($(evt.currentTarget).attr("nwAct") === "stop") {
             if (network.in_use) {
@@ -153,7 +153,7 @@ kimchi.addNetworkActions = function(network) {
                     confirm : i18n['KCHAPI6002M'],
                     cancel : i18n['KCHAPI6003M']
                 };
-                kimchi.confirm(settings, function() {
+                wok.confirm(settings, function() {
                     kimchi.stopNetwork(network, menu);
                     $('#networkGrid').grid('deleteRow', $(evt.currentTarget).parents(".row"));
                 }, null);
@@ -166,7 +166,7 @@ kimchi.addNetworkActions = function(network) {
             if (network.state === "up" || network.in_use) {
                 return false;
             }
-            kimchi.confirm({
+            wok.confirm({
                 title : i18n['KCHAPI6006M'],
                 content : i18n['KCHNET6002M'],
                 confirm : i18n['KCHAPI6002M'],
@@ -206,7 +206,7 @@ kimchi.initNetworkCreation = function() {
                 if ($("#enableVlan").prop("checked")) {
                     data.vlan_id = network.vlan_id;
                     if (!(data.vlan_id >=1 && data.vlan_id <= 4094)) {
-                        kimchi.message.error.code('KCHNET6001E');
+                        wok.message.error.code('KCHNET6001E');
                         errorCallback();
                         return;
                     }
@@ -220,7 +220,7 @@ kimchi.initNetworkCreation = function() {
                 $('#networkGrid').grid('addRow', kimchi.addNetworkItem(network));
                 $("#networkConfig").dialog("close");
             }, function(data) {
-                kimchi.message.error(data.responseJSON.reason);
+                wok.message.error(data.responseJSON.reason);
                 errorCallback();
             });
         });
@@ -375,7 +375,7 @@ kimchi.setDefaultNetworkType = function(isInterfaceAvail) {
         $("#networkBriDisabledLabel").show();
     } else {
         if (kimchi.capabilities && kimchi.capabilities.nm_running) {
-            kimchi.message.warn(i18n['KCHNET6001W']);
+            wok.message.warn(i18n['KCHNET6001W']);
         }
         $("#bridgeOptions").slideDown(100);
         $("#networkVlanID").toggle(false);
