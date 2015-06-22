@@ -86,12 +86,13 @@ def render_cheetah_file(resource, data):
     paths = cherrypy.request.app.root.paths
     filename = paths.get_template_path(resource)
     try:
-        params = {'data': data}
+        params = {}
         lang = validate_language(get_lang())
         gettext_conf = {'domain': cherrypy.request.app.root.domain,
                         'localedir': paths.mo_dir,
                         'lang': [lang]}
         params['lang'] = gettext_conf
+        params['data'] = {'ui_dir': paths.ui_dir}
         return Template(file=filename, searchList=params).respond()
     except OSError, e:
         if e.errno == errno.ENOENT:
