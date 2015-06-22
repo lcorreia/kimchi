@@ -15,7 +15,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-SUBDIRS = help tabs
+SUBDIRS = help
 
 htmldir = $(datadir)/wok/plugins/kimchi/ui/pages
 
