@@ -22,6 +22,13 @@
 #silent t = gettext.translation($lang.domain, $lang.localedir, languages=$lang.lang, fallback=True)
 #silent _ = t.gettext
 #silent _t = t.gettext
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="plugins/kimchi/css/theme-default.min.css">
+<script src="plugins/kimchi/js/kimchi.min.js"></script>
+</head>
+<body>
 <div id="host-root-container">
     <div class="toolbar">
         <div class="tools">
@@ -166,3 +173,5 @@
 <script type="text/javascript">
     kimchi.host_main();
 </script>
+</body>
+</html>
