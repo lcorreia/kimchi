@@ -99,7 +99,7 @@ wok.main = function() {
                 tabs.push.apply(tabs, retrieveTabs(url));
             });
 
-            var defaultTab = tabs[1]
+            var defaultTab = tabs[0]
 
             var defaultTabPath = defaultTab && defaultTab['path']
             // Remove file extension from 'defaultTabPath'
