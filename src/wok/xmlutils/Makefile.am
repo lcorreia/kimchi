@@ -19,7 +19,7 @@
 
 xmlutils_PYTHON = *.py
 
-xmlutilsdir = $(pythondir)/kimchi/xmlutils
+xmlutilsdir = $(pythondir)/wok/xmlutils
 
 install-data-local:
 	$(MKDIR_P) $(DESTDIR)$(xmlutilsdir)

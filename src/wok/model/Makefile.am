@@ -19,7 +19,7 @@
 
 model_PYTHON = *.py
 
-modeldir = $(pythondir)/kimchi/model
+modeldir = $(pythondir)/wok/model
 
 install-data-local:
 	$(MKDIR_P) $(DESTDIR)$(modeldir)

@@ -19,9 +19,9 @@
 
 SUBDIRS = control model xmlutils
 
-kimchi_PYTHON = $(filter-out config.py, $(wildcard *.py))
+wok_PYTHON = $(filter-out config.py, $(wildcard *.py))
 
-nodist_kimchi_PYTHON = config.py
+nodist_wok_PYTHON = config.py
 
 EXTRA_DIST = \
 	API.json \
@@ -33,14 +33,14 @@ else
 WITH_SPICE=no
 endif
 
-kimchidir = $(pythondir)/kimchi
+wokdir = $(pythondir)/wok
 
 install-data-local:
-	$(MKDIR_P) $(DESTDIR)$(kimchidir)
-	$(INSTALL_DATA) API.json $(DESTDIR)$(kimchidir)/API.json
+	$(MKDIR_P) $(DESTDIR)$(wokdir)
+	$(INSTALL_DATA) API.json $(DESTDIR)$(wokdir)/API.json
 
 uninstall-local:
-	$(RM) $(DESTDIR)$(kimchidir)/API.json
+	$(RM) $(DESTDIR)$(wokdir)/API.json
 
 do_substitution = \
 	sed -e 's,[@]prefix[@],$(prefix),g'             \
@@ -48,9 +48,9 @@ do_substitution = \
 	-e 's,[@]sysconfdir[@],$(sysconfdir),g'         \
 	-e 's,[@]localstatedir[@],$(localstatedir),g'   \
 	-e 's,[@]pkgdatadir[@],$(pkgdatadir),g'         \
-	-e 's,[@]kimchidir[@],$(kimchidir),g'           \
-	-e 's,[@]kimchiversion[@],$(PACKAGE_VERSION),g' \
-	-e 's,[@]kimchirelease[@],$(PACKAGE_RELEASE),g' \
+	-e 's,[@]wokdir[@],$(wokdir),g'           \
+	-e 's,[@]wokversion[@],$(PACKAGE_VERSION),g' \
+	-e 's,[@]wokrelease[@],$(PACKAGE_RELEASE),g' \
 	-e 's,[@]withspice[@],$(WITH_SPICE),g'
 
 

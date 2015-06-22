@@ -136,7 +136,7 @@ class Paths(object):
         else:
             base = os.path.dirname('./%s' % __file__)
 
-        if os.access('%s/../../src/kimchi/config.py' % base, os.F_OK):
+        if os.access('%s/../../src/wok/config.py' % base, os.F_OK):
             return os.path.abspath('%s/../..' % base)
         else:
             return '@pkgdatadir@'
