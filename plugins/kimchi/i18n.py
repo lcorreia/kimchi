@@ -24,23 +24,10 @@ _ = gettext.gettext
 
 messages = {
     "KCHAPI0001E": _("Unknown parameter %(value)s"),
-    "KCHAPI0002E": _("Delete is not allowed for %(resource)s"),
-    "KCHAPI0003E": _("%(resource)s does not implement update method"),
-    "KCHAPI0005E": _("Create is not allowed for %(resource)s"),
-    "KCHAPI0006E": _("Unable to parse JSON request"),
-    "KCHAPI0007E": _("This API only supports JSON"),
-    "KCHAPI0008E": _("Parameters does not match requirement in schema: %(err)s"),
-    "KCHAPI0009E": _("You don't have permission to perform this operation."),
 
-    "KCHASYNC0001E": _("Datastore is not initiated in the model object."),
-    "KCHASYNC0002E": _("Unable to start task due error: %(err)s"),
     "KCHASYNC0003E": _("Timeout of %(seconds)s seconds expired while running task '%(task)s."),
 
-    "KCHAUTH0001E": _("Authentication failed for user '%(username)s'. [Error code: %(code)s]"),
-    "KCHAUTH0002E": _("You are not authorized to access Kimchi"),
-    "KCHAUTH0003E": _("Specify %(item)s to login into Kimchi"),
     "KCHAUTH0004E": _("User %(user_id)s not found with given LDAP settings."),
-    "KCHAUTH0005E": _("Invalid LDAP configuration: %(item)s : %(value)s"),
 
     "KCHDEVS0001E": _('Unknown "_cap" specified'),
     "KCHDEVS0002E": _('"_passthrough" should be "true" or "false"'),
@@ -286,13 +273,8 @@ messages = {
     "KCHPKGUPD0003E": _("Error while getting packages marked to be updated. Details: %(err)s"),
     "KCHPKGUPD0004E": _("There is no compatible package manager for this system."),
 
-    "KCHOBJST0001E": _("Unable to find %(item)s in datastore"),
-
     "KCHUTILS0001E": _("Invalid URI %(uri)s"),
-    "KCHUTILS0002E": _("Timeout while running command '%(cmd)s' after %(seconds)s seconds"),
     "KCHUTILS0003E": _("Unable to choose a virtual machine name"),
-    "KCHUTILS0004E": _("Invalid data value '%(value)s'"),
-    "KCHUTILS0005E": _("Invalid data unit '%(unit)s'"),
 
     "KCHVMSTOR0002E": _("Invalid storage type. Types supported: 'cdrom', 'disk'"),
     "KCHVMSTOR0003E": _("The path '%(value)s' is not a valid local/remote path for the device"),
