@@ -7,8 +7,9 @@ BuildArch:	noarch
 Group:		System Environment/Base
 License:	LGPL/ASL2
 Source0:	%{name}-%{version}.tar.gz
+Requires:	wok
 Requires:	qemu-kvm
-Requires:	gettext-devel
+Requires:	gettext
 Requires:	libvirt
 Requires:	libvirt-python
 Requires:	libvirt-daemon-config-network
@@ -35,7 +36,6 @@ Requires:	python-libguestfs
 Requires:	libguestfs-tools
 Requires:	python-magic
 BuildRequires:	libxslt
-BuildRequires:	openssl
 BuildRequires:	python-lxml
 
 %if 0%{?rhel} >= 6 || 0%{?fedora} >= 19
@@ -52,20 +52,8 @@ Requires:	python-imaging
 BuildRequires:    python-unittest2
 %endif
 
-%if 0%{?with_systemd}
-Requires:	systemd
-Requires:	firewalld
-Requires(post): systemd
-Requires(preun): systemd
-Requires(postun): systemd
-%endif
-
-%if 0%{?with_systemd}
-BuildRequires: systemd-units
-%endif
-
 %description
-Web server application to manage KVM/Qemu virtual machines
+Web application to manage KVM/Qemu virtual machines
 
 
 %prep
@@ -85,71 +73,29 @@ make
 rm -rf %{buildroot}
 make DESTDIR=%{buildroot} install
 
-%if 0%{?with_systemd}
-
-%endif
-
-%if 0%{?rhel} == 6
-# Install the upstart script
-install -Dm 0755 contrib/kimchid-upstart.conf.fedora %{buildroot}/etc/init/kimchid.conf
-%endif
-%if 0%{?rhel} == 5
-# Install the SysV init scripts
-install -Dm 0755 contrib/kimchid.sysvinit %{buildroot}%{_initrddir}/kimchid
-%endif
-
-%post
-if [ $1 -eq 1 ] ; then
-    /bin/systemctl enable kimchid.service >/dev/null 2>&1 || :
-    # Initial installation
-    /bin/systemctl daemon-reload >/dev/null 2>&1 || :
-fi
-
-
-%preun
-
-if [ $1 -eq 0 ] ; then
-    # Package removal, not upgrade
-    /bin/systemctl --no-reload disable kimchid.service > /dev/null 2>&1 || :
-    /bin/systemctl stop kimchid.service > /dev/null 2>&1 || :
-fi
-
-exit 0
-
-
-%postun
-if [ "$1" -ge 1 ] ; then
-    /bin/systemctl try-restart kimchid.service >/dev/null 2>&1 || :
-fi
-exit 0
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %attr(-,root,root)
-%{_bindir}/kimchid
-%{python_sitelib}/kimchi/*.py*
-%{python_sitelib}/kimchi/control/*.py*
-%{python_sitelib}/kimchi/control/vm/*.py*
-%{python_sitelib}/kimchi/model/*.py*
-%{python_sitelib}/kimchi/xmlutils/*.py*
-%{python_sitelib}/kimchi/API.json
-%{python_sitelib}/kimchi/plugins/*.py*
-%{python_sitelib}/kimchi/
+%{python_sitelib}/wok/plugins/kimchi/*.py*
+%{python_sitelib}/wok/plugins/kimchi/control/*.py*
+%{python_sitelib}/wok/plugins/kimchi/control/vm/*.py*
+%{python_sitelib}/wok/plugins/kimchi/model/*.py*
+%{python_sitelib}/wok/plugins/kimchi/API.json
+%{python_sitelib}/wok/plugins/kimchi/
 %{_datadir}/kimchi/doc/API.md
 %{_datadir}/kimchi/doc/README.md
 %{_datadir}/kimchi/doc/README-federation.md
 %{_datadir}/kimchi/doc/kimchi-guest.png
 %{_datadir}/kimchi/doc/kimchi-templates.png
 %{_prefix}/share/locale/*/LC_MESSAGES/kimchi.mo
-%{_datadir}/kimchi/config/ui/*.xml
-%{_datadir}/kimchi/ui/
-%{_datadir}/kimchi
-%{_sysconfdir}/nginx/conf.d/kimchi.conf.in
-%{_sysconfdir}/nginx/conf.d/kimchi.conf
-%{_sysconfdir}/kimchi/kimchi.conf
-%{_sysconfdir}/kimchi/template.conf
+%{_datadir}/wok/plugins/kimchi/ui/config/*.xml
+%{_datadir}/wok/plugins/kimchi/ui/
+%{_datadir}/wok/plugins/kimchi
+%{_sysconfdir}/wok/plugins.d/kimchi.conf
+%{_sysconfdir}/wok/plugins.d/template.conf
 %{_sysconfdir}/kimchi/distros.d/debian.json
 %{_sysconfdir}/kimchi/distros.d/fedora.json
 %{_sysconfdir}/kimchi/distros.d/opensuse.json
@@ -158,25 +104,14 @@ rm -rf $RPM_BUILD_ROOT
 %{_sysconfdir}/kimchi/
 %{_sharedstatedir}/kimchi/debugreports/
 %{_sharedstatedir}/kimchi/screenshots/
-%{_sharedstatedir}/kimchi/vnc-tokens/
 %{_sharedstatedir}/kimchi/isos/
 %{_sharedstatedir}/kimchi/
-%{_localstatedir}/log/kimchi/*
-%{_localstatedir}/log/kimchi/
-%{_mandir}/man8/kimchid.8.gz
 
-%if 0%{?with_systemd}
-%{_unitdir}/kimchid.service
-%{_prefix}/lib/firewalld/services/kimchid.xml
-%endif
-%if 0%{?rhel} == 6
-/etc/init/kimchid.conf
-%endif
-%if 0%{?rhel} == 5
-%{_initrddir}/kimchid
-%endif
 
 %changelog
+* Thu Jun 18 2015 Lucio Correia <luciojhc@linux.vnet.ibm.com> 1.6
+- Run kimchi as a plugin
+
 * Thu Feb 26 2015 Frédéric Bonnard <frediz@linux.vnet.ibm.com> 1.4.0
 - Add man page for kimchid
 

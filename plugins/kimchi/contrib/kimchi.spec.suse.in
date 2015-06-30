@@ -7,6 +7,7 @@ BuildArch:	noarch
 Group:		System Environment/Base
 License:	LGPL/ASL2
 Source0:	%{name}-%{version}.tar.gz
+Requires:	wok
 Requires:	kvm
 Requires:	gettext-tools
 Requires:	libvirt
@@ -35,7 +36,6 @@ Requires:	python-libguestfs
 Requires:	guestfs-tools
 Requires:	python-magic
 BuildRequires:	libxslt-tools
-BuildRequires:	openssl
 BuildRequires:	python-lxml
 
 %if 0%{?suse_version} == 1100
@@ -47,7 +47,7 @@ Requires:       python-ordereddict
 %endif
 
 %description
-Web server application to manage KVM/Qemu virtual machines
+Web application to manage KVM/Qemu virtual machines
 
 %prep
 %setup
@@ -60,83 +60,46 @@ make
 rm -rf %{buildroot}
 make DESTDIR=%{buildroot} install
 
-%post
-%if 0%{?with_systemd}
-    /bin/systemctl enable kimchid.service >/dev/null 2>&1 || :
-    /bin/systemctl daemon-reload >/dev/null 2>&1 || :
-%else
-    chkconfig kimchid on
-%endif
-exit 0
-
-
-%preun
-%if 0%{?with_systemd}
-    /bin/systemctl --no-reload disable kimchid.service > /dev/null 2>&1 || :
-    /bin/systemctl stop kimchid.service > /dev/null 2>&1 || :
-%else
-    service kimchid stop
-%endif
-exit 0
-
-
-%postun
-%if 0%{?with_systemd}
-    /bin/systemctl try-restart kimchid.service >/dev/null 2>&1 || :
-%endif
-exit 0
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %attr(-,root,root)
-%{_bindir}/kimchid
-%{python_sitelib}/kimchi/*.py*
-%{python_sitelib}/kimchi/control/*.py*
-%{python_sitelib}/kimchi/control/vm/*.py*
-%{python_sitelib}/kimchi/model/*.py*
-%{python_sitelib}/kimchi/xmlutils/*.py*
-%{python_sitelib}/kimchi/API.json
-%{python_sitelib}/kimchi/plugins/*.py*
-%{python_sitelib}/kimchi/
+%{python_sitelib}/wok/plugins/kimchi/*.py*
+%{python_sitelib}/wok/plugins/kimchi/control/*.py*
+%{python_sitelib}/wok/plugins/kimchi/control/vm/*.py*
+%{python_sitelib}/wok/plugins/kimchi/model/*.py*
+%{python_sitelib}/wok/plugins/kimchi/API.json
+%{python_sitelib}/wok/plugins/kimchi/
 %{_datadir}/kimchi/doc/API.md
 %{_datadir}/kimchi/doc/README.md
 %{_datadir}/kimchi/doc/README-federation.md
 %{_datadir}/kimchi/doc/kimchi-guest.png
 %{_datadir}/kimchi/doc/kimchi-templates.png
 %{_prefix}/share/locale/*/LC_MESSAGES/kimchi.mo
-%{_datadir}/kimchi/config/ui/*.xml
-%{_datadir}/kimchi/ui/
-%{_datadir}/kimchi
-%{_sysconfdir}/nginx/conf.d/kimchi.conf.in
-%{_sysconfdir}/nginx/conf.d/kimchi.conf
-%{_sysconfdir}/kimchi/kimchi.conf
-%{_sysconfdir}/kimchi/template.conf
+%{_datadir}/wok/plugins/kimchi/ui/config/*.xml
+%{_datadir}/wok/plugins/kimchi/ui/
+%{_datadir}/wok/plugins/kimchi
+%{_sysconfdir}/wok/plugins.d/kimchi.conf
+%{_sysconfdir}/wok/plugins.d/template.conf
 %{_sysconfdir}/kimchi/distros.d/debian.json
 %{_sysconfdir}/kimchi/distros.d/fedora.json
 %{_sysconfdir}/kimchi/distros.d/opensuse.json
 %{_sysconfdir}/kimchi/distros.d/ubuntu.json
 %{_sysconfdir}/kimchi/distros.d/gentoo.json
-%{_sysconfdir}/kimchi
 %{_sysconfdir}/kimchi/
 %{_var}/lib/kimchi/debugreports/
 %{_var}/lib/kimchi/screenshots/
-%{_var}/lib/kimchi/vnc-tokens/
 %{_var}/lib/kimchi/isos/
 %{_var}/lib/kimchi/
-%{_localstatedir}/log/kimchi/*
-%{_localstatedir}/log/kimchi/
-%{_mandir}/man8/kimchid.8.gz
 
-%if 0%{?with_systemd}
-%{_unitdir}/kimchid.service
-%else
-%{_initrddir}/kimchid
-%endif
 
 
 %changelog
+* Thu Jun 18 2015 Lucio Correia <luciojhc@linux.vnet.ibm.com> 1.6
+- Run kimchi as a plugin
+
 * Thu Feb 26 2015 Frédéric Bonnard <frediz@linux.vnet.ibm.com> 1.4.0
 - Add man page for kimchid
 
