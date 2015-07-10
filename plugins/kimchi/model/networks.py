@@ -23,8 +23,6 @@ import sys
 import time
 from xml.sax.saxutils import escape
 
-from wok import netinfo
-from wok import network as knetwork
 from wok.config import PluginPaths
 from wok.exception import InvalidOperation, InvalidParameter
 from wok.exception import MissingParameter, NotFoundError, OperationFailed
@@ -32,6 +30,8 @@ from wok.rollbackcontext import RollbackContext
 from wok.utils import run_command, wok_log
 from wok.xmlutils.utils import xpath_get_text
 
+from .. import netinfo
+from .. import network as knetwork
 from ..osinfo import defaults as tmpl_defaults
 from ..xmlutils.network import create_vlan_tagged_bridge_xml
 from ..xmlutils.network import to_network_xml
