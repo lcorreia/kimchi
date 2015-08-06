@@ -67,4 +67,3 @@ class KimchiRoot(WokRoot):
 
     def get_custom_conf(self):
         return config.KimchiConfig()
-

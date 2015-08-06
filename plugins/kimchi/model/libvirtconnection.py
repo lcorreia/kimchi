@@ -75,8 +75,8 @@ class LibvirtConnection(object):
                               libvirt.VIR_ERR_INVALID_CONN)
                     if edom in EDOMAINS and ecode in ECODES:
                         wok_log.error('Connection to libvirt broken. '
-                                         'Recycling. ecode: %d edom: %d' %
-                                         (ecode, edom))
+                                      'Recycling. ecode: %d edom: %d' %
+                                      (ecode, edom))
                         with LibvirtConnection._connectionLock:
                             self._connections[conn_id] = None
                     raise
@@ -97,10 +97,10 @@ class LibvirtConnection(object):
                         wok_log.error('Unable to connect to libvirt.')
                         if not retries:
                             wok_log.error("Unable to establish connection "
-                                             "with libvirt. Please check "
-                                             "your libvirt URI which is often "
-                                             "defined in "
-                                             "/etc/libvirt/libvirt.conf")
+                                          "with libvirt. Please check "
+                                          "your libvirt URI which is often "
+                                          "defined in "
+                                          "/etc/libvirt/libvirt.conf")
                             cherrypy.engine.stop()
                             exit(1)
                     time.sleep(2)

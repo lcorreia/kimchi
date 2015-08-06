@@ -111,8 +111,9 @@ class RestTests(unittest.TestCase):
         # Now add a couple of VMs to the mock model
         for i in xrange(10):
             name = 'vm-%i' % i
-            req = json.dumps({'name': name, 'template': '/plugins/kimchi/templates/test',
-                             'users': test_users, 'groups': test_groups})
+            req = json.dumps({'name': name,
+                              'template': '/plugins/kimchi/templates/test',
+                              'users': test_users, 'groups': test_groups})
             resp = self.request('/plugins/kimchi/vms', req, 'POST')
             self.assertEquals(202, resp.status)
             task = json.loads(resp.read())
@@ -215,7 +216,9 @@ class RestTests(unittest.TestCase):
         req = json.dumps(params)
         resp = self.request('/plugins/kimchi/vms/vm-1', req, 'PUT')
         self.assertEquals(303, resp.status)
-        vm = json.loads(self.request('/plugins/kimchi/vms/∨м-црdαtеd', req).read())
+        vm = json.loads(
+            self.request('/plugins/kimchi/vms/∨м-црdαtеd', req).read()
+        )
         for key in params.keys():
             self.assertEquals(params[key], vm[key])
 
@@ -225,7 +228,9 @@ class RestTests(unittest.TestCase):
         req = json.dumps({'users': users})
         resp = self.request('/plugins/kimchi/vms/∨м-црdαtеd', req, 'PUT')
         self.assertEquals(200, resp.status)
-        info = json.loads(self.request('/plugins/kimchi/vms/∨м-црdαtеd', '{}').read())
+        info = json.loads(
+            self.request('/plugins/kimchi/vms/∨м-црdαtеd', '{}').read()
+        )
         self.assertEquals(users, info['users'])
 
         # change only VM groups - users are not changed (default is empty)
@@ -234,7 +239,9 @@ class RestTests(unittest.TestCase):
         req = json.dumps({'groups': groups})
         resp = self.request('/plugins/kimchi/vms/∨м-црdαtеd', req, 'PUT')
         self.assertEquals(200, resp.status)
-        info = json.loads(self.request('/plugins/kimchi/vms/∨м-црdαtеd', '{}').read())
+        info = json.loads(
+            self.request('/plugins/kimchi/vms/∨м-црdαtеd', '{}').read()
+        )
         self.assertEquals(groups, info['groups'])
 
         # change VM users (wrong value) and groups
@@ -271,7 +278,8 @@ class RestTests(unittest.TestCase):
         self.assertEquals('images/icon-debian.png', vm['icon'])
 
         # Verify the volume was created
-        vol_uri = '/plugins/kimchi/storagepools/default-pool/storagevolumes/%s-0.img'
+        vol_uri = '/plugins/kimchi/storagepools/default-pool/storagevolumes/' \
+                  + '%s-0.img'
         resp = self.request(vol_uri % vm['uuid'])
         vol = json.loads(resp.read())
         self.assertEquals(1 << 30, vol['capacity'])
@@ -310,12 +318,14 @@ class RestTests(unittest.TestCase):
         self.assertEquals(400, resp.status)
 
         # Force poweroff the VM
-        resp = self.request('/plugins/kimchi/vms/test-vm/poweroff', '{}', 'POST')
+        resp = self.request('/plugins/kimchi/vms/test-vm/poweroff', '{}',
+                            'POST')
         vm = json.loads(self.request('/plugins/kimchi/vms/test-vm').read())
         self.assertEquals('shutoff', vm['state'])
 
         # Test create VM with same name fails with 400
-        req = json.dumps({'name': 'test-vm', 'template': '/plugins/kimchi/templates/test'})
+        req = json.dumps({'name': 'test-vm',
+                         'template': '/plugins/kimchi/templates/test'})
         resp = self.request('/plugins/kimchi/vms', req, 'POST')
         self.assertEquals(400, resp.status)
 
@@ -324,7 +334,9 @@ class RestTests(unittest.TestCase):
         self.assertEquals(202, resp.status)
         task = json.loads(resp.read())
         wait_task(self._task_lookup, task['id'])
-        task = json.loads(self.request('/plugins/kimchi/tasks/%s' % task['id'], '{}').read())
+        task = json.loads(
+            self.request('/plugins/kimchi/tasks/%s' % task['id'], '{}').read()
+        )
         self.assertEquals('finished', task['status'])
         clone_vm_name = task['target_uri'].split('/')[-2]
         self.assertTrue(re.match(u'test-vm-clone-\d+', clone_vm_name))
@@ -347,12 +359,15 @@ class RestTests(unittest.TestCase):
 
         # Create a snapshot on a stopped VM
         params = {'name': 'test-snap'}
-        resp = self.request('/plugins/kimchi/vms/test-vm/snapshots', json.dumps(params),
+        resp = self.request('/plugins/kimchi/vms/test-vm/snapshots',
+                            json.dumps(params),
                             'POST')
         self.assertEquals(202, resp.status)
         task = json.loads(resp.read())
         wait_task(self._task_lookup, task['id'])
-        task = json.loads(self.request('/plugins/kimchi/tasks/%s' % task['id']).read())
+        task = json.loads(
+            self.request('/plugins/kimchi/tasks/%s' % task['id']).read()
+        )
         self.assertEquals('finished', task['status'])
 
         # Look up a non-existing snapshot
@@ -361,8 +376,8 @@ class RestTests(unittest.TestCase):
         self.assertEquals(404, resp.status)
 
         # Look up a snapshot
-        resp = self.request('/plugins/kimchi/vms/test-vm/snapshots/%s' % params['name'], '{}',
-                            'GET')
+        resp = self.request('/plugins/kimchi/vms/test-vm/snapshots/%s' %
+                            params['name'], '{}', 'GET')
         self.assertEquals(200, resp.status)
         snap = json.loads(resp.read())
         self.assertTrue(int(time.time()) >= int(snap['created']))
@@ -370,33 +385,39 @@ class RestTests(unittest.TestCase):
         self.assertEquals(u'', snap['parent'])
         self.assertEquals(u'shutoff', snap['state'])
 
-        resp = self.request('/plugins/kimchi/vms/test-vm/snapshots', '{}', 'GET')
+        resp = self.request('/plugins/kimchi/vms/test-vm/snapshots', '{}',
+                            'GET')
         self.assertEquals(200, resp.status)
         snaps = json.loads(resp.read())
         self.assertEquals(1, len(snaps))
 
         # Look up current snapshot (the one created above)
-        resp = self.request('/plugins/kimchi/vms/test-vm/snapshots/current', '{}', 'GET')
+        resp = self.request('/plugins/kimchi/vms/test-vm/snapshots/current',
+                            '{}', 'GET')
         self.assertEquals(200, resp.status)
         snap = json.loads(resp.read())
         self.assertEquals(params['name'], snap['name'])
 
-        resp = self.request('/plugins/kimchi/vms/test-vm/snapshots', '{}', 'POST')
+        resp = self.request('/plugins/kimchi/vms/test-vm/snapshots', '{}',
+                            'POST')
         self.assertEquals(202, resp.status)
         task = json.loads(resp.read())
         snap_name = task['target_uri'].split('/')[-1]
         wait_task(self._task_lookup, task['id'])
-        resp = self.request('/plugins/kimchi/tasks/%s' % task['id'], '{}', 'GET')
+        resp = self.request('/plugins/kimchi/tasks/%s' % task['id'], '{}',
+                            'GET')
         task = json.loads(resp.read())
         self.assertEquals('finished', task['status'])
 
-        resp = self.request('/plugins/kimchi/vms/test-vm/snapshots', '{}', 'GET')
+        resp = self.request('/plugins/kimchi/vms/test-vm/snapshots', '{}',
+                            'GET')
         self.assertEquals(200, resp.status)
         snaps = json.loads(resp.read())
         self.assertEquals(2, len(snaps))
 
         # Look up current snapshot (the one created above)
-        resp = self.request('/plugins/kimchi/vms/test-vm/snapshots/current', '{}', 'GET')
+        resp = self.request('/plugins/kimchi/vms/test-vm/snapshots/current',
+                            '{}', 'GET')
         self.assertEquals(200, resp.status)
         snap = json.loads(resp.read())
         self.assertEquals(snap_name, snap['name'])
@@ -410,14 +431,15 @@ class RestTests(unittest.TestCase):
         self.assertEquals(200, resp.status)
         vm = json.loads(resp.read())
         self.assertEquals(vm['state'], snap['state'])
-        resp = self.request('/plugins/kimchi/vms/test-vm/snapshots/current', '{}', 'GET')
+        resp = self.request('/plugins/kimchi/vms/test-vm/snapshots/current',
+                            '{}', 'GET')
         self.assertEquals(200, resp.status)
         current_snap = json.loads(resp.read())
         self.assertEquals(snap, current_snap)
 
         # Delete a snapshot
-        resp = self.request('/plugins/kimchi/vms/test-vm/snapshots/%s' % params['name'],
-                            '{}', 'DELETE')
+        resp = self.request('/plugins/kimchi/vms/test-vm/snapshots/%s' %
+                            params['name'], '{}', 'DELETE')
         self.assertEquals(204, resp.status)
 
         # Suspend the VM
@@ -425,7 +447,8 @@ class RestTests(unittest.TestCase):
         self.assertEquals(200, resp.status)
         vm = json.loads(resp.read())
         self.assertEquals(vm['state'], 'shutoff')
-        resp = self.request('/plugins/kimchi/vms/test-vm/suspend', '{}', 'POST')
+        resp = self.request('/plugins/kimchi/vms/test-vm/suspend', '{}',
+                            'POST')
         self.assertEquals(400, resp.status)
         resp = self.request('/plugins/kimchi/vms/test-vm/start', '{}', 'POST')
         self.assertEquals(200, resp.status)
@@ -433,7 +456,8 @@ class RestTests(unittest.TestCase):
         self.assertEquals(200, resp.status)
         vm = json.loads(resp.read())
         self.assertEquals(vm['state'], 'running')
-        resp = self.request('/plugins/kimchi/vms/test-vm/suspend', '{}', 'POST')
+        resp = self.request('/plugins/kimchi/vms/test-vm/suspend', '{}',
+                            'POST')
         self.assertEquals(200, resp.status)
         resp = self.request('/plugins/kimchi/vms/test-vm', '{}', 'GET')
         self.assertEquals(200, resp.status)
@@ -482,7 +506,8 @@ class RestTests(unittest.TestCase):
 
         # Create a VM with specified graphics type and listen
         graphics = {'type': 'vnc', 'listen': '127.0.0.1'}
-        req = json.dumps({'name': 'test-vm', 'template': '/plugins/kimchi/templates/test',
+        req = json.dumps({'name': 'test-vm',
+                          'template': '/plugins/kimchi/templates/test',
                           'graphics': graphics})
         resp = self.request('/plugins/kimchi/vms', req, 'POST')
         self.assertEquals(202, resp.status)
@@ -498,7 +523,8 @@ class RestTests(unittest.TestCase):
 
         # Create a VM with listen as ipv6 address
         graphics = {'type': 'spice', 'listen': 'fe00::0'}
-        req = json.dumps({'name': 'test-vm', 'template': '/plugins/kimchi/templates/test',
+        req = json.dumps({'name': 'test-vm',
+                          'template': '/plugins/kimchi/templates/test',
                           'graphics': graphics})
         resp = self.request('/plugins/kimchi/vms', req, 'POST')
         self.assertEquals(202, resp.status)
@@ -514,7 +540,8 @@ class RestTests(unittest.TestCase):
 
         # Create a VM with specified graphics type and default listen
         graphics = {'type': 'spice'}
-        req = json.dumps({'name': 'test-vm', 'template': '/plugins/kimchi/templates/test',
+        req = json.dumps({'name': 'test-vm',
+                          'template': '/plugins/kimchi/templates/test',
                           'graphics': graphics})
         resp = self.request('/plugins/kimchi/vms', req, 'POST')
         self.assertEquals(202, resp.status)
@@ -530,14 +557,16 @@ class RestTests(unittest.TestCase):
 
         # Try to create a VM with invalid graphics type
         graphics = {'type': 'invalid'}
-        req = json.dumps({'name': 'test-vm', 'template': '/plugins/kimchi/templates/test',
+        req = json.dumps({'name': 'test-vm',
+                          'template': '/plugins/kimchi/templates/test',
                           'graphics': graphics})
         resp = self.request('/plugins/kimchi/vms', req, 'POST')
         self.assertEquals(400, resp.status)
 
         # Try to create a VM with invalid graphics listen
         graphics = {'type': 'spice', 'listen': 'invalid'}
-        req = json.dumps({'name': 'test-vm', 'template': '/plugins/kimchi/templates/test',
+        req = json.dumps({'name': 'test-vm',
+                          'template': '/plugins/kimchi/templates/test',
                           'graphics': graphics})
         resp = self.request('/plugins/kimchi/vms', req, 'POST')
         self.assertEquals(400, resp.status)
@@ -555,7 +584,8 @@ class RestTests(unittest.TestCase):
             self.assertEquals(201, resp.status)
             # Delete the template
             rollback.prependDefer(self.request,
-                                  '/plugins/kimchi/templates/test', '{}', 'DELETE')
+                                  '/plugins/kimchi/templates/test', '{}',
+                                  'DELETE')
 
             # Create a VM with default args
             req = json.dumps({'name': 'test-vm',
@@ -565,11 +595,12 @@ class RestTests(unittest.TestCase):
             task = json.loads(resp.read())
             wait_task(self._task_lookup, task['id'])
             # Delete the VM
-            rollback.prependDefer(self.request,
-                                  '/plugins/kimchi/vms/test-vm', '{}', 'DELETE')
+            rollback.prependDefer(self.request, '/plugins/kimchi/vms/test-vm',
+                                  '{}', 'DELETE')
 
             # Check storage devices
-            resp = self.request('/plugins/kimchi/vms/test-vm/storages', '{}', 'GET')
+            resp = self.request('/plugins/kimchi/vms/test-vm/storages', '{}',
+                                'GET')
             devices = json.loads(resp.read())
             self.assertEquals(2, len(devices))
             dev_types = []
@@ -585,7 +616,8 @@ class RestTests(unittest.TestCase):
             req = json.dumps({'dev': 'hdx',
                               'type': 'cdrom',
                               'path': '/tmp/nonexistent.iso'})
-            resp = self.request('/plugins/kimchi/vms/test-vm/storages', req, 'POST')
+            resp = self.request('/plugins/kimchi/vms/test-vm/storages', req,
+                                'POST')
             self.assertEquals(400, resp.status)
 
             # Create temp storage pool
@@ -596,7 +628,8 @@ class RestTests(unittest.TestCase):
                               'type': 'dir'})
             resp = self.request('/plugins/kimchi/storagepools', req, 'POST')
             self.assertEquals(201, resp.status)
-            resp = self.request('/plugins/kimchi/storagepools/tmp/activate', req, 'POST')
+            resp = self.request('/plugins/kimchi/storagepools/tmp/activate',
+                                req, 'POST')
             self.assertEquals(200, resp.status)
 
             # 'name' is required for this type of volume
@@ -605,16 +638,18 @@ class RestTests(unittest.TestCase):
                               'allocation': 512,
                               'type': 'disk',
                               'format': 'raw'})
-            resp = self.request('/plugins/kimchi/storagepools/tmp/storagevolumes',
-                                req, 'POST')
+            resp = self.request(
+                '/plugins/kimchi/storagepools/tmp/storagevolumes', req, 'POST'
+            )
             self.assertEquals(400, resp.status)
             req = json.dumps({'name': "attach-volume",
                               'capacity': 1024,
                               'allocation': 512,
                               'type': 'disk',
                               'format': 'raw'})
-            resp = self.request('/plugins/kimchi/storagepools/tmp/storagevolumes',
-                                req, 'POST')
+            resp = self.request(
+                '/plugins/kimchi/storagepools/tmp/storagevolumes', req, 'POST'
+            )
             self.assertEquals(202, resp.status)
             time.sleep(1)
 
@@ -625,7 +660,9 @@ class RestTests(unittest.TestCase):
                               'pool': 'tmp',
                               'vol': 'attach-volume',
                               'path': '/tmp/existent.iso'})
-            resp = self.request('/plugins/kimchi/vms/test-vm/storages', req, 'POST')
+            resp = self.request(
+                '/plugins/kimchi/vms/test-vm/storages', req, 'POST'
+            )
             self.assertEquals(400, resp.status)
 
             # Attach disk with both path and volume specified
@@ -634,21 +671,27 @@ class RestTests(unittest.TestCase):
                               'pool': 'tmp',
                               'vol': 'attach-volume',
                               'path': '/tmp/existent.iso'})
-            resp = self.request('/plugins/kimchi/vms/test-vm/storages', req, 'POST')
+            resp = self.request(
+                '/plugins/kimchi/vms/test-vm/storages', req, 'POST'
+            )
             self.assertEquals(400, resp.status)
 
             # Attach disk with only pool specified
             req = json.dumps({'dev': 'hdx',
                               'type': 'cdrom',
                               'pool': 'tmp'})
-            resp = self.request('/plugins/kimchi/vms/test-vm/storages', req, 'POST')
+            resp = self.request(
+                '/plugins/kimchi/vms/test-vm/storages', req, 'POST'
+            )
             self.assertEquals(400, resp.status)
 
             # Attach disk with pool and vol specified
             req = json.dumps({'type': 'disk',
                               'pool': 'tmp',
                               'vol': 'attach-volume'})
-            resp = self.request('/plugins/kimchi/vms/test-vm/storages', req, 'POST')
+            resp = self.request(
+                '/plugins/kimchi/vms/test-vm/storages', req, 'POST'
+            )
             self.assertEquals(201, resp.status)
             cd_info = json.loads(resp.read())
             self.assertEquals('disk', cd_info['type'])
@@ -656,7 +699,9 @@ class RestTests(unittest.TestCase):
             # Attach a cdrom with existent dev name
             req = json.dumps({'type': 'cdrom',
                               'path': '/tmp/existent.iso'})
-            resp = self.request('/plugins/kimchi/vms/test-vm/storages', req, 'POST')
+            resp = self.request(
+                '/plugins/kimchi/vms/test-vm/storages', req, 'POST'
+            )
             self.assertEquals(201, resp.status)
             cd_info = json.loads(resp.read())
             cd_dev = cd_info['dev']
@@ -664,7 +709,8 @@ class RestTests(unittest.TestCase):
             self.assertEquals('/tmp/existent.iso', cd_info['path'])
             # Delete the file and cdrom
             rollback.prependDefer(self.request,
-                                  '/plugins/kimchi/vms/test-vm/storages/hdx', '{}', 'DELETE')
+                                  '/plugins/kimchi/vms/test-vm/storages/hdx',
+                                  '{}', 'DELETE')
             os.remove('/tmp/existent.iso')
             os.remove('/tmp/attach-volume')
 
@@ -672,27 +718,34 @@ class RestTests(unittest.TestCase):
             cdrom = u'http://mirrors.kernel.org/fedora/releases/21/Live/'\
                     'x86_64/Fedora-Live-KDE-x86_64-21-5.iso'
             req = json.dumps({'path': cdrom})
-            resp = self.request('/plugins/kimchi/vms/test-vm/storages/' + cd_dev, req, 'PUT')
+            resp = self.request('/plugins/kimchi/vms/test-vm/storages/' +
+                                cd_dev, req, 'PUT')
             self.assertEquals(200, resp.status)
             cd_info = json.loads(resp.read())
             self.assertEquals(urlparse.urlparse(cdrom).path,
                               urlparse.urlparse(cd_info['path']).path)
 
             # Test GET
-            devs = json.loads(self.request('/plugins/kimchi/vms/test-vm/storages').read())
+            devs = json.loads(
+                self.request('/plugins/kimchi/vms/test-vm/storages').read()
+            )
             self.assertEquals(4, len(devs))
 
             # Detach storage cdrom
-            resp = self.request('/plugins/kimchi/vms/test-vm/storages/' + cd_dev,
-                                '{}', 'DELETE')
+            resp = self.request('/plugins/kimchi/vms/test-vm/storages/' +
+                                cd_dev, '{}', 'DELETE')
             self.assertEquals(204, resp.status)
 
             # Test GET
-            devs = json.loads(self.request('/plugins/kimchi/vms/test-vm/storages').read())
+            devs = json.loads(
+                self.request('/plugins/kimchi/vms/test-vm/storages').read()
+            )
             self.assertEquals(3, len(devs))
-            resp = self.request('/plugins/kimchi/storagepools/tmp/deactivate', {}, 'POST')
+            resp = self.request('/plugins/kimchi/storagepools/tmp/deactivate',
+                                {}, 'POST')
             self.assertEquals(200, resp.status)
-            resp = self.request('/plugins/kimchi/storagepools/tmp', {}, 'DELETE')
+            resp = self.request('/plugins/kimchi/storagepools/tmp', {},
+                                'DELETE')
             self.assertEquals(204, resp.status)
 
     def test_vm_iface(self):
@@ -704,7 +757,8 @@ class RestTests(unittest.TestCase):
             self.assertEquals(201, resp.status)
             # Delete the template
             rollback.prependDefer(self.request,
-                                  '/plugins/kimchi/templates/test', '{}', 'DELETE')
+                                  '/plugins/kimchi/templates/test', '{}',
+                                  'DELETE')
 
             # Create a VM with default args
             req = json.dumps({'name': 'test-vm',
@@ -715,7 +769,8 @@ class RestTests(unittest.TestCase):
             wait_task(self._task_lookup, task['id'])
             # Delete the VM
             rollback.prependDefer(self.request,
-                                  '/plugins/kimchi/vms/test-vm', '{}', 'DELETE')
+                                  '/plugins/kimchi/vms/test-vm', '{}',
+                                  'DELETE')
 
             # Create a network
             req = json.dumps({'name': 'test-network',
@@ -725,14 +780,19 @@ class RestTests(unittest.TestCase):
             self.assertEquals(201, resp.status)
             # Delete the network
             rollback.prependDefer(self.request,
-                                  '/plugins/kimchi/networks/test-network', '{}', 'DELETE')
+                                  '/plugins/kimchi/networks/test-network',
+                                  '{}', 'DELETE')
 
-            ifaces = json.loads(self.request('/plugins/kimchi/vms/test-vm/ifaces').read())
+            ifaces = json.loads(
+                self.request('/plugins/kimchi/vms/test-vm/ifaces').read()
+            )
             self.assertEquals(1, len(ifaces))
 
             for iface in ifaces:
-                res = json.loads(self.request('/plugins/kimchi/vms/test-vm/ifaces/%s' %
-                                              iface['mac']).read())
+                res = json.loads(
+                    self.request('/plugins/kimchi/vms/test-vm/ifaces/%s' %
+                                 iface['mac']).read()
+                )
                 self.assertEquals('default', res['network'])
                 self.assertEquals(17, len(res['mac']))
                 self.assertEquals(get_template_default('old', 'nic_model'),
@@ -749,7 +809,8 @@ class RestTests(unittest.TestCase):
             req = json.dumps({"type": "network",
                               "network": "test-network",
                               "model": "virtio"})
-            resp = self.request('/plugins/kimchi/vms/test-vm/ifaces', req, 'POST')
+            resp = self.request('/plugins/kimchi/vms/test-vm/ifaces', req,
+                                'POST')
             self.assertEquals(201, resp.status)
             iface = json.loads(resp.read())
 
@@ -765,8 +826,10 @@ class RestTests(unittest.TestCase):
             resp = self.request('/plugins/kimchi/vms/test-vm/ifaces/%s' %
                                 iface['mac'], req, 'PUT')
             self.assertEquals(303, resp.status)
-            iface = json.loads(self.request('/plugins/kimchi/vms/test-vm/ifaces/%s' %
-                                            newMacAddr).read())
+            iface = json.loads(
+                self.request('/plugins/kimchi/vms/test-vm/ifaces/%s' %
+                             newMacAddr).read()
+            )
             self.assertEquals(newMacAddr, iface['mac'])
 
             # Start the VM
@@ -789,8 +852,8 @@ class RestTests(unittest.TestCase):
             self.assertEquals('shutoff', vm['state'])
 
             # detach network interface from vm
-            resp = self.request('/plugins/kimchi/vms/test-vm/ifaces/%s' % iface['mac'],
-                                '{}', 'DELETE')
+            resp = self.request('/plugins/kimchi/vms/test-vm/ifaces/%s' %
+                                iface['mac'], '{}', 'DELETE')
             self.assertEquals(204, resp.status)
 
     def test_vm_customise_storage(self):
@@ -808,7 +871,8 @@ class RestTests(unittest.TestCase):
                           'type': 'dir'})
         resp = self.request('/plugins/kimchi/storagepools', req, 'POST')
         self.assertEquals(201, resp.status)
-        resp = self.request('/plugins/kimchi/storagepools/alt/activate', req, 'POST')
+        resp = self.request('/plugins/kimchi/storagepools/alt/activate', req,
+                            'POST')
         self.assertEquals(200, resp.status)
 
         # Create a VM
@@ -824,10 +888,12 @@ class RestTests(unittest.TestCase):
 
         # Test template not changed after vm customise its pool
         t = json.loads(self.request('/plugins/kimchi/templates/test').read())
-        self.assertEquals(t['storagepool'], '/plugins/kimchi/storagepools/default-pool')
+        self.assertEquals(t['storagepool'],
+                          '/plugins/kimchi/storagepools/default-pool')
 
         # Verify the volume was created
-        vol_uri = '/plugins/kimchi/storagepools/alt/storagevolumes/%s-0.img' % vm_info['uuid']
+        vol_uri = '/plugins/kimchi/storagepools/alt/storagevolumes/%s-0.img' \
+                  % vm_info['uuid']
         resp = self.request(vol_uri)
         vol = json.loads(resp.read())
         self.assertEquals(1 << 30, vol['capacity'])
@@ -849,18 +915,23 @@ class RestTests(unittest.TestCase):
 
         # Test create vms using lun of this pool
         # activate the storage pool
-        resp = self.request('/plugins/kimchi/storagepools/scsi_fc_pool/activate', '{}',
-                            'POST')
+        resp = self.request(
+            '/plugins/kimchi/storagepools/scsi_fc_pool/activate', '{}', 'POST'
+        )
 
         # Create template fails because SCSI volume is missing
-        tmpl_params = {'name': 'test_fc_pool', 'cdrom': fake_iso,
-                       'storagepool': '/plugins/kimchi/storagepools/scsi_fc_pool'}
+        tmpl_params = {
+            'name': 'test_fc_pool', 'cdrom': fake_iso,
+            'storagepool': '/plugins/kimchi/storagepools/scsi_fc_pool'
+        }
         req = json.dumps(tmpl_params)
         resp = self.request('/plugins/kimchi/templates', req, 'POST')
         self.assertEquals(400, resp.status)
 
         # Choose SCSI volume to create template
-        resp = self.request('/plugins/kimchi/storagepools/scsi_fc_pool/storagevolumes')
+        resp = self.request(
+            '/plugins/kimchi/storagepools/scsi_fc_pool/storagevolumes'
+        )
         lun_name = json.loads(resp.read())[0]['name']
 
         tmpl_params['disks'] = [{'index': 0, 'volume': lun_name}]
@@ -882,7 +953,8 @@ class RestTests(unittest.TestCase):
         self.assertEquals('running', vm['state'])
 
         # Force poweroff the VM
-        resp = self.request('/plugins/kimchi/vms/test-vm/poweroff', '{}', 'POST')
+        resp = self.request('/plugins/kimchi/vms/test-vm/poweroff', '{}',
+                            'POST')
         vm = json.loads(self.request('/plugins/kimchi/vms/test-vm').read())
         self.assertEquals('shutoff', vm['state'])
 
@@ -899,10 +971,11 @@ class RestTests(unittest.TestCase):
         # Create 5 unnamed vms from this template
         for i in xrange(1, 6):
             req = json.dumps({'template': '/plugins/kimchi/templates/test'})
-            task = json.loads(self.request('/plugins/kimchi/vms', 
+            task = json.loads(self.request('/plugins/kimchi/vms',
                               req, 'POST').read())
             wait_task(self._task_lookup, task['id'])
-            resp = self.request('/plugins/kimchi/vms/test-vm-%i' % i, {}, 'GET')
+            resp = self.request('/plugins/kimchi/vms/test-vm-%i' % i, {},
+                                'GET')
             self.assertEquals(resp.status, 200)
         count = len(json.loads(self.request('/plugins/kimchi/vms').read()))
         self.assertEquals(6, count)
@@ -924,7 +997,10 @@ class RestTests(unittest.TestCase):
 
     def test_create_vm_with_img_based_template(self):
         resp = json.loads(
-            self.request('/plugins/kimchi/storagepools/default-pool/storagevolumes').read())
+            self.request(
+                '/plugins/kimchi/storagepools/default-pool/storagevolumes'
+            ).read()
+        )
         self.assertEquals(0, len(resp))
 
         # Create a Template
@@ -942,7 +1018,10 @@ class RestTests(unittest.TestCase):
 
         # Test storage volume created with backing store of base file
         resp = json.loads(
-            self.request('/plugins/kimchi/storagepools/default-pool/storagevolumes').read())
+            self.request(
+                '/plugins/kimchi/storagepools/default-pool/storagevolumes'
+            ).read()
+        )
         self.assertEquals(1, len(resp))
 
     def _create_pool(self, name):
@@ -962,13 +1041,15 @@ class RestTests(unittest.TestCase):
 
     def _delete_pool(self, name):
         # Delete the storage pool
-        resp = self.request('/plugins/kimchi/storagepools/%s' % name, '{}', 'DELETE')
+        resp = self.request('/plugins/kimchi/storagepools/%s' % name, '{}',
+                            'DELETE')
         self.assertEquals(204, resp.status)
 
     def test_iso_scan_shallow(self):
         # fake environment preparation
         self._create_pool('pool-3')
-        self.request('/plugins/kimchi/storagepools/pool-3/activate', '{}', 'POST')
+        self.request('/plugins/kimchi/storagepools/pool-3/activate', '{}',
+                     'POST')
         params = {'name': 'fedora.iso',
                   'capacity': 1073741824,  # 1 GiB
                   'type': 'file',
@@ -976,8 +1057,11 @@ class RestTests(unittest.TestCase):
         task_info = model.storagevolumes_create('pool-3', params)
         wait_task(self._task_lookup, task_info['id'])
 
-        storagevolume = json.loads(self.request(
-            '/plugins/kimchi/storagepools/kimchi_isos/storagevolumes/').read())[0]
+        storagevolume = json.loads(
+            self.request(
+                '/plugins/kimchi/storagepools/kimchi_isos/storagevolumes/'
+            ).read()
+        )[0]
         self.assertEquals('fedora.iso', storagevolume['name'])
         self.assertEquals('iso', storagevolume['format'])
         self.assertEquals('/var/lib/libvirt/images/fedora.iso',
@@ -1006,19 +1090,25 @@ class RestTests(unittest.TestCase):
         self.assertEquals(get_template_default('old', 'memory'), t['memory'])
 
         # Deactivate or destroy scan pool return 405
-        resp = self.request('/plugins/kimchi/storagepools/kimchi_isos/storagevolumes'
-                            '/deactivate', '{}', 'POST')
+        resp = self.request(
+            '/plugins/kimchi/storagepools/kimchi_isos/storagevolumes'
+            '/deactivate', '{}', 'POST'
+        )
         self.assertEquals(405, resp.status)
 
-        resp = self.request('/plugins/kimchi/storagepools/kimchi_isos/storagevolumes',
-                            '{}', 'DELETE')
+        resp = self.request(
+            '/plugins/kimchi/storagepools/kimchi_isos/storagevolumes',
+            '{}', 'DELETE'
+        )
         self.assertEquals(405, resp.status)
 
         # Delete the template
-        resp = self.request('/plugins/kimchi/templates/%s' % t['name'], '{}', 'DELETE')
+        resp = self.request('/plugins/kimchi/templates/%s' % t['name'], '{}',
+                            'DELETE')
         self.assertEquals(204, resp.status)
 
-        resp = self.request('/plugins/kimchi/storagepools/pool-3/deactivate', '{}', 'POST')
+        resp = self.request('/plugins/kimchi/storagepools/pool-3/deactivate',
+                            '{}', 'POST')
         self.assertEquals(200, resp.status)
         self._delete_pool('pool-3')
 
@@ -1055,7 +1145,8 @@ class RestTests(unittest.TestCase):
         lastMod2 = resp.getheader('last-modified')
         self.assertEquals(lastMod2, lastMod1)
 
-        resp = self.request('/plugins/kimchi/vms/test-vm/screenshot', '{}', 'DELETE')
+        resp = self.request('/plugins/kimchi/vms/test-vm/screenshot', '{}',
+                            'DELETE')
         self.assertEquals(405, resp.status)
 
         # No screenshot after stopped the VM
@@ -1080,28 +1171,39 @@ class RestTests(unittest.TestCase):
             self.assertEquals(sorted(keys), sorted(interface.keys()))
 
     def _task_lookup(self, taskid):
-        return json.loads(self.request('/plugins/kimchi/tasks/%s' % taskid).read())
+        return json.loads(
+            self.request('/plugins/kimchi/tasks/%s' % taskid).read()
+        )
 
     def test_tasks(self):
-        id1 = add_task('/plugins/kimchi/tasks/1', self._async_op, model.objstore)
-        id2 = add_task('/plugins/kimchi/tasks/2', self._except_op, model.objstore)
-        id3 = add_task('/plugins/kimchi/tasks/3', self._intermid_op, model.objstore)
+        id1 = add_task('/plugins/kimchi/tasks/1', self._async_op,
+                       model.objstore)
+        id2 = add_task('/plugins/kimchi/tasks/2', self._except_op,
+                       model.objstore)
+        id3 = add_task('/plugins/kimchi/tasks/3', self._intermid_op,
+                       model.objstore)
 
         target_uri = urllib2.quote('^/tasks/*', safe="")
         filter_data = 'status=running&target_uri=%s' % target_uri
-        tasks = json.loads(self.request('/plugins/kimchi/tasks?%s' % filter_data).read())
+        tasks = json.loads(
+            self.request('/plugins/kimchi/tasks?%s' % filter_data).read()
+        )
         self.assertEquals(3, len(tasks))
 
         tasks = json.loads(self.request('/plugins/kimchi/tasks').read())
         tasks_ids = [int(t['id']) for t in tasks]
         self.assertEquals(set([id1, id2, id3]) - set(tasks_ids), set([]))
         wait_task(self._task_lookup, id2)
-        foo2 = json.loads(self.request('/plugins/kimchi/tasks/%s' % id2).read())
+        foo2 = json.loads(
+            self.request('/plugins/kimchi/tasks/%s' % id2).read()
+        )
         keys = ['id', 'status', 'message', 'target_uri']
         self.assertEquals(sorted(keys), sorted(foo2.keys()))
         self.assertEquals('failed', foo2['status'])
         wait_task(self._task_lookup, id3)
-        foo3 = json.loads(self.request('/plugins/kimchi/tasks/%s' % id3).read())
+        foo3 = json.loads(
+            self.request('/plugins/kimchi/tasks/%s' % id3).read()
+        )
         self.assertEquals('in progress', foo3['message'])
         self.assertEquals('running', foo3['status'])
 
@@ -1169,44 +1271,51 @@ class RestTests(unittest.TestCase):
         self.assertEquals(200, resp.status)
 
     def _report_delete(self, name):
-        request(host, ssl_port, '/plugins/kimchi/debugreports/%s' % name, '{}', 'DELETE')
+        request(host, ssl_port, '/plugins/kimchi/debugreports/%s' % name, '{}',
+                'DELETE')
 
     def test_create_debugreport(self):
         req = json.dumps({'name': 'report1'})
         with RollbackContext() as rollback:
-            resp = request(host, ssl_port, '/plugins/kimchi/debugreports', req, 'POST')
+            resp = request(host, ssl_port, '/plugins/kimchi/debugreports', req,
+                           'POST')
             self.assertEquals(202, resp.status)
             task = json.loads(resp.read())
             # make sure the debugreport doesn't exist until the
             # the task is finished
             wait_task(self._task_lookup, task['id'])
             rollback.prependDefer(self._report_delete, 'report2')
-            resp = request(host, ssl_port, '/plugins/kimchi/debugreports/report1')
+            resp = request(host, ssl_port,
+                           '/plugins/kimchi/debugreports/report1')
             debugreport = json.loads(resp.read())
             self.assertEquals("report1", debugreport['name'])
             self.assertEquals(200, resp.status)
             req = json.dumps({'name': 'report2'})
-            resp = request(host, ssl_port, '/plugins/kimchi/debugreports/report1',
-                           req, 'PUT')
+            resp = request(host, ssl_port,
+                           '/plugins/kimchi/debugreports/report1', req, 'PUT')
             self.assertEquals(303, resp.status)
 
     def test_debugreport_download(self):
         req = json.dumps({'name': 'report1'})
         with RollbackContext() as rollback:
-            resp = request(host, ssl_port, '/plugins/kimchi/debugreports', req, 'POST')
+            resp = request(host, ssl_port, '/plugins/kimchi/debugreports', req,
+                           'POST')
             self.assertEquals(202, resp.status)
             task = json.loads(resp.read())
             # make sure the debugreport doesn't exist until the
             # the task is finished
             wait_task(self._task_lookup, task['id'], 20)
             rollback.prependDefer(self._report_delete, 'report1')
-            resp = request(host, ssl_port, '/plugins/kimchi/debugreports/report1')
+            resp = request(host, ssl_port,
+                           '/plugins/kimchi/debugreports/report1')
             debugreport = json.loads(resp.read())
             self.assertEquals("report1", debugreport['name'])
             self.assertEquals(200, resp.status)
-            resp = request(host, ssl_port, '/plugins/kimchi/debugreports/report1/content')
+            resp = request(host, ssl_port,
+                           '/plugins/kimchi/debugreports/report1/content')
             self.assertEquals(200, resp.status)
-            resp = request(host, ssl_port, '/plugins/kimchi/debugreports/report1')
+            resp = request(host, ssl_port,
+                           '/plugins/kimchi/debugreports/report1')
             debugre = json.loads(resp.read())
             resp = request(host, ssl_port, debugre['uri'])
             self.assertEquals(200, resp.status)

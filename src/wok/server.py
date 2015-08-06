@@ -75,8 +75,8 @@ class Server(object):
         # thus it is safe to unsubscribe.
         cherrypy.engine.timeout_monitor.unsubscribe()
         cherrypy.tools.nocache = cherrypy.Tool('on_end_resource', set_no_cache)
-        cherrypy.tools.wokauth = cherrypy.Tool('before_handler',
-                                                   auth.wokauth)
+        cherrypy.tools.wokauth = cherrypy.Tool('before_handler', auth.wokauth)
+
         # Setting host to 127.0.0.1. This makes wok run
         # as a localhost app, inaccessible to the outside
         # directly. You must go through the proxy.
@@ -169,11 +169,12 @@ class Server(object):
             # dynamically add tools.wokauth.on = True to extra plugin APIs
             if extra_auth:
                 try:
-                    authed_apis = import_class(('plugins.%s.%s' % (plugin_name,
-                                              extra_auth)))
+                    authed_apis = import_class(('plugins.%s.%s' %
+                                                (plugin_name, extra_auth)))
                 except ImportError:
                     cherrypy.log.error_log.error("Failed to import subnodes "
-                                                 "for plugin %s" % plugin_class)
+                                                 "for plugin %s" %
+                                                 plugin_class)
                     continue
 
                 urlSubNodes = {}

@@ -23,7 +23,7 @@ import os
 from wok.config import paths, PluginPaths
 
 
-def href(url, plugin = None):
+def href(url, plugin=None):
     if plugin is None:
         basePath = paths.ui_dir
     else:

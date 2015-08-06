@@ -44,7 +44,7 @@ def _get_dev_info_tree(dev_infos):
             parent = devs[dev_info['parent']]
         except KeyError:
             wok_log.error('Parent %s of device %s does not exist.',
-                             dev_info['parent'], dev_info['name'])
+                          dev_info['parent'], dev_info['name'])
             continue
 
         try:
@@ -99,7 +99,7 @@ def _get_same_iommugroup_devices(dev_infos, device_info):
                 parent_info = dev_dict[parent]
             except KeyError:
                 wok_log.error("Parent %s of device %s does not exist",
-                                 parent, dev_info['name'])
+                              parent, dev_info['name'])
                 break
 
             try:

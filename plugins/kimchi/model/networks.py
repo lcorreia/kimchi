@@ -51,7 +51,8 @@ class NetworksModel(object):
         conn = self.conn.get()
 
         error_msg = ("Please, check the configuration in %s/template.conf to "
-         "ensure it lists only valid networks." % PluginPaths('kimchi').conf_dir)
+                     "ensure it lists only valid networks." %
+                     PluginPaths('kimchi').conf_dir)
 
         for net_name in networks:
             try:

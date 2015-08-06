@@ -121,7 +121,9 @@ class NetworkTests(unittest.TestCase):
             nets = json.loads(self.request('/plugins/kimchi/networks').read())
             self.assertEquals(len(networks) + 5, len(nets))
 
-            network = json.loads(self.request('/plugins/kimchi/networks/network-1').read())
+            network = json.loads(
+                self.request('/plugins/kimchi/networks/network-1').read()
+            )
             keys = [u'name', u'connection', u'interface', u'subnet', u'dhcp',
                     u'vms', u'in_use', u'autostart', u'state', u'persistent']
             self.assertEquals(sorted(keys), sorted(network.keys()))
@@ -135,7 +137,9 @@ class NetworkTests(unittest.TestCase):
 
         # Verify the current system has at least one interface to create a
         # bridged network
-        interfaces = json.loads(self.request('/plugins/kimchi/interfaces?type=nic').read())
+        interfaces = json.loads(
+            self.request('/plugins/kimchi/interfaces?type=nic').read()
+        )
         if len(interfaces) > 0:
             iface = interfaces[0]['name']
             networks.append({'name': u'bridge-network', 'connection': 'bridge',

@@ -193,7 +193,7 @@ class VMStorageModel(object):
                 used_by = get_disk_used_by(self.objstore, self.conn, path)
             else:
                 wok_log.error("Unable to decrement volume used_by on"
-                                 " delete because no path could be found.")
+                              " delete because no path could be found.")
             dom.detachDeviceFlags(etree.tostring(disk),
                                   get_vm_config_flag(dom, 'all'))
         except Exception as e:
@@ -204,7 +204,7 @@ class VMStorageModel(object):
             set_disk_used_by(self.objstore, path, used_by)
         else:
             wok_log.error("Unable to update %s:%s used_by on delete."
-                             % (vm_name, dev_name))
+                          % (vm_name, dev_name))
 
     def update(self, vm_name, dev_name, params):
         old_disk_used_by = None
@@ -248,5 +248,5 @@ class VMStorageModel(object):
                                  new_disk_used_by)
         except Exception as e:
             wok_log.error("Unable to update dev used_by on update due to"
-                             " %s:" % e.message)
+                          " %s:" % e.message)
         return dev

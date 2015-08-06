@@ -212,7 +212,7 @@ def run_command(cmd, timeout=None, silent=False):
                 wok_log.error(msg)
         elif error:
             wok_log.debug("error: %s returned from cmd: %s",
-                             error, ' '.join(cmd))
+                          error, ' '.join(cmd))
 
         if timeout_flag[0]:
             msg = ("subprocess is killed by signal.SIGKILL for "
@@ -258,7 +258,7 @@ def patch_find_nfs_target(nfs_server):
         out = run_command(cmd, 10)[0]
     except TimeoutExpired:
         wok_log.warning("server %s query timeout, may not have any path "
-                           "exported", nfs_server)
+                        "exported", nfs_server)
         return list()
 
     targets = parse_cmd_output(out, output_items=['target'])

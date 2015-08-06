@@ -71,8 +71,10 @@ class MockModelTests(unittest.TestCase):
         wait_task(model.task_lookup, task['id'])
 
         # Test screenshot refresh for running vm
-        request(host, ssl_port, '/plugins/kimchi/vms/test-vm/start', '{}', 'POST')
-        resp = request(host, ssl_port, '/plugins/kimchi/vms/test-vm/screenshot')
+        request(host, ssl_port, '/plugins/kimchi/vms/test-vm/start', '{}',
+                'POST')
+        resp = request(host, ssl_port,
+                       '/plugins/kimchi/vms/test-vm/screenshot')
         self.assertEquals(200, resp.status)
         self.assertEquals('image/png', resp.getheader('content-type'))
         resp1 = request(host, ssl_port, '/plugins/kimchi/vms/test-vm')

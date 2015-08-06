@@ -106,7 +106,7 @@ class CapabilitiesModel(object):
         out, err, rc = run_command(['ldd', qemu_path])
         if rc != 0:
             wok_log.error('Failed to find qemu binary dependencies: %s',
-                             err)
+                          err)
             return False
         for line in out.split('\n'):
             if line.lstrip().startswith('libspice-server.so'):

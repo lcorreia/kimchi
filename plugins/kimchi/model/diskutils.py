@@ -55,8 +55,8 @@ def get_disk_used_by(objstore, conn, path):
                     #   occour if a disk is added to two guests
                     #   unknowingly.
                     wok_log.error('Unable to store storage volume id in'
-                                     ' objectstore due error: %s',
-                                     e.message)
+                                  ' objectstore due error: %s',
+                                  e.message)
                     raise OperationFailed('KCHVOL0017E',
                                           {'err': e.message})
     except Exception as e:

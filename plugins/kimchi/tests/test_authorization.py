@@ -88,7 +88,8 @@ class AuthorizationTests(unittest.TestCase):
         self.assertEquals(200, resp.status)
         resp = self.request('/plugins/kimchi/networks', '{}', 'POST')
         self.assertEquals(403, resp.status)
-        resp = self.request('/plugins/kimchi/networks/default/activate', '{}', 'POST')
+        resp = self.request('/plugins/kimchi/networks/default/activate', '{}',
+                            'POST')
         self.assertEquals(403, resp.status)
         resp = self.request('/plugins/kimchi/networks/default', '{}', 'DELETE')
         self.assertEquals(403, resp.status)
@@ -98,9 +99,11 @@ class AuthorizationTests(unittest.TestCase):
         self.assertEquals(200, resp.status)
         resp = self.request('/plugins/kimchi/storagepools', '{}', 'POST')
         self.assertEquals(403, resp.status)
-        resp = self.request('/plugins/kimchi/storagepools/default/activate', '{}', 'POST')
+        resp = self.request('/plugins/kimchi/storagepools/default/activate',
+                            '{}', 'POST')
         self.assertEquals(403, resp.status)
-        resp = self.request('/plugins/kimchi/storagepools/default', '{}', 'DELETE')
+        resp = self.request('/plugins/kimchi/storagepools/default', '{}',
+                            'DELETE')
         self.assertEquals(403, resp.status)
 
         # Non-root users can not update or delete a template
@@ -118,23 +121,29 @@ class AuthorizationTests(unittest.TestCase):
         # Non-root users can only get vms authorized to them
         model.templates_create({'name': u'test', 'cdrom': fake_iso})
 
-        task_info = model.vms_create({'name': u'test-me',
-                                 'template': '/plugins/kimchi/templates/test'})
+        task_info = model.vms_create({
+            'name': u'test-me',
+            'template': '/plugins/kimchi/templates/test'
+        })
         wait_task(model.task_lookup, task_info['id'])
 
         model.vm_update(u'test-me',
                         {'users': [mockmodel.fake_user.keys()[0]],
                          'groups': []})
 
-        task_info = model.vms_create({'name': u'test-usera',
-                                 'template': '/plugins/kimchi/templates/test'})
+        task_info = model.vms_create({
+            'name': u'test-usera',
+            'template': '/plugins/kimchi/templates/test'
+        })
         wait_task(model.task_lookup, task_info['id'])
 
         non_root = list(set(model.users_get_list()) - set(['root']))[0]
         model.vm_update(u'test-usera', {'users': [non_root], 'groups': []})
 
-        task_info = model.vms_create({'name': u'test-groupa',
-                                 'template': '/plugins/kimchi/templates/test'})
+        task_info = model.vms_create({
+            'name': u'test-groupa',
+            'template': '/plugins/kimchi/templates/test'
+        })
         wait_task(model.task_lookup, task_info['id'])
         a_group = model.groups_get_list()[0]
         model.vm_update(u'test-groupa', {'groups': [a_group]})
@@ -148,8 +157,10 @@ class AuthorizationTests(unittest.TestCase):
         self.assertEquals(403, resp.status)
 
         # Create a vm using mockmodel directly to test Resource access
-        task_info = model.vms_create({'name': 'kimchi-test',
-                                 'template': '/plugins/kimchi/templates/test'})
+        task_info = model.vms_create({
+            'name': 'kimchi-test',
+            'template': '/plugins/kimchi/templates/test'
+        })
         wait_task(model.task_lookup, task_info['id'])
         resp = self.request('/plugins/kimchi/vms/kimchi-test', '{}', 'PUT')
         self.assertEquals(403, resp.status)
@@ -159,7 +170,8 @@ class AuthorizationTests(unittest.TestCase):
         # Non-root users can only update VMs authorized by them
         resp = self.request('/plugins/kimchi/vms/test-me/start', '{}', 'POST')
         self.assertEquals(200, resp.status)
-        resp = self.request('/plugins/kimchi/vms/test-usera/start', '{}', 'POST')
+        resp = self.request('/plugins/kimchi/vms/test-usera/start', '{}',
+                            'POST')
         self.assertEquals(403, resp.status)
 
         model.template_delete('test')

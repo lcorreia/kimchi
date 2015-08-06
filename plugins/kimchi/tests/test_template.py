@@ -84,7 +84,9 @@ class TemplateTests(unittest.TestCase):
         keys = ['name', 'icon', 'invalid', 'os_distro', 'os_version', 'cpus',
                 'memory', 'cdrom', 'disks', 'storagepool', 'networks',
                 'folder', 'graphics', 'cpu_info']
-        tmpl = json.loads(self.request('/plugins/kimchi/templates/test').read())
+        tmpl = json.loads(
+            self.request('/plugins/kimchi/templates/test').read()
+        )
         self.assertEquals(sorted(tmpl.keys()), sorted(keys))
 
         # Verify if default disk format was configured
@@ -92,17 +94,21 @@ class TemplateTests(unittest.TestCase):
         self.assertEquals(tmpl['disks'][0]['format'], default_disk_format)
 
         # Clone a template
-        resp = self.request('/plugins/kimchi/templates/test/clone', '{}', 'POST')
+        resp = self.request('/plugins/kimchi/templates/test/clone', '{}',
+                            'POST')
         self.assertEquals(303, resp.status)
 
         # Verify the cloned template
-        tmpl_cloned = json.loads(self.request('/plugins/kimchi/templates/test-clone1').read())
+        tmpl_cloned = json.loads(
+            self.request('/plugins/kimchi/templates/test-clone1').read()
+        )
         del tmpl['name']
         del tmpl_cloned['name']
         self.assertEquals(tmpl, tmpl_cloned)
 
         # Delete the cloned template
-        resp = self.request('/plugins/kimchi/templates/test-clone1', '{}', 'DELETE')
+        resp = self.request('/plugins/kimchi/templates/test-clone1', '{}',
+                            'DELETE')
         self.assertEquals(204, resp.status)
 
         # Create a template with same name fails with 400
@@ -112,7 +118,8 @@ class TemplateTests(unittest.TestCase):
 
         # Create an image based template
         open('/tmp/mock.img', 'w').close()
-        t = {'name': 'test_img_template', 'disks': [{'base': '/tmp/mock.img'}]}
+        t = {'name': 'test_img_template',
+             'disks': [{'base': '/tmp/mock.img'}]}
         req = json.dumps(t)
         resp = self.request('/plugins/kimchi/templates', req, 'POST')
         self.assertEquals(201, resp.status)
@@ -124,7 +131,9 @@ class TemplateTests(unittest.TestCase):
         req = json.dumps(t)
         resp = self.request('/plugins/kimchi/templates', req, 'POST')
         self.assertEquals(201, resp.status)
-        tmpl = json.loads(self.request('/plugins/kimchi/templates/test-format').read())
+        tmpl = json.loads(
+            self.request('/plugins/kimchi/templates/test-format').read()
+        )
         self.assertEquals(tmpl['disks'][0]['format'], 'vmdk')
 
     def test_customized_tmpl(self):
@@ -133,11 +142,14 @@ class TemplateTests(unittest.TestCase):
         req = json.dumps(t)
         resp = self.request('/plugins/kimchi/templates', req, 'POST')
         self.assertEquals(201, resp.status)
-        tmpl = json.loads(self.request('/plugins/kimchi/templates/test').read())
+        tmpl = json.loads(
+            self.request('/plugins/kimchi/templates/test').read()
+        )
 
         # Update name
         new_name = u'kīмсhīTmpl'
-        new_tmpl_uri = '/plugins/kimchi/templates/%s' % new_name.encode('utf-8')
+        new_tmpl_uri = '/plugins/kimchi/templates/%s' \
+                       % new_name.encode('utf-8')
         req = json.dumps({'name': new_name})
         resp = self.request('/plugins/kimchi/templates/test', req, 'PUT')
         self.assertEquals(303, resp.status)
@@ -259,7 +271,9 @@ class TemplateTests(unittest.TestCase):
 
         # Verify the current system has at least one interface to create a
         # bridged network
-        interfaces = json.loads(self.request('/plugins/kimchi/interfaces?type=nic').read())
+        interfaces = json.loads(
+            self.request('/plugins/kimchi/interfaces?type=nic').read()
+        )
         if len(interfaces) > 0:
             iface = interfaces[0]['name']
             networks.append({'name': u'bridge-network', 'connection': 'bridge',
@@ -283,11 +297,15 @@ class TemplateTests(unittest.TestCase):
         self.assertEquals(201, resp.status)
 
         # MockModel always returns 2 partitions (vdx, vdz)
-        partitions = json.loads(self.request('/plugins/kimchi/host/partitions').read())
+        partitions = json.loads(
+            self.request('/plugins/kimchi/host/partitions').read()
+        )
         devs = [dev['path'] for dev in partitions]
 
         # MockModel always returns 3 FC devices
-        fc_devs = json.loads(self.request('/plugins/kimchi/host/devices?_cap=fc_host').read())
+        fc_devs = json.loads(
+            self.request('/plugins/kimchi/host/devices?_cap=fc_host').read()
+        )
         fc_devs = [dev['name'] for dev in fc_devs]
 
         poolDefs = [
@@ -305,8 +323,10 @@ class TemplateTests(unittest.TestCase):
              'source': {'devices': [devs[0]]}}]
 
         for pool in poolDefs:
-            self.request('/plugins/kimchi/storagepools', json.dumps(pool), 'POST')
-            pool_uri = '/plugins/kimchi/storagepools/%s' % pool['name'].encode('utf-8')
+            self.request('/plugins/kimchi/storagepools', json.dumps(pool),
+                         'POST')
+            pool_uri = '/plugins/kimchi/storagepools/%s' \
+                       % pool['name'].encode('utf-8')
             self.request(pool_uri + '/activate', '{}', 'POST')
 
             req = None
@@ -321,7 +341,8 @@ class TemplateTests(unittest.TestCase):
                 req = json.dumps({'storagepool': pool_uri})
 
             if req is not None:
-                resp = self.request('/plugins/kimchi/templates/test', req, 'PUT')
+                resp = self.request('/plugins/kimchi/templates/test', req,
+                                    'PUT')
                 self.assertEquals(200, resp.status)
 
     def test_tmpl_integrity(self):
@@ -331,7 +352,8 @@ class TemplateTests(unittest.TestCase):
 
         pool = {'type': 'dir', 'name': 'dir-pool', 'path': '/tmp/dir-pool'}
         self.request('/plugins/kimchi/storagepools', json.dumps(pool), 'POST')
-        pool_uri = '/plugins/kimchi/storagepools/%s' % pool['name'].encode('utf-8')
+        pool_uri = '/plugins/kimchi/storagepools/%s' \
+                   % pool['name'].encode('utf-8')
         self.request(pool_uri + '/activate', '{}', 'POST')
 
         # Create a template using the custom network and pool
@@ -344,19 +366,22 @@ class TemplateTests(unittest.TestCase):
 
         # Try to delete network
         # It should fail as it is associated to a template
-        resp = self.request('/plugins/kimchi/networks/nat-network', '{}', 'DELETE')
+        resp = self.request('/plugins/kimchi/networks/nat-network', '{}',
+                            'DELETE')
         self.assertIn("KCHNET0017E", json.loads(resp.read())["reason"])
 
         # Update template to release network and then delete it
         params = {'networks': []}
         req = json.dumps(params)
         self.request('/plugins/kimchi/templates/test', req, 'PUT')
-        resp = self.request('/plugins/kimchi/networks/nat-network', '{}', 'DELETE')
+        resp = self.request('/plugins/kimchi/networks/nat-network', '{}',
+                            'DELETE')
         self.assertEquals(204, resp.status)
 
         # Try to delete the storagepool
         # It should fail as it is associated to a template
-        resp = self.request('/plugins/kimchi/storagepools/dir-pool', '{}', 'DELETE')
+        resp = self.request('/plugins/kimchi/storagepools/dir-pool', '{}',
+                            'DELETE')
         self.assertEquals(400, resp.status)
 
         # Verify the template

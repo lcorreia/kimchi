@@ -63,7 +63,9 @@ class StoragepoolTests(unittest.TestCase):
         self.request = partial(request, host, ssl_port)
 
     def test_get_storagepools(self):
-        storagepools = json.loads(self.request('/plugins/kimchi/storagepools').read())
+        storagepools = json.loads(
+            self.request('/plugins/kimchi/storagepools').read()
+        )
         self.assertIn('default', [pool['name'] for pool in storagepools])
 
         with RollbackContext() as rollback:
@@ -72,7 +74,8 @@ class StoragepoolTests(unittest.TestCase):
                 name = u'kīмсhī-storagepool-%i' % i
                 req = json.dumps({'name': name, 'type': 'dir',
                                   'path': '/var/lib/libvirt/images/%i' % i})
-                resp = self.request('/plugins/kimchi/storagepools', req, 'POST')
+                resp = self.request('/plugins/kimchi/storagepools', req,
+                                    'POST')
                 rollback.prependDefer(model.storagepool_delete, name)
 
                 self.assertEquals(201, resp.status)
@@ -80,11 +83,13 @@ class StoragepoolTests(unittest.TestCase):
                 # Pool name must be unique
                 req = json.dumps({'name': name, 'type': 'dir',
                                   'path': '/var/lib/libvirt/images/%i' % i})
-                resp = self.request('/plugins/kimchi/storagepools', req, 'POST')
+                resp = self.request('/plugins/kimchi/storagepools', req,
+                                    'POST')
                 self.assertEquals(400, resp.status)
 
                 # Verify pool information
-                resp = self.request('/plugins/kimchi/storagepools/%s' % name.encode("utf-8"))
+                resp = self.request('/plugins/kimchi/storagepools/%s' %
+                                    name.encode("utf-8"))
                 p = json.loads(resp.read())
                 keys = [u'name', u'state', u'capacity', u'allocated',
                         u'available', u'path', u'source', u'type',
@@ -96,7 +101,9 @@ class StoragepoolTests(unittest.TestCase):
                 self.assertEquals(True, p['autostart'])
                 self.assertEquals(0, p['nr_volumes'])
 
-            pools = json.loads(self.request('/plugins/kimchi/storagepools').read())
+            pools = json.loads(
+                self.request('/plugins/kimchi/storagepools').read()
+            )
             self.assertEquals(len(storagepools) + 3, len(pools))
 
             # Create a pool with an existing path
@@ -111,5 +118,6 @@ class StoragepoolTests(unittest.TestCase):
             # Reserved pool return 400
             req = json.dumps({'name': 'kimchi_isos', 'type': 'dir',
                               'path': '/var/lib/libvirt/images/%i' % i})
-            resp = request(host, ssl_port, '/plugins/kimchi/storagepools', req, 'POST')
+            resp = request(host, ssl_port, '/plugins/kimchi/storagepools', req,
+                           'POST')
             self.assertEquals(400, resp.status)

@@ -56,7 +56,9 @@ class ExceptionTests(unittest.TestCase):
         """
         setup_server('production')
         # test 404
-        resp = json.loads(request(host, ssl_port, '/plugins/kimchi/vms/blah').read())
+        resp = json.loads(
+            request(host, ssl_port, '/plugins/kimchi/vms/blah').read()
+        )
         self.assertEquals('404 Not Found', resp.get('code'))
 
         # test 405 wrong method
@@ -66,7 +68,9 @@ class ExceptionTests(unittest.TestCase):
         self.assertEquals(msg, resp.get('reason'))
 
         # test 400 parse error
-        resp = json.loads(request(host, ssl_port, '/plugins/kimchi/vms', '{', 'POST').read())
+        resp = json.loads(
+            request(host, ssl_port, '/plugins/kimchi/vms', '{', 'POST').read()
+        )
         msg = u'KCHAPI0006E: Unable to parse JSON request'
         self.assertEquals('400 Bad Request', resp.get('code'))
         self.assertEquals(msg, resp.get('reason'))
@@ -74,7 +78,9 @@ class ExceptionTests(unittest.TestCase):
 
         # test 400 missing required parameter
         req = json.dumps({})
-        resp = json.loads(request(host, ssl_port, '/plugins/kimchi/vms', req, 'POST').read())
+        resp = json.loads(
+            request(host, ssl_port, '/plugins/kimchi/vms', req, 'POST').read()
+        )
         self.assertEquals('400 Bad Request', resp.get('code'))
         m = u"KCHVM0016E: Specify a template to create a virtual machine from"
         self.assertEquals(m, resp.get('reason'))
@@ -86,7 +92,9 @@ class ExceptionTests(unittest.TestCase):
         """
         setup_server()
         # test 404
-        resp = json.loads(request(host, ssl_port, '/plugins/kimchi/vms/blah').read())
+        resp = json.loads(
+            request(host, ssl_port, '/plugins/kimchi/vms/blah').read()
+        )
         self.assertEquals('404 Not Found', resp.get('code'))
 
         # test 405 wrong method
@@ -96,7 +104,9 @@ class ExceptionTests(unittest.TestCase):
         self.assertEquals(msg, resp.get('reason'))
 
         # test 400 parse error
-        resp = json.loads(request(host, ssl_port, '/plugins/kimchi/vms', '{', 'POST').read())
+        resp = json.loads(
+            request(host, ssl_port, '/plugins/kimchi/vms', '{', 'POST').read()
+        )
         msg = u'KCHAPI0006E: Unable to parse JSON request'
         self.assertEquals('400 Bad Request', resp.get('code'))
         self.assertEquals(msg, resp.get('reason'))
@@ -104,7 +114,9 @@ class ExceptionTests(unittest.TestCase):
 
         # test 400 missing required parameter
         req = json.dumps({})
-        resp = json.loads(request(host, ssl_port, '/plugins/kimchi/vms', req, 'POST').read())
+        resp = json.loads(
+            request(host, ssl_port, '/plugins/kimchi/vms', req, 'POST').read()
+        )
         m = u"KCHVM0016E: Specify a template to create a virtual machine from"
         self.assertEquals('400 Bad Request', resp.get('code'))
         self.assertEquals(m, resp.get('reason'))

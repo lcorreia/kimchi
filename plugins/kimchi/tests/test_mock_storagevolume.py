@@ -61,11 +61,15 @@ class MockStorageVolumeTests(unittest.TestCase):
 
     def test_storagevolume(self):
         # MockModel always returns 2 partitions (vdx, vdz)
-        partitions = json.loads(self.request('/plugins/kimchi/host/partitions').read())
+        partitions = json.loads(
+            self.request('/plugins/kimchi/host/partitions').read()
+        )
         devs = [dev['path'] for dev in partitions]
 
         # MockModel always returns 3 FC devices
-        fc_devs = json.loads(self.request('/plugins/kimchi/host/devices?_cap=fc_host').read())
+        fc_devs = json.loads(
+            self.request('/plugins/kimchi/host/devices?_cap=fc_host').read()
+        )
         fc_devs = [dev['name'] for dev in fc_devs]
 
         poolDefs = [

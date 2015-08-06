@@ -60,15 +60,21 @@ class MockStoragepoolTests(unittest.TestCase):
         model.reset()
 
     def _task_lookup(self, taskid):
-        return json.loads(self.request('/plugins/kimchi/tasks/%s' % taskid).read())
+        return json.loads(
+            self.request('/plugins/kimchi/tasks/%s' % taskid).read()
+        )
 
     def test_storagepool(self):
         # MockModel always returns 2 partitions (vdx, vdz)
-        partitions = json.loads(self.request('/plugins/kimchi/host/partitions').read())
+        partitions = json.loads(
+            self.request('/plugins/kimchi/host/partitions').read()
+        )
         devs = [dev['path'] for dev in partitions]
 
         # MockModel always returns 3 FC devices
-        fc_devs = json.loads(self.request('/plugins/kimchi/host/devices?_cap=fc_host').read())
+        fc_devs = json.loads(
+            self.request('/plugins/kimchi/host/devices?_cap=fc_host').read()
+        )
         fc_devs = [dev['name'] for dev in fc_devs]
 
         poolDefs = [

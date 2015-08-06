@@ -136,4 +136,3 @@ class KimchiConfig(dict):
         }
 
         self.update(custom_config)
-

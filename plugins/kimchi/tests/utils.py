@@ -167,8 +167,8 @@ def get_remote_iso_path():
     """
     host_arch = os.uname()[4]
     remote_path = ''
-    with open(os.path.join(PluginPaths('kimchi').conf_dir, 'distros.d', 'fedora.json')) \
-            as fedora_isos:
+    with open(os.path.join(PluginPaths('kimchi').conf_dir, 'distros.d',
+              'fedora.json')) as fedora_isos:
         # Get a list of dicts
         json_isos_list = json.load(fedora_isos)
         for iso in json_isos_list:
@@ -228,12 +228,12 @@ def wait_task(task_lookup, taskid, timeout=10):
         task_info = task_lookup(taskid)
         if task_info['status'] == "running":
             wok_log.info("Waiting task %s, message: %s",
-                            taskid, task_info['message'])
+                         taskid, task_info['message'])
             time.sleep(1)
         else:
             return
     wok_log.error("Timeout while process long-run task, "
-                     "try to increase timeout value.")
+                  "try to increase timeout value.")
 
 
 # The action functions in model backend raise NotFoundError exception if the

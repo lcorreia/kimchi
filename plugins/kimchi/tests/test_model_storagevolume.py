@@ -63,13 +63,17 @@ def tearDownModule():
 
 def _do_volume_test(self, model, host, ssl_port, pool_name):
     def _task_lookup(taskid):
-        return json.loads(self.request('/plugins/kimchi/tasks/%s' % taskid).read())
+        return json.loads(
+            self.request('/plugins/kimchi/tasks/%s' % taskid).read()
+        )
 
-    uri = '/plugins/kimchi/storagepools/%s/storagevolumes' % pool_name.encode('utf-8')
+    uri = '/plugins/kimchi/storagepools/%s/storagevolumes' \
+          % pool_name.encode('utf-8')
     resp = self.request(uri)
     self.assertEquals(200, resp.status)
 
-    resp = self.request('/plugins/kimchi/storagepools/%s' % pool_name.encode('utf-8'))
+    resp = self.request('/plugins/kimchi/storagepools/%s' %
+                        pool_name.encode('utf-8'))
     pool_info = json.loads(resp.read())
     with RollbackContext() as rollback:
         # Create storage volume with 'capacity'
@@ -86,7 +90,9 @@ def _do_volume_test(self, model, host, ssl_port, pool_name):
             self.assertEquals(202, resp.status)
             task_id = json.loads(resp.read())['id']
             wait_task(_task_lookup, task_id)
-            status = json.loads(self.request('/plugins/kimchi/tasks/%s' % task_id).read())
+            status = json.loads(
+                self.request('/plugins/kimchi/tasks/%s' % task_id).read()
+            )
             self.assertEquals('finished', status['status'])
             vol_info = json.loads(self.request(vol_uri).read())
             vol_info['name'] = vol
@@ -130,7 +136,9 @@ def _do_volume_test(self, model, host, ssl_port, pool_name):
             rollback.prependDefer(model.storagevolume_delete, pool_name,
                                   cloned_vol_name)
             wait_task(_task_lookup, task['id'])
-            task = json.loads(self.request('/plugins/kimchi/tasks/%s' % task['id']).read())
+            task = json.loads(
+                self.request('/plugins/kimchi/tasks/%s' % task['id']).read()
+            )
             self.assertEquals('finished', task['status'])
             resp = self.request(uri + '/' + cloned_vol_name.encode('utf-8'))
 

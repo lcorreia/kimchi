@@ -41,7 +41,7 @@ class PeersModel(object):
         out, error, ret = run_command(cmd)
         if out and len(out) != 0:
             wok_log.error("Unable to register server on openSLP."
-                             " Details: %s" % out)
+                          " Details: %s" % out)
         cherrypy.engine.subscribe('exit', self._peer_deregister)
 
     def _peer_deregister(self):
@@ -50,7 +50,7 @@ class PeersModel(object):
         out, error, ret = run_command(cmd)
         if out and len(out) != 0:
             wok_log.error("Unable to deregister server on openSLP."
-                             " Details: %s" % out)
+                          " Details: %s" % out)
 
     def get_list(self):
         # check federation feature is enabled on Kimchi server

@@ -214,5 +214,4 @@ def lookup(distro, version):
     else:
         params['icon'] = 'plugins/kimchi/images/icon-vm.png'
 
-
     return params

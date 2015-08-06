@@ -101,8 +101,9 @@ class HostTests(unittest.TestCase):
 
     def test_host_actions(self):
         def _task_lookup(taskid):
-            return json.loads(self.request('/plugins/kimchi/tasks/%s' %
-                                           taskid).read())
+            return json.loads(
+                self.request('/plugins/kimchi/tasks/%s' % taskid).read()
+            )
 
         resp = self.request('/plugins/kimchi/host/shutdown', '{}', 'POST')
         self.assertEquals(200, resp.status)
@@ -127,11 +128,13 @@ class HostTests(unittest.TestCase):
         task_params = [u'id', u'message', u'status', u'target_uri']
         self.assertEquals(sorted(task_params), sorted(task.keys()))
 
-        resp = self.request('/plugins/kimchi/tasks/' + task[u'id'], None, 'GET')
+        resp = self.request('/plugins/kimchi/tasks/' + task[u'id'], None,
+                            'GET')
         task_info = json.loads(resp.read())
         self.assertEquals(task_info['status'], 'running')
         wait_task(_task_lookup, task_info['id'])
-        resp = self.request('/plugins/kimchi/tasks/' + task[u'id'], None, 'GET')
+        resp = self.request('/plugins/kimchi/tasks/' + task[u'id'], None,
+                            'GET')
         task_info = json.loads(resp.read())
         self.assertEquals(task_info['status'], 'finished')
         self.assertIn(u'All packages updated', task_info['message'])
@@ -146,7 +149,7 @@ class HostTests(unittest.TestCase):
         keys = ['name', 'path', 'type', 'fstype', 'size', 'mountpoint',
                 'available']
         for item in partitions:
-            resp = self.request('/plugins/kimchi/host/partitions/%s' % 
+            resp = self.request('/plugins/kimchi/host/partitions/%s' %
                                 item['name'])
             info = json.loads(resp.read())
             self.assertEquals(sorted(info.keys()), sorted(keys))
@@ -161,8 +164,9 @@ class HostTests(unittest.TestCase):
         # Mockmodel brings 3 preconfigured scsi fc_host
         self.assertEquals(3, len(nodedevs))
 
-        nodedev = json.loads(self.request(
-                             '/plugins/kimchi/host/devices/scsi_host2').read())
+        nodedev = json.loads(
+            self.request('/plugins/kimchi/host/devices/scsi_host2').read()
+        )
         # Mockmodel generates random wwpn and wwnn
         self.assertEquals('scsi_host2', nodedev['name'])
         self.assertEquals('fc_host', nodedev['adapter']['type'])
@@ -172,7 +176,7 @@ class HostTests(unittest.TestCase):
         devs = json.loads(self.request('/plugins/kimchi/host/devices').read())
         dev_names = [dev['name'] for dev in devs]
         for dev_type in ('pci', 'usb_device', 'scsi'):
-            resp = self.request('/plugins/kimchi/host/devices?_cap=%s' % 
+            resp = self.request('/plugins/kimchi/host/devices?_cap=%s' %
                                 dev_type)
             devsByType = json.loads(resp.read())
             names = [dev['name'] for dev in devsByType]
@@ -185,8 +189,9 @@ class HostTests(unittest.TestCase):
 
         for dev_type in ('pci', 'usb_device', 'scsi'):
             resp = self.request(
-                   '/plugins/kimchi/host/devices?_cap=%s&_passthrough=true' %
-                                dev_type)
+                '/plugins/kimchi/host/devices?_cap=%s&_passthrough=true' %
+                dev_type
+            )
             filteredDevs = json.loads(resp.read())
             filteredNames = [dev['name'] for dev in filteredDevs]
             self.assertTrue(set(filteredNames) <= set(dev_names))
@@ -194,8 +199,9 @@ class HostTests(unittest.TestCase):
 
         for dev in passthru_devs:
             resp = self.request(
-                   '/plugins/kimchi/host/devices?_passthrough_affected_by=%s' %
-                                dev)
+                '/plugins/kimchi/host/devices?_passthrough_affected_by=%s' %
+                dev
+            )
             affected_devs = [dev['name'] for dev in json.loads(resp.read())]
             self.assertTrue(set(affected_devs) <= set(dev_names))
 

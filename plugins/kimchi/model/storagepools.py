@@ -214,8 +214,8 @@ class StoragePoolsModel(object):
                                                     'virt_use_nfs=1'])
             if error or returncode:
                 wok_log.error("Unable to set virt_use_nfs=1. If you use "
-                                 "SELinux, this may prevent NFS pools from "
-                                 "being used.")
+                              "SELinux, this may prevent NFS pools from "
+                              "being used.")
         return name
 
     def _clean_scan(self, pool_name):
@@ -285,9 +285,9 @@ class StoragePoolModel(object):
             # throwing an Exception here would prevent all pools from
             # displaying information -- so return None for busy
             wok_log.error("ERROR: Storage Pool get vol count: %s "
-                             % e.get_error_message())
+                          % e.get_error_message())
             wok_log.error("ERROR: Storage Pool get vol count error no: %s "
-                             % e.get_error_code())
+                          % e.get_error_code())
             return 0
         except Exception as e:
             raise OperationFailed("KCHPOOL0008E",
@@ -340,8 +340,7 @@ class StoragePoolModel(object):
         # for a nfs if the corresponding NFS server is down.
         if pool_type == 'netfs' and not self._nfs_status_online(pool):
             wok_log.debug("NFS pool %s is offline, reason: NFS "
-                             "server %s is unreachable.", name,
-                             source['addr'])
+                          "server %s is unreachable.", name, source['addr'])
             # Mark state as '4' => inaccessible.
             info[0] = 4
             # skip calculating volumes
@@ -379,7 +378,7 @@ class StoragePoolModel(object):
             output, error, returncode = run_command(lsblk_cmd)
             if returncode != 0:
                 wok_log.error('%s is not a valid disk/partition. Could not '
-                                 'add it to the pool %s.', disk, pool_name)
+                              'add it to the pool %s.', disk, pool_name)
                 raise OperationFailed('KCHPOOL0027E', {'disk': disk,
                                                        'pool': pool_name})
         # add disks to the lvm pool using vgextend + virsh refresh

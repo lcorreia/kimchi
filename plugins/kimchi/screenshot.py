@@ -165,7 +165,7 @@ class VMScreenshot(object):
                 self._generate_scratch(thumbnail)
             except:
                 wok_log.error("screenshot_creation: Unable to create "
-                                 "screenshot image %s." % thumbnail)
+                              "screenshot image %s." % thumbnail)
         else:
             self._create_black_image(thumbnail)
 

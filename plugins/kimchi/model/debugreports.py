@@ -97,7 +97,7 @@ class DebugReportsModel(object):
             # Some error in sosreport happened
             if reportFile is None:
                 wok_log.error('Debug report file not found. See sosreport '
-                                 'output for detail:\n%s', output)
+                              'output for detail:\n%s', output)
                 fname = (patterns[0] % name).split('/')[-1]
                 raise OperationFailed('KCHDR0004E', {'name': fname})
 

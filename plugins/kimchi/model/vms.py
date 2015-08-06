@@ -137,7 +137,7 @@ class VMsModel(object):
                 # It is possible to continue Kimchi executions without store
                 # vm icon info
                 wok_log.error('Error trying to update database with guest '
-                                 'icon information due error: %s', e.message)
+                              'icon information due error: %s', e.message)
 
         # If storagepool is SCSI, volumes will be LUNs and must be passed by
         # the user from UI or manually.
@@ -202,8 +202,12 @@ class VMModel(object):
         self.objstore = kargs['objstore']
         self.caps = CapabilitiesModel(**kargs)
         self.vmscreenshot = VMScreenshotModel(**kargs)
-        self.users = import_class('plugins.kimchi.model.users.UsersModel')(**kargs)
-        self.groups = import_class('plugins.kimchi.model.groups.GroupsModel')(**kargs)
+        self.users = import_class(
+            'plugins.kimchi.model.users.UsersModel'
+        )(**kargs)
+        self.groups = import_class(
+            'plugins.kimchi.model.groups.GroupsModel'
+        )(**kargs)
         self.vms = VMsModel(**kargs)
         self.task = TaskModel(**kargs)
         self.storagepool = model.storagepools.StoragePoolModel(**kargs)
@@ -416,9 +420,9 @@ class VMModel(object):
                 # be used
                 if orig_vol['capacity'] > orig_pool['available']:
                     wok_log.warning('storage pool \'%s\' doesn\'t have '
-                                       'enough free space to store image '
-                                       '\'%s\'; falling back to \'default\'',
-                                       orig_pool_name, path)
+                                    'enough free space to store image '
+                                    '\'%s\'; falling back to \'default\'',
+                                    orig_pool_name, path)
                     new_pool_name = u'default'
                     new_pool = self.storagepool.lookup(u'default')
 
@@ -432,8 +436,8 @@ class VMModel(object):
             elif orig_pool['type'] in ['scsi', 'iscsi']:
                 # SCSI and iSCSI always fall back to the storage pool 'default'
                 wok_log.warning('cannot create new volume for clone in '
-                                   'storage pool \'%s\'; falling back to '
-                                   '\'default\'', orig_pool_name)
+                                'storage pool \'%s\'; falling back to '
+                                '\'default\'', orig_pool_name)
                 new_pool_name = u'default'
                 new_pool = self.storagepool.lookup(u'default')
 
@@ -1075,7 +1079,7 @@ class VMModel(object):
             snapshot_names = self.vmsnapshots.get_list(name)
         except OperationFailed, e:
             wok_log.error('cannot list snapshots: %s; '
-                             'skipping snapshot deleting...' % e.message)
+                          'skipping snapshot deleting...' % e.message)
         else:
             for s in snapshot_names:
                 self.vmsnapshot.delete(name, s)
@@ -1100,7 +1104,7 @@ class VMModel(object):
                                        ignore_missing=True)
             except libvirt.libvirtError as e:
                 wok_log.error('Unable to get storage volume by path: %s' %
-                                 e.message)
+                              e.message)
             except Exception as e:
                 raise OperationFailed('KCHVOL0017E', {'err': e.message})
 
@@ -1120,7 +1124,7 @@ class VMModel(object):
         except Exception as e:
             # It is possible to delete vm without delete its database info
             wok_log.error('Error deleting vm information from database: '
-                             '%s', e.message)
+                          '%s', e.message)
 
         vnc.remove_proxy_token(name)
 
@@ -1236,7 +1240,7 @@ class VMModel(object):
             # It is possible to continue Kimchi executions without delete
             # screenshots
             wok_log.error('Error trying to delete vm screenshot from '
-                             'database due error: %s', e.message)
+                          'database due error: %s', e.message)
 
     def suspend(self, name):
         """Suspend the virtual machine's execution and puts it in the
@@ -1302,7 +1306,7 @@ class VMScreenshotModel(object):
             # It is possible to continue Kimchi executions without store
             # screenshots
             wok_log.error('Error trying to update database with guest '
-                             'screenshot information due error: %s', e.message)
+                          'screenshot information due error: %s', e.message)
         return img_path
 
     @staticmethod
@@ -1320,7 +1324,7 @@ class VMScreenshotModel(object):
             # It is possible to continue Kimchi vm executions without
             # screenshots
             wok_log.error('Error trying to update database with guest '
-                             'screenshot information due error: %s', e.message)
+                          'screenshot information due error: %s', e.message)
         return LibvirtVMScreenshot(params, conn)
 
 

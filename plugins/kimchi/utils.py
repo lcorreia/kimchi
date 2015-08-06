@@ -37,4 +37,3 @@ def template_name_from_uri(uri):
 
 def pool_name_from_uri(uri):
     return _uri_to_name('storagepools', uri)
-

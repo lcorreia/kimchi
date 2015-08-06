@@ -60,7 +60,7 @@ class CPUInfoModel(object):
             libvirt_topology = get_topo_capabilities(connect)
         except Exception as e:
             wok_log.info("Unable to get CPU topology capabilities: %s"
-                            % e.message)
+                         % e.message)
             return
         if libvirt_topology is None:
             wok_log.info("cpu_info topology not supported.")
