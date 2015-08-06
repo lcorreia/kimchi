@@ -21,8 +21,6 @@ import json
 import os
 import unittest
 
-import wok.server
-
 from wok.plugins.kimchi import mockmodel
 
 from utils import get_free_port, patch_auth, request, run_server

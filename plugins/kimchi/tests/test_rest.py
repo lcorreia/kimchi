@@ -27,9 +27,6 @@ import urllib2
 import urlparse
 from functools import partial
 
-import iso_gen
-from wok.plugins.kimchi import mockmodel
-from wok.plugins.kimchi.osinfo import get_template_default
 from wok.rollbackcontext import RollbackContext
 from wok.utils import add_task
 

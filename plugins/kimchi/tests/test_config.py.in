@@ -26,8 +26,6 @@ from wok.plugins.kimchi.config import get_debugreports_path
 from wok.plugins.kimchi.config import get_screenshot_path
 from wok.plugins.kimchi.config import KimchiPaths
 
-from wok.plugins.kimchi import config as kconfig
-
 
 get_prefix = None
 

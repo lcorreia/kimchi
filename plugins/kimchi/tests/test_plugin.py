@@ -22,7 +22,6 @@ import os
 import unittest
 from functools import partial
 
-import wok.server
 from wok.utils import get_enabled_plugins
 
 from wok.plugins.kimchi import mockmodel
