@@ -88,10 +88,13 @@ class PluginPaths(Paths):
         self.plugin_dir = os.path.join('plugins', name)
 
         if self.installed:
+            self.state_dir = '@localstatedir@/lib/%s' % name
             self.conf_dir = '@sysconfdir@/wok/plugins.d'
             self.src_dir = os.path.join('@wokdir@', self.plugin_dir)
             self.mo_dir = '@prefix@/share/locale'
         else:
+            self.state_dir = self.add_prefix(os.path.join(self.plugin_dir,
+                                             'data'))
             self.conf_dir = self.add_prefix(self.plugin_dir)
             self.src_dir = self.add_prefix(self.plugin_dir)
             self.mo_dir = self.add_prefix(os.path.join(self.plugin_dir, 'mo'))
