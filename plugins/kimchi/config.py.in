@@ -23,7 +23,7 @@ import os
 import platform
 import threading
 
-from wok.config import PluginPaths
+from wok.config import PluginConfig, PluginPaths
 from wok.xmlutils.utils import xpath_get_text
 
 kimchiLock = threading.Lock()
@@ -103,9 +103,9 @@ class KimchiPaths(PluginPaths):
 kimchiPaths = KimchiPaths()
 
 
-class KimchiConfig(dict):
+class KimchiConfig(PluginConfig):
     def __init__(self):
-        super(KimchiConfig, self).__init__(self)
+        super(KimchiConfig, self).__init__('kimchi')
 
         custom_config = {
             '/novnc': {

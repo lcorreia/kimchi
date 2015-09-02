@@ -151,6 +151,14 @@ class WokConfig(dict):
         '/wok-ui.html': {
             'tools.wokauth.on': True
         },
+        '/favicon.ico': {
+            'tools.staticfile.on': True,
+            'tools.staticfile.filename': '%s/images/logo.ico' % paths.ui_dir
+        },
+        '/robots.txt': {
+            'tools.staticfile.on': True,
+            'tools.staticfile.filename': '%s/robots.txt' % paths.ui_dir
+        },
     }
 
     def __init__(self):
