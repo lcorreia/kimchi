@@ -21,6 +21,7 @@ Requires:	python-lxml
 Requires:	python-xml
 Requires:	nginx
 Requires:	python-psutil >= 0.6.0
+Requires:	fontawesome-fonts
 BuildRequires:	libxslt-tools
 BuildRequires:	openssl
 BuildRequires:	python-lxml
