@@ -29,7 +29,6 @@ from lxml import etree, objectify
 from lxml.builder import E
 from xml.etree import ElementTree
 
-from wok import vnc
 from wok.config import config
 from wok.exception import InvalidOperation, InvalidParameter
 from wok.exception import NotFoundError, OperationFailed
@@ -40,6 +39,7 @@ from wok.xmlutils.utils import xpath_get_text, xml_item_update
 from wok.xmlutils.utils import dictize
 
 from .. import model
+from .. import vnc
 from ..config import READONLY_POOL_TYPE
 from ..kvmusertests import UserTests
 from ..screenshot import VMScreenshot

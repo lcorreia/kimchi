@@ -103,8 +103,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_sysconfdir}/kimchi/distros.d/gentoo.json
 %{_sysconfdir}/kimchi/
 %{_sharedstatedir}/kimchi/debugreports/
-%{_sharedstatedir}/kimchi/screenshots/
 %{_sharedstatedir}/kimchi/isos/
+%{_sharedstatedir}/kimchi/screenshots/
+%{_sharedstatedir}/kimchi/vnc-tokens/
 %{_sharedstatedir}/kimchi/
 
 

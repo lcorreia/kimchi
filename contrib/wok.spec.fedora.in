@@ -130,7 +130,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %if 0%{?with_systemd}
 %{_sysconfdir}/nginx/conf.d/wok.conf
-%{_sharedstatedir}/wok/vnc-tokens/
 %{_sharedstatedir}/wok/
 %{_localstatedir}/log/wok/*
 %{_localstatedir}/log/wok/

@@ -90,10 +90,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_sysconfdir}/kimchi/distros.d/gentoo.json
 %{_sysconfdir}/kimchi/
 %{_var}/lib/kimchi/debugreports/
-%{_var}/lib/kimchi/screenshots/
 %{_var}/lib/kimchi/isos/
+%{_var}/lib/kimchi/screenshots/
+%{_var}/lib/kimchi/vnc-tokens/
 %{_var}/lib/kimchi/
-
 
 
 %changelog

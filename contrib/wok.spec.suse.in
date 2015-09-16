@@ -96,7 +96,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_sysconfdir}/wok/
 %{_sysconfdir}/nginx/conf.d/wok.conf.in
 %{_sysconfdir}/nginx/conf.d/wok.conf
-%{_var}/lib/wok/vnc-tokens/
 %{_var}/lib/wok/
 %{_localstatedir}/log/wok/*
 %{_localstatedir}/log/wok/
