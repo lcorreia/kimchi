@@ -15,8 +15,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-SUBDIRS = css font
-
-fontellodir = $(datadir)/wok/ui/fontello
-
-dist_fontello_DATA = LICENSE.txt
+opensanscssdir = $(datadir)/wok/ui/css/opensans
+dist_opensanscss_DATA = opensans.css

@@ -15,6 +15,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-cssdir = $(datadir)/wok/ui/fontello/css
-
-dist_css_DATA = $(wildcard *.css) $(NULL)
+fontawesomecssdir = $(datadir)/wok/ui/css/fontawesome
+dist_fontawesomecss_DATA = fontawesome.css

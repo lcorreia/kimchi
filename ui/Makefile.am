@@ -15,7 +15,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-SUBDIRS = base64 css fontello images js libs pages
+SUBDIRS = base64 css images js libs pages
 
 uidir = $(datadir)/wok/ui
 
