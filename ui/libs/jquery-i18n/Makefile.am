@@ -1,7 +1,7 @@
 #
 # Kimchi
 #
-# Copyright IBM, Corp. 2013
+# Copyright IBM, Corp. 2013-2015
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,4 +15,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-SUBDIRS = bootstrap jquery jquery-ui bootstrap-select es5-shim jquery-i18n
+jqueryi18ndir = $(datadir)/wok/ui/libs/jquery-i18n
+
+dist_jqueryi18n_DATA = $(wildcard *.js) $(NULL)
