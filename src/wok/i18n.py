@@ -41,6 +41,7 @@ messages = {
 
     "KCHOBJST0001E": _("Unable to find %(item)s in datastore"),
 
+    "KCHUTILS0001E": _("Invalid URI %(uri)s"),
     "KCHUTILS0002E": _("Timeout while running command '%(cmd)s' after %(seconds)s seconds"),
     "KCHUTILS0004E": _("Invalid data value '%(value)s'"),
     "KCHUTILS0005E": _("Invalid data unit '%(unit)s'"),
