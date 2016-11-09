@@ -17,7 +17,7 @@ Homepage: https://github.com/kimchi-project/kimchi
 Package: kimchi
 Architecture: any
 Depends: gettext,
-         gingerbase,
+         ginger-base,
          libguestfs-tools,
          libvirt-clients,
          libvirt-daemon-system,
