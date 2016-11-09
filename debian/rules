@@ -1,0 +1,22 @@
+#!/usr/bin/make -f
+export DH_VERBOSE=1
+
+export AUTOPOINT=true
+
+%:
+	dh $@ --with autoreconf --with python2
+
+override_dh_clean:
+	dh_clean po/gen-pot po/stamp-po \
+	$(shell find ./ -name '*.gmo'| sed 's#[^/]*$$#*.gmo#'| sort|uniq)
+	#dh_clean po/gen-pot po/stamp-po plugins/sample/po/stamp-po \
+	#$(shell find ./ -name '*.pyc'| sed 's#[^/]*$$#*.pyc#'| sort|uniq) \
+	#$(shell find ./ -name '*.mo' -type l)
+
+override_dh_auto_build:
+	# Debian : we removed generated css above and make sure we can rebuild them
+	make -C ui/css css
+	dh_auto_build
+
+override_dh_auto_test:
+	echo "Skipping tests"

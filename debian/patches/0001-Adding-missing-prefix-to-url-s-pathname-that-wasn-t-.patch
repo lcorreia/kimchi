@@ -1,0 +1,21 @@
+From 16e8baecb4fd0149b25208f3bfcd21e4fe0376c8 Mon Sep 17 00:00:00 2001
+From: Frederic Bonnard <frediz@linux.vnet.ibm.com>
+Date: Fri, 2 Oct 2015 13:51:58 +0200
+Subject: [PATCH] Adding missing prefix to url's pathname that wasn't in patch
+ for making urls relative
+
+---
+ ui/js/src/kimchi.api.js | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--- a/ui/js/src/kimchi.api.js
++++ b/ui/js/src/kimchi.api.js
+@@ -343,7 +343,7 @@
+             dataType : "json"
+         }).done(function() {
+             url = 'https://' + location.hostname + ':' + ssl_port;
+-            url += "/plugins/kimchi/novnc/vnc_auto.html";
++            url += window.location.pathname.replace(/^\//, '') + "/plugins/kimchi/novnc/vnc_auto.html";
+             url += "?port=" + ssl_port;
+             /*
+              * From python documentation base64.urlsafe_b64encode(s)
