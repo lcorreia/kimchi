@@ -1,13 +1,15 @@
 Source: kimchi
 Section: misc
 Priority: optional
-Maintainer: Frédéric Bonnard <frediz@linux.vnet.ibm.com>
+Maintainer: Lucio Correia <luciojhc@linux.vnet.ibm.com>
 Standards-Version: 3.9.6
 Build-Depends: compass-bootstrap-sass-plugin,
                debhelper (>= 9),
                dh-autoreconf,
                dh-python,
+               pysassc,
                python,
+               python-pkg-resources,
                ruby-compass-core,
                xsltproc,
                wok-dev
@@ -16,10 +18,12 @@ Homepage: https://github.com/kimchi-project/kimchi
 Package: kimchi
 Architecture: any
 Depends: gettext,
+         gingerbase,
          libguestfs-tools,
          libvirt-clients,
          libvirt-daemon-system,
          nfs-common,
+         novnc,
          open-iscsi,
          python-configobj,
          python-ethtool,
@@ -30,6 +34,7 @@ Depends: gettext,
          python-lxml,
          python-magic,
          python-parted,
+         python-paramiko,
          python-psutil,
          qemu-system-arm [armel armhf],
          qemu-system-mips [mips mipsel],
@@ -38,9 +43,9 @@ Depends: gettext,
          qemu-system-sparc [sparc],
          qemu-system-x86 [i386 amd64],
          sosreport,
+         spice-html5,
          sudo,
          websockify,
-         novnc,
          wok,
          ${misc:Depends},
          ${python:Depends}
@@ -49,6 +54,6 @@ Description: HTML5 based management tool for KVM
  Kimchi is designed to make it as easy as possible to get started with KVM and
  create your first guest.
  .
- Kimchi runs as a daemon on the hypervisor host. It manages KVM guests through
- libvirt. The management interface is accessed over the web using a browser that
- supports HTML5.
+ Kimchi is a plugin for Wok. It manages KVM guests through libvirt. The
+ management interface is accessed over the web using a browser that supports
+ HTML5.
