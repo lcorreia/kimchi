@@ -2,10 +2,9 @@ Source: kimchi
 Section: misc
 Priority: optional
 Maintainer: Lucio Correia <luciojhc@linux.vnet.ibm.com>
-Standards-Version: 3.9.6
+Standards-Version: 3.9.8
 Build-Depends: compass-bootstrap-sass-plugin,
-               debhelper (>= 9),
-               dh-autoreconf,
+               debhelper (>= 10),
                dh-python,
                pysassc,
                python,
