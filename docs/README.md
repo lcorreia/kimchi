@@ -34,7 +34,7 @@ Install Dependencies
 First of all, make sure to [Wok](https://github.com/kimchi-project/wok/#getting-started)
 and [Ginger Base](https://github.com/kimchi-project/gingerbase/#getting-started) installed in your system.
 To add Kimchi plugin, please make sure to have all the dependencies installed
-before starting up the wokd service.
+before starting up the wok service.
 
 * [RHEL/Fedora systems](/docs/fedora-deps.md)
 * [Debian/Ubuntu systems](/docs/ubuntu-deps.md)

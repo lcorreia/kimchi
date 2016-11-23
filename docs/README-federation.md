@@ -51,7 +51,7 @@ To enable it, do the following:
    federation = True
 
 6. Then start Wok service
-   sudo service wokd start
+   sudo service wok start
 
 The Wok server will be registered on openSLP on server starting up and will
 be found by other Wok peers (with federation feature enabled) in the same

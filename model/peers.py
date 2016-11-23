@@ -39,7 +39,7 @@ class PeersModel(object):
         self.url = hostname + ":" + port
 
         cmd = ["slptool", "register",
-               "service:wokd://%s" % self.url]
+               "service:wok://%s" % self.url]
         out, error, ret = run_command(cmd)
         if out and len(out) != 0:
             wok_log.error("Unable to register server on openSLP."
@@ -48,7 +48,7 @@ class PeersModel(object):
 
     def _peer_deregister(self):
         cmd = ["slptool", "deregister",
-               "service:wokd://%s" % self.url]
+               "service:wok://%s" % self.url]
         out, error, ret = run_command(cmd)
         if out and len(out) != 0:
             wok_log.error("Unable to deregister server on openSLP."
@@ -59,14 +59,14 @@ class PeersModel(object):
         if not config.get('kimchi', {}).get('federation', False):
             return []
 
-        cmd = ["slptool", "findsrvs", "service:wokd"]
+        cmd = ["slptool", "findsrvs", "service:wok"]
         out, error, ret = run_command(cmd)
         if ret != 0:
             return []
 
         peers = []
         for server in out.strip().split("\n"):
-            match = re.match("service:wokd://(.*?),.*", server)
+            match = re.match("service:wok://(.*?),.*", server)
             peer = match.group(1)
             if peer != self.url:
                 peers.append("https://" + peer)

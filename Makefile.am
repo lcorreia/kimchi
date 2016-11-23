@@ -156,11 +156,11 @@ ChangeLog:
 
 install-data-local:
 	@if test -d "$(systemdsystemunitdir)" ; then \
-		mkdir -p $(DESTDIR)/etc/systemd/system/wokd.service.d; \
+		mkdir -p $(DESTDIR)/etc/systemd/system/wok.service.d; \
 		if test -f /etc/debian_version; then \
-			$(INSTALL_DATA) contrib/kimchid.service.debian $(DESTDIR)/etc/systemd/system/wokd.service.d/kimchi.conf; \
+			$(INSTALL_DATA) contrib/kimchid.service.debian $(DESTDIR)/etc/systemd/system/wok.service.d/kimchi.conf; \
 		else \
-			$(INSTALL_DATA) contrib/kimchid.service.fedora $(DESTDIR)/etc/systemd/system/wokd.service.d/kimchi.conf; \
+			$(INSTALL_DATA) contrib/kimchid.service.fedora $(DESTDIR)/etc/systemd/system/wok.service.d/kimchi.conf; \
 		fi; \
 	fi; \
 	$(MKDIR_P) $(DESTDIR)/$(localstatedir)/lib/kimchi/
@@ -172,8 +172,8 @@ install-data-local:
 	mkdir -p $(DESTDIR)/$(localstatedir)/lib/kimchi/virtviewerfiles
 
 uninstall-local:
-	@if test -f $(DESTDIR)/etc/systemd/system/wokd.service.d/kimchi.conf; then \
-		$(RM) $(DESTDIR)/etc/systemd/system/wokd.service.d/kimchi.conf; \
+	@if test -f $(DESTDIR)/etc/systemd/system/wok.service.d/kimchi.conf; then \
+		$(RM) $(DESTDIR)/etc/systemd/system/wok.service.d/kimchi.conf; \
 	fi; \
 	$(RM) $(DESTDIR)$(kimchidir)/API.json
 	$(RM) -rf $(DESTDIR)/$(localstatedir)/lib/kimchi

@@ -1,7 +1,7 @@
 [Unit]
-Requires=wokd.service
+Requires=wok.service
 Wants=libvirtd.service
-After=libvirtd.service wokd.service
+After=libvirtd.service wok.service
 
 [Service]
 Nice=0
