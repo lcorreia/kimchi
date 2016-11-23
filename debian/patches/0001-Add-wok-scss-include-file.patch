@@ -1,0 +1,55 @@
+From 36de4f872ec205179466fb567554a7e8e9dbf2b3 Mon Sep 17 00:00:00 2001
+From: Lucio Correia <luciojhc@linux.vnet.ibm.com>
+Date: Wed, 23 Nov 2016 11:51:17 -0200
+Subject: [PATCH] [Kimchi] Add wok scss include file
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Signed-off-by: Frédéric Bonnard <frediz@linux.vnet.ibm.com>
+---
+ ui/css/Makefile.am     |  2 +-
+ ui/css/src/kimchi.scss | 12 ++++++------
+ 2 files changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/ui/css/Makefile.am b/ui/css/Makefile.am
+index 6573e2b..dc7741d 100644
+--- a/ui/css/Makefile.am
++++ b/ui/css/Makefile.am
+@@ -20,4 +20,4 @@ dist_css_DATA = kimchi.css
+ 
+ css: src/*.scss src/modules/*.scss
+ 	echo "Compiling .scss file $<"
+-	sassc -s expanded $< kimchi.css
++	pysassc -I /usr/share/wok/scss -s expanded $< kimchi.css
+diff --git a/ui/css/src/kimchi.scss b/ui/css/src/kimchi.scss
+index 89904e0..44758c3 100644
+--- a/ui/css/src/kimchi.scss
++++ b/ui/css/src/kimchi.scss
+@@ -17,17 +17,17 @@
+  */
+ 
+ // Core variables
+-@import "../../../../../../../ui/css/src/modules/wok-variables";
++@import "modules/wok-variables";
+ // Core functions
+-@import "../../../../../../../ui/css/src/modules/compact";
++@import "modules/compact";
+ // Compass Mixins
+-@import "../../../../../../../ui/css/src/vendor/compass-mixins/lib/compass";
++@import "vendor/compass-mixins/lib/compass";
+ // Bootstrap Mixins
+-@import "../../../../../../../ui/css/src/vendor/bootstrap-sass/bootstrap/mixins";
++@import "vendor/bootstrap-sass/bootstrap/mixins";
+ 
+ // Extended classes
+-@import "../../../../../../../ui/css/src/modules/utils";
+-@import "../../../../../../../ui/css/src/modules/animation";
++@import "modules/utils";
++@import "modules/animation";
+ 
+ // Images List - Guests and Templates
+ @import "modules/iso-list";
+-- 
+2.7.4
+

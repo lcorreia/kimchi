@@ -1,0 +1,126 @@
+From 5f3575ce752fef0de86afd9f26ec5a76204fb83d Mon Sep 17 00:00:00 2001
+From: Lucio Correia <luciojhc@linux.vnet.ibm.com>
+Date: Wed, 23 Nov 2016 14:20:06 -0200
+Subject: [PATCH] Rename wokd to wok
+
+Signed-off-by: Lucio Correia <luciojhc@linux.vnet.ibm.com>
+---
+ Makefile.am                    | 10 +++++-----
+ contrib/kimchid.service.ubuntu |  4 ++--
+ docs/README-federation.md      |  2 +-
+ docs/README.md                 |  2 +-
+ model/peers.py                 |  8 ++++----
+ 5 files changed, 13 insertions(+), 13 deletions(-)
+
+diff --git a/Makefile.am b/Makefile.am
+index 01d4edf..36607a1 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -156,11 +156,11 @@ ChangeLog:
+ 
+ install-data-local:
+ 	@if test -d "$(systemdsystemunitdir)" ; then \
+-		mkdir -p $(DESTDIR)/etc/systemd/system/wokd.service.d; \
++		mkdir -p $(DESTDIR)/etc/systemd/system/wok.service.d; \
+ 		if test -f /etc/debian_version; then \
+-			$(INSTALL_DATA) contrib/kimchid.service.ubuntu $(DESTDIR)/etc/systemd/system/wokd.service.d/kimchi.conf; \
++			$(INSTALL_DATA) contrib/kimchid.service.ubuntu $(DESTDIR)/etc/systemd/system/wok.service.d/kimchi.conf; \
+ 		else \
+-			$(INSTALL_DATA) contrib/kimchid.service.fedora $(DESTDIR)/etc/systemd/system/wokd.service.d/kimchi.conf; \
++			$(INSTALL_DATA) contrib/kimchid.service.fedora $(DESTDIR)/etc/systemd/system/wok.service.d/kimchi.conf; \
+ 		fi; \
+ 	fi; \
+ 	$(MKDIR_P) $(DESTDIR)/$(localstatedir)/lib/kimchi/
+@@ -172,8 +172,8 @@ install-data-local:
+ 	mkdir -p $(DESTDIR)/$(localstatedir)/lib/kimchi/virtviewerfiles
+ 
+ uninstall-local:
+-	@if test -f $(DESTDIR)/etc/systemd/system/wokd.service.d/kimchi.conf; then \
+-		$(RM) $(DESTDIR)/etc/systemd/system/wokd.service.d/kimchi.conf; \
++	@if test -f $(DESTDIR)/etc/systemd/system/wok.service.d/kimchi.conf; then \
++		$(RM) $(DESTDIR)/etc/systemd/system/wok.service.d/kimchi.conf; \
+ 	fi; \
+ 	$(RM) $(DESTDIR)$(kimchidir)/API.json
+ 	$(RM) -rf $(DESTDIR)/$(localstatedir)/lib/kimchi
+diff --git a/contrib/kimchid.service.ubuntu b/contrib/kimchid.service.ubuntu
+index e52db66..e261942 100644
+--- a/contrib/kimchid.service.ubuntu
++++ b/contrib/kimchid.service.ubuntu
+@@ -1,7 +1,7 @@
+ [Unit]
+-Requires=wokd.service
++Requires=wok.service
+ Wants=libvirt-bin.service
+-After=libvirt-bin.service wokd.service
++After=libvirt-bin.service wok.service
+ 
+ [Service]
+ Nice=0
+diff --git a/docs/README-federation.md b/docs/README-federation.md
+index 3554757..561adde 100644
+--- a/docs/README-federation.md
++++ b/docs/README-federation.md
+@@ -51,7 +51,7 @@ To enable it, do the following:
+    federation = True
+ 
+ 6. Then start Wok service
+-   sudo service wokd start
++   sudo service wok start
+ 
+ The Wok server will be registered on openSLP on server starting up and will
+ be found by other Wok peers (with federation feature enabled) in the same
+diff --git a/docs/README.md b/docs/README.md
+index 674a4d7..7974d1b 100644
+--- a/docs/README.md
++++ b/docs/README.md
+@@ -31,7 +31,7 @@ Install Dependencies
+ First of all, make sure to [Wok](https://github.com/kimchi-project/wok/#getting-started)
+ and [Ginger Base](https://github.com/kimchi-project/gingerbase/#getting-started) installed in your system.
+ To add Kimchi plugin, please make sure to have all the dependencies installed
+-before starting up the wokd service.
++before starting up the wok service.
+ 
+ * [RHEL/Fedora systems](/docs/fedora-deps.md)
+ * [Debian/Ubuntu systems](/docs/ubuntu-deps.md)
+diff --git a/model/peers.py b/model/peers.py
+index 1be606b..d960ca0 100644
+--- a/model/peers.py
++++ b/model/peers.py
+@@ -39,7 +39,7 @@ class PeersModel(object):
+         self.url = hostname + ":" + port
+ 
+         cmd = ["slptool", "register",
+-               "service:wokd://%s" % self.url]
++               "service:wok://%s" % self.url]
+         out, error, ret = run_command(cmd)
+         if out and len(out) != 0:
+             wok_log.error("Unable to register server on openSLP."
+@@ -48,7 +48,7 @@ class PeersModel(object):
+ 
+     def _peer_deregister(self):
+         cmd = ["slptool", "deregister",
+-               "service:wokd://%s" % self.url]
++               "service:wok://%s" % self.url]
+         out, error, ret = run_command(cmd)
+         if out and len(out) != 0:
+             wok_log.error("Unable to deregister server on openSLP."
+@@ -59,14 +59,14 @@ class PeersModel(object):
+         if not config.get('kimchi', {}).get('federation', False):
+             return []
+ 
+-        cmd = ["slptool", "findsrvs", "service:wokd"]
++        cmd = ["slptool", "findsrvs", "service:wok"]
+         out, error, ret = run_command(cmd)
+         if ret != 0:
+             return []
+ 
+         peers = []
+         for server in out.strip().split("\n"):
+-            match = re.match("service:wokd://(.*?),.*", server)
++            match = re.match("service:wok://(.*?),.*", server)
+             peer = match.group(1)
+             if peer != self.url:
+                 peers.append("https://" + peer)
+-- 
+2.7.4
+

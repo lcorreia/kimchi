@@ -1,2 +1,6 @@
-0001-Adding-missing-prefix-to-url-s-pathname-that-wasn-t-.patch
-add-wok-scss-include-file
+0001-Issue-733-Fix-UI-to-handle-relative-paths.patch
+0002-Issue-733-CSS-updates-to-handle-relative-path-suppor.patch
+0003-Update-Kimchi-code-due-chnages-on-Wok-configuration-.patch
+0001-Rename-wokd-to-wok.patch
+0001-Use-libvirtd-service-in-Ubuntu.patch
+0001-Add-wok-scss-include-file.patch

@@ -1,0 +1,967 @@
+From 863b0350a84739418af2bc2f04c4bf52115d4760 Mon Sep 17 00:00:00 2001
+From: Aline Manera <alinefm@linux.vnet.ibm.com>
+Date: Thu, 10 Nov 2016 00:19:34 -0200
+Subject: [PATCH 3/3] Update Kimchi code due chnages on Wok configuration
+ parameters
+
+Some Wok configuration parameters were removed or renamed, so update
+Kimchi code according to it.
+
+Also move some functions from Wok (tests/utils.py) to Kimchi as they were
+stricted related to Kimchi tests.
+
+Signed-off-by: Aline Manera <alinefm@linux.vnet.ibm.com>
+---
+ model/peers.py                    |  2 +-
+ tests/test_authorization.py       | 14 +++------
+ tests/test_host.py                | 15 +++-------
+ tests/test_livemigration.py       | 12 ++------
+ tests/test_mock_network.py        | 17 +++--------
+ tests/test_mock_storagepool.py    | 17 +++--------
+ tests/test_mock_storagevolume.py  | 19 ++++---------
+ tests/test_mockmodel.py           | 30 +++++++-------------
+ tests/test_model.py               | 60 +++++++++++++++++++++++++--------------
+ tests/test_model_network.py       | 17 +++--------
+ tests/test_model_storagepool.py   | 20 ++++---------
+ tests/test_model_storagevolume.py | 25 ++++++----------
+ tests/test_networkxml.py          |  7 +++--
+ tests/test_rest.py                | 20 ++++---------
+ tests/test_template.py            | 17 +++--------
+ ui/js/src/kimchi.api.js           | 21 ++++++--------
+ websocket.py                      |  8 +-----
+ 17 files changed, 116 insertions(+), 205 deletions(-)
+
+diff --git a/model/peers.py b/model/peers.py
+index 606ee8a..1be606b 100644
+--- a/model/peers.py
++++ b/model/peers.py
+@@ -35,7 +35,7 @@ class PeersModel(object):
+ 
+         # register server on openslp
+         hostname = socket.getfqdn(wok_config.get("server", "host"))
+-        port = wok_config.get("server", "ssl_port")
++        port = wok_config.get("server", "proxy_port")
+         self.url = hostname + ":" + port
+ 
+         cmd = ["slptool", "register",
+diff --git a/tests/test_authorization.py b/tests/test_authorization.py
+index cbeca04..565f446 100644
+--- a/tests/test_authorization.py
++++ b/tests/test_authorization.py
+@@ -22,7 +22,7 @@ import os
+ import unittest
+ from functools import partial
+ 
+-from tests.utils import get_fake_user, get_free_port, patch_auth
++from tests.utils import get_fake_user, patch_auth
+ from tests.utils import request, run_server, wait_task
+ 
+ from wok.plugins.kimchi import mockmodel
+@@ -32,21 +32,15 @@ from iso_gen import construct_fake_iso
+ 
+ test_server = None
+ model = None
+-host = None
+-port = None
+-ssl_port = None
+ fake_iso = '/tmp/fake.iso'
+ 
+ 
+ def setUpModule():
+-    global test_server, model, host, port, ssl_port
++    global test_server, model
+ 
+     patch_auth(sudo=False)
+     model = mockmodel.MockModel('/tmp/obj-store-test')
+-    host = '127.0.0.1'
+-    port = get_free_port('http')
+-    ssl_port = get_free_port('https')
+-    test_server = run_server(host, port, ssl_port, test_mode=True, model=model)
++    test_server = run_server(test_mode=True, model=model)
+ 
+     # Create fake ISO to do the tests
+     construct_fake_iso(fake_iso, True, '12.04', 'ubuntu')
+@@ -60,7 +54,7 @@ def tearDownModule():
+ 
+ class AuthorizationTests(unittest.TestCase):
+     def setUp(self):
+-        self.request = partial(request, host, ssl_port)
++        self.request = partial(request)
+         model.reset()
+ 
+     def test_nonroot_access(self):
+diff --git a/tests/test_host.py b/tests/test_host.py
+index 4b5fd40..1ee3368 100644
+--- a/tests/test_host.py
++++ b/tests/test_host.py
+@@ -24,30 +24,23 @@ import tempfile
+ import unittest
+ from functools import partial
+ 
+-from tests.utils import get_free_port, patch_auth, request, run_server
++from tests.utils import patch_auth, request, run_server
+ 
+ from wok.plugins.kimchi.mockmodel import MockModel
+ 
+ 
+ test_server = None
+ model = None
+-host = None
+-ssl_port = None
+ tmpfile = None
+ 
+ 
+ def setUpModule():
+-    global test_server, model, host, ssl_port, tmpfile
++    global test_server, model, tmpfile
+ 
+     patch_auth()
+     tmpfile = tempfile.mktemp()
+     model = MockModel(tmpfile)
+-    host = '127.0.0.1'
+-    port = get_free_port('http')
+-    ssl_port = get_free_port('https')
+-    cherrypy_port = get_free_port('cherrypy_port')
+-    test_server = run_server(host, port, ssl_port, test_mode=True,
+-                             cherrypy_port=cherrypy_port, model=model)
++    test_server = run_server(test_mode=True, model=model)
+ 
+ 
+ def tearDownModule():
+@@ -57,7 +50,7 @@ def tearDownModule():
+ 
+ class HostTests(unittest.TestCase):
+     def setUp(self):
+-        self.request = partial(request, host, ssl_port)
++        self.request = partial(request)
+ 
+     def test_host_devices(self):
+         def asset_devices_type(devices, dev_type):
+diff --git a/tests/test_livemigration.py b/tests/test_livemigration.py
+index 34fe853..7d7d458 100644
+--- a/tests/test_livemigration.py
++++ b/tests/test_livemigration.py
+@@ -25,7 +25,7 @@ import socket
+ import unittest
+ from functools import partial
+ 
+-from tests.utils import get_free_port, patch_auth, request, rollback_wrapper
++from tests.utils import patch_auth, request, rollback_wrapper
+ from tests.utils import run_server, running_as_root, wait_task
+ 
+ from wok.basemodel import Singleton
+@@ -411,17 +411,11 @@ class LiveMigrationTests(unittest.TestCase):
+         inst = model.Model(libvirt_uri='qemu:///system',
+                            objstore_loc=self.tmp_store)
+ 
+-        host = '127.0.0.1'
+-        port = get_free_port('http')
+-        ssl_port = get_free_port('https')
+-        cherrypy_port = get_free_port('cherrypy_port')
+-
+         with RollbackContext() as rollback:
+-            test_server = run_server(host, port, ssl_port, test_mode=True,
+-                                     cherrypy_port=cherrypy_port, model=inst)
++            test_server = run_server(test_mode=True, model=inst)
+             rollback.prependDefer(test_server.stop)
+ 
+-            self.request = partial(request, host, ssl_port)
++            self.request = partial(request)
+ 
+             self.create_vm_test()
+             rollback.prependDefer(rollback_wrapper, self.inst.vm_delete,
+diff --git a/tests/test_mock_network.py b/tests/test_mock_network.py
+index 6fed641..48e5557 100644
+--- a/tests/test_mock_network.py
++++ b/tests/test_mock_network.py
+@@ -23,7 +23,7 @@ import os
+ import unittest
+ from functools import partial
+ 
+-from tests.utils import get_free_port, patch_auth, request, run_server
++from tests.utils import patch_auth, request, run_server
+ 
+ from wok.plugins.kimchi.mockmodel import MockModel
+ from wok.plugins.kimchi.model.featuretests import FeatureTests
+@@ -33,23 +33,14 @@ from test_model_network import _do_network_test
+ 
+ model = None
+ test_server = None
+-host = None
+-port = None
+-ssl_port = None
+-cherrypy_port = None
+ 
+ 
+ def setUpModule():
+-    global test_server, model, host, port, ssl_port, cherrypy_port
++    global test_server, model
+ 
+     patch_auth()
+     model = MockModel('/tmp/obj-store-test')
+-    host = '127.0.0.1'
+-    port = get_free_port('http')
+-    ssl_port = get_free_port('https')
+-    cherrypy_port = get_free_port('cherrypy_port')
+-    test_server = run_server(host, port, ssl_port, test_mode=True,
+-                             cherrypy_port=cherrypy_port, model=model)
++    test_server = run_server(test_mode=True, model=model)
+ 
+ 
+ def tearDownModule():
+@@ -59,7 +50,7 @@ def tearDownModule():
+ 
+ class MockNetworkTests(unittest.TestCase):
+     def setUp(self):
+-        self.request = partial(request, host, ssl_port)
++        self.request = partial(request)
+         model.reset()
+ 
+     @unittest.skipIf(FeatureTests.is_nm_running(),
+diff --git a/tests/test_mock_storagepool.py b/tests/test_mock_storagepool.py
+index 925a9e6..5c152e4 100644
+--- a/tests/test_mock_storagepool.py
++++ b/tests/test_mock_storagepool.py
+@@ -23,30 +23,21 @@ import os
+ import unittest
+ from functools import partial
+ 
+-from tests.utils import get_free_port, patch_auth, request, run_server
++from tests.utils import patch_auth, request, run_server
+ 
+ from wok.plugins.kimchi.mockmodel import MockModel
+ 
+ 
+ model = None
+ test_server = None
+-host = None
+-port = None
+-ssl_port = None
+-cherrypy_port = None
+ 
+ 
+ def setUpModule():
+-    global test_server, model, host, port, ssl_port, cherrypy_port
++    global test_server, model
+ 
+     patch_auth()
+     model = MockModel('/tmp/obj-store-test')
+-    host = '127.0.0.1'
+-    port = get_free_port('http')
+-    ssl_port = get_free_port('https')
+-    cherrypy_port = get_free_port('cherrypy_port')
+-    test_server = run_server(host, port, ssl_port, test_mode=True,
+-                             cherrypy_port=cherrypy_port, model=model)
++    test_server = run_server(test_mode=True, model=model)
+ 
+ 
+ def tearDownModule():
+@@ -56,7 +47,7 @@ def tearDownModule():
+ 
+ class MockStoragepoolTests(unittest.TestCase):
+     def setUp(self):
+-        self.request = partial(request, host, ssl_port)
++        self.request = partial(request)
+         model.reset()
+ 
+     def _task_lookup(self, taskid):
+diff --git a/tests/test_mock_storagevolume.py b/tests/test_mock_storagevolume.py
+index d04c91f..3380bd5 100644
+--- a/tests/test_mock_storagevolume.py
++++ b/tests/test_mock_storagevolume.py
+@@ -23,7 +23,7 @@ import os
+ import unittest
+ from functools import partial
+ 
+-from tests.utils import get_free_port, patch_auth, request, run_server
++from tests.utils import patch_auth, request, run_server
+ 
+ from wok.plugins.kimchi.mockmodel import MockModel
+ 
+@@ -32,23 +32,14 @@ from test_model_storagevolume import _do_volume_test
+ 
+ model = None
+ test_server = None
+-host = None
+-port = None
+-ssl_port = None
+-cherrypy_port = None
+ 
+ 
+ def setUpModule():
+-    global test_server, model, host, port, ssl_port, cherrypy_port
++    global test_server, model
+ 
+     patch_auth()
+     model = MockModel('/tmp/obj-store-test')
+-    host = '127.0.0.1'
+-    port = get_free_port('http')
+-    ssl_port = get_free_port('https')
+-    cherrypy_port = get_free_port('cherrypy_port')
+-    test_server = run_server(host, port, ssl_port, test_mode=True,
+-                             cherrypy_port=cherrypy_port, model=model)
++    test_server = run_server(test_mode=True, model=model)
+ 
+ 
+ def tearDownModule():
+@@ -58,7 +49,7 @@ def tearDownModule():
+ 
+ class MockStorageVolumeTests(unittest.TestCase):
+     def setUp(self):
+-        self.request = partial(request, host, ssl_port)
++        self.request = partial(request)
+ 
+     def test_storagevolume(self):
+         # MockModel always returns 2 partitions (vdx, vdz)
+@@ -96,4 +87,4 @@ class MockStorageVolumeTests(unittest.TestCase):
+             # activate the storage pool
+             resp = self.request(uri + '/activate', '{}', 'POST')
+             self.assertEquals(200, resp.status)
+-            _do_volume_test(self, model, host, ssl_port, pool_name)
++            _do_volume_test(self, model, pool_name)
+diff --git a/tests/test_mockmodel.py b/tests/test_mockmodel.py
+index 147942c..826af12 100644
+--- a/tests/test_mockmodel.py
++++ b/tests/test_mockmodel.py
+@@ -23,7 +23,7 @@ import os
+ import time
+ import unittest
+ 
+-from tests.utils import get_free_port, patch_auth, request, run_server
++from tests.utils import patch_auth, request, run_server
+ from tests.utils import wait_task
+ 
+ from wok.exception import InvalidOperation
+@@ -34,22 +34,15 @@ import iso_gen
+ 
+ test_server = None
+ model = None
+-host = None
+-port = None
+-ssl_port = None
+ fake_iso = None
+ 
+ 
+ def setUpModule():
+-    global host, port, ssl_port, model, test_server, fake_iso
++    global model, test_server, fake_iso
+     cherrypy.request.headers = {'Accept': 'application/json'}
+     model = mockmodel.MockModel('/tmp/obj-store-test')
+     patch_auth()
+-    port = get_free_port('http')
+-    ssl_port = get_free_port('https')
+-    host = '127.0.0.1'
+-    test_server = run_server(host, port, ssl_port, test_mode=True,
+-                             model=model)
++    test_server = run_server(test_mode=True, model=model)
+     fake_iso = '/tmp/fake.iso'
+     iso_gen.construct_fake_iso(fake_iso, True, '12.04', 'ubuntu')
+ 
+@@ -68,26 +61,25 @@ class MockModelTests(unittest.TestCase):
+         # Create a VM
+         req = json.dumps({'name': 'test',
+                           'source_media': {'type': 'disk', 'path': fake_iso}})
+-        request(host, ssl_port, '/plugins/kimchi/templates', req, 'POST')
++        request('/plugins/kimchi/templates', req, 'POST')
+         req = json.dumps({'name': 'test-vm',
+                           'template': '/plugins/kimchi/templates/test'})
+-        resp = request(host, ssl_port, '/plugins/kimchi/vms', req, 'POST')
++        resp = request('/plugins/kimchi/vms', req, 'POST')
+         task = json.loads(resp.read())
+         wait_task(model.task_lookup, task['id'])
+ 
+         # Test screenshot refresh for running vm
+-        request(host, ssl_port, '/plugins/kimchi/vms/test-vm/start', '{}',
++        request('/plugins/kimchi/vms/test-vm/start', '{}',
+                 'POST')
+-        resp = request(host, ssl_port,
+-                       '/plugins/kimchi/vms/test-vm/screenshot')
++        resp = request('/plugins/kimchi/vms/test-vm/screenshot')
+         self.assertEquals(200, resp.status)
+         self.assertEquals('image/png', resp.getheader('content-type'))
+-        resp1 = request(host, ssl_port, '/plugins/kimchi/vms/test-vm')
++        resp1 = request('/plugins/kimchi/vms/test-vm')
+         rspBody = resp1.read()
+         testvm_Data = json.loads(rspBody)
+         screenshotURL = '/' + testvm_Data['screenshot']
+         time.sleep(5)
+-        resp2 = request(host, ssl_port, screenshotURL)
++        resp2 = request(screenshotURL)
+         self.assertEquals(200, resp2.status)
+         self.assertEquals(resp2.getheader('content-type'),
+                           resp.getheader('content-type'))
+@@ -99,13 +91,13 @@ class MockModelTests(unittest.TestCase):
+     def test_vm_list_sorted(self):
+         req = json.dumps({'name': 'test',
+                           'source_media': {'type': 'disk', 'path': fake_iso}})
+-        request(host, ssl_port, '/plugins/kimchi/templates', req, 'POST')
++        request('/plugins/kimchi/templates', req, 'POST')
+ 
+         def add_vm(name):
+             # Create a VM
+             req = json.dumps({'name': name,
+                               'template': '/plugins/kimchi/templates/test'})
+-            task = json.loads(request(host, ssl_port, '/plugins/kimchi/vms',
++            task = json.loads(request('/plugins/kimchi/vms',
+                               req, 'POST').read())
+             wait_task(model.task_lookup, task['id'])
+ 
+diff --git a/tests/test_model.py b/tests/test_model.py
+index 05f046c..40c85bc 100644
+--- a/tests/test_model.py
++++ b/tests/test_model.py
+@@ -22,23 +22,22 @@ import __builtin__ as builtins
+ 
+ import base64
+ import grp
++import json
+ import lxml.etree as ET
++import mock
+ import os
+ import pwd
+-import mock
+ import re
+ import shutil
+ import time
+ import unittest
+ 
+-from mock import call, mock_open, patch
+-
+ import tests.utils as utils
+ 
+ import wok.objectstore
+ from wok.asynctask import AsyncTask
+ from wok.basemodel import Singleton
+-from wok.config import config
++from wok.config import config, PluginPaths
+ from wok.exception import InvalidOperation
+ from wok.exception import InvalidParameter, NotFoundError, OperationFailed
+ from wok.rollbackcontext import RollbackContext
+@@ -98,6 +97,25 @@ def tearDownModule():
+     shutil.rmtree(TMP_DIR)
+ 
+ 
++def get_remote_iso_path():
++    """
++    Get a remote iso with the right arch from the distro files shipped
++    with kimchi.
++    """
++    host_arch = os.uname()[4]
++    remote_path = ''
++    with open(os.path.join(PluginPaths('kimchi').conf_dir, 'distros.d',
++                   'fedora.json')) as fedora_isos:
++        # Get a list of dicts
++        json_isos_list = json.load(fedora_isos)
++        for iso in json_isos_list:
++            if (iso.get('os_arch')) == host_arch:
++                remote_path = iso.get('path')
++                break
++
++    return remote_path
++
++
+ def _setDiskPoolDefault():
+     osinfo.defaults['disks'][0]['pool'] = {
+         'name': '/plugins/kimchi/storagepools/default'}
+@@ -387,8 +405,8 @@ class ModelTests(unittest.TestCase):
+ 
+         vvmodel = VMVirtViewerFileModel(conn=None)
+ 
+-        open_ = mock_open(read_data='')
+-        with patch.object(builtins, 'open', open_):
++        open_ = mock.mock_open(read_data='')
++        with mock.patch.object(builtins, 'open', open_):
+             vvfilepath = vvmodel.lookup('kimchi-vm')
+ 
+         self.assertEqual(
+@@ -399,7 +417,7 @@ class ModelTests(unittest.TestCase):
+         expected_write_content = "[virt-viewer]\ntype=vnc\n"\
+             "host=kimchi-test-host\nport=5999\n"
+         self.assertEqual(
+-            open_().write.mock_calls, [call(expected_write_content)]
++            open_().write.mock_calls, [mock.call(expected_write_content)]
+         )
+ 
+         mock_get_graphics.assert_called_once_with('kimchi-vm', None)
+@@ -430,8 +448,8 @@ class ModelTests(unittest.TestCase):
+ 
+         vvmodel = VMVirtViewerFileModel(conn=None)
+ 
+-        open_ = mock_open(read_data='')
+-        with patch.object(builtins, 'open', open_):
++        open_ = mock.mock_open(read_data='')
++        with mock.patch.object(builtins, 'open', open_):
+             vvfilepath = vvmodel.lookup('kimchi-vm')
+ 
+         self.assertEqual(
+@@ -442,7 +460,7 @@ class ModelTests(unittest.TestCase):
+         expected_write_content = "[virt-viewer]\ntype=spice\n"\
+             "host=kimchi-test-host\nport=6660\npassword=spicepasswd\n"
+         self.assertEqual(
+-            open_().write.mock_calls, [call(expected_write_content)]
++            open_().write.mock_calls, [mock.call(expected_write_content)]
+         )
+ 
+         mock_get_graphics.assert_called_once_with('kimchi-vm', None)
+@@ -464,9 +482,9 @@ class ModelTests(unittest.TestCase):
+         self.assertEqual(fw_manager.opened_ports, {})
+ 
+         mock_run_cmd.assert_has_calls(
+-            [call(['firewall-cmd', '--state', '-q']),
+-             call(['firewall-cmd', '--add-port=5905/tcp']),
+-             call(['firewall-cmd', '--remove-port=5905/tcp'])])
++            [mock.call(['firewall-cmd', '--state', '-q']),
++             mock.call(['firewall-cmd', '--add-port=5905/tcp']),
++             mock.call(['firewall-cmd', '--remove-port=5905/tcp'])])
+ 
+     @mock.patch('wok.plugins.kimchi.model.virtviewerfile.run_command')
+     def test_firewall_provider_ufw(self, mock_run_cmd):
+@@ -482,10 +500,10 @@ class ModelTests(unittest.TestCase):
+         self.assertEqual(fw_manager.opened_ports, {})
+ 
+         mock_run_cmd.assert_has_calls(
+-            [call(['firewall-cmd', '--state', '-q']),
+-             call(['ufw', 'status']),
+-             call(['ufw', 'allow', '5905/tcp']),
+-             call(['ufw', 'deny', '5905/tcp'])])
++            [mock.call(['firewall-cmd', '--state', '-q']),
++             mock.call(['ufw', 'status']),
++             mock.call(['ufw', 'allow', '5905/tcp']),
++             mock.call(['ufw', 'deny', '5905/tcp'])])
+ 
+     @mock.patch('wok.plugins.kimchi.model.virtviewerfile.run_command')
+     def test_firewall_provider_iptables(self, mock_run_cmd):
+@@ -507,9 +525,9 @@ class ModelTests(unittest.TestCase):
+                         5905, '-j', 'ACCEPT']
+ 
+         mock_run_cmd.assert_has_calls(
+-            [call(['firewall-cmd', '--state', '-q']),
+-             call(['ufw', 'status']),
+-             call(iptables_add), call(iptables_del)])
++            [mock.call(['firewall-cmd', '--state', '-q']),
++             mock.call(['ufw', 'status']),
++             mock.call(iptables_add), mock.call(iptables_del)])
+ 
+     @unittest.skipUnless(utils.running_as_root(), 'Must be run as root')
+     @mock.patch('wok.plugins.kimchi.model.virtviewerfile.'
+@@ -866,7 +884,7 @@ class ModelTests(unittest.TestCase):
+             self.assertEquals(prev_count, len(storage_list))
+ 
+             # Create a new cdrom using a remote iso
+-            valid_remote_iso_path = utils.get_remote_iso_path()
++            valid_remote_iso_path = get_remote_iso_path()
+             cdrom_args = {"type": "cdrom",
+                           "path": valid_remote_iso_path}
+             cdrom_dev = inst.vmstorages_create(vm_name, cdrom_args)
+diff --git a/tests/test_model_network.py b/tests/test_model_network.py
+index 3717c94..79fda88 100644
+--- a/tests/test_model_network.py
++++ b/tests/test_model_network.py
+@@ -23,7 +23,7 @@ import os
+ import unittest
+ from functools import partial
+ 
+-from tests.utils import get_free_port, patch_auth, request, rollback_wrapper
++from tests.utils import patch_auth, request, rollback_wrapper
+ from tests.utils import run_server
+ 
+ from wok.rollbackcontext import RollbackContext
+@@ -34,23 +34,14 @@ from wok.plugins.kimchi.model.featuretests import FeatureTests
+ 
+ model = None
+ test_server = None
+-host = None
+-port = None
+-ssl_port = None
+-cherrypy_port = None
+ 
+ 
+ def setUpModule():
+-    global test_server, model, host, port, ssl_port, cherrypy_port
++    global test_server, model
+ 
+     patch_auth()
+     model = Model(None, '/tmp/obj-store-test')
+-    host = '127.0.0.1'
+-    port = get_free_port('http')
+-    ssl_port = get_free_port('https')
+-    cherrypy_port = get_free_port('cherrypy_port')
+-    test_server = run_server(host, port, ssl_port, test_mode=True,
+-                             cherrypy_port=cherrypy_port, model=model)
++    test_server = run_server(test_mode=True, model=model)
+ 
+ 
+ def tearDownModule():
+@@ -116,7 +107,7 @@ def _do_network_test(self, model, params):
+ 
+ class NetworkTests(unittest.TestCase):
+     def setUp(self):
+-        self.request = partial(request, host, ssl_port)
++        self.request = partial(request)
+ 
+     def test_get_networks(self):
+         networks = json.loads(self.request('/plugins/kimchi/networks').read())
+diff --git a/tests/test_model_storagepool.py b/tests/test_model_storagepool.py
+index 276b8a5..2210a37 100644
+--- a/tests/test_model_storagepool.py
++++ b/tests/test_model_storagepool.py
+@@ -29,29 +29,20 @@ from wok.rollbackcontext import RollbackContext
+ 
+ from wok.plugins.kimchi.model.model import Model
+ 
+-from tests.utils import get_free_port, patch_auth, request
++from tests.utils import patch_auth, request
+ from tests.utils import run_server
+ 
+ 
+ model = None
+ test_server = None
+-host = None
+-port = None
+-ssl_port = None
+-cherrypy_port = None
+ 
+ 
+ def setUpModule():
+-    global test_server, model, host, port, ssl_port, cherrypy_port
++    global test_server, model
+ 
+     patch_auth()
+     model = Model(None, '/tmp/obj-store-test')
+-    host = '127.0.0.1'
+-    port = get_free_port('http')
+-    ssl_port = get_free_port('https')
+-    cherrypy_port = get_free_port('cherrypy_port')
+-    test_server = run_server(host, port, ssl_port, test_mode=True,
+-                             cherrypy_port=cherrypy_port, model=model)
++    test_server = run_server(test_mode=True, model=model)
+ 
+ 
+ def tearDownModule():
+@@ -61,7 +52,7 @@ def tearDownModule():
+ 
+ class StoragepoolTests(unittest.TestCase):
+     def setUp(self):
+-        self.request = partial(request, host, ssl_port)
++        self.request = partial(request)
+ 
+     def test_get_storagepools(self):
+         storagepools = json.loads(
+@@ -120,6 +111,5 @@ class StoragepoolTests(unittest.TestCase):
+             # Reserved pool return 400
+             req = json.dumps({'name': 'kimchi_isos', 'type': 'dir',
+                               'path': '/var/lib/libvirt/images/%i' % i})
+-            resp = request(host, ssl_port, '/plugins/kimchi/storagepools', req,
+-                           'POST')
++            resp = request('/plugins/kimchi/storagepools', req, 'POST')
+             self.assertEquals(400, resp.status)
+diff --git a/tests/test_model_storagevolume.py b/tests/test_model_storagevolume.py
+index 35cb51d..cacfbb5 100644
+--- a/tests/test_model_storagevolume.py
++++ b/tests/test_model_storagevolume.py
+@@ -24,8 +24,8 @@ import requests
+ import unittest
+ from functools import partial
+ 
+-
+-from tests.utils import fake_auth_header, get_free_port, patch_auth, request
++from tests.utils import fake_auth_header, HOST
++from tests.utils import patch_auth, PROXY_PORT, request
+ from tests.utils import rollback_wrapper, run_server, wait_task
+ 
+ from wok.config import paths
+@@ -37,23 +37,14 @@ from wok.plugins.kimchi.model.model import Model
+ 
+ model = None
+ test_server = None
+-host = None
+-port = None
+-ssl_port = None
+-cherrypy_port = None
+ 
+ 
+ def setUpModule():
+-    global test_server, model, host, port, ssl_port, cherrypy_port
++    global test_server, model
+ 
+     patch_auth()
+     model = Model(None, '/tmp/obj-store-test')
+-    host = '127.0.0.1'
+-    port = get_free_port('http')
+-    ssl_port = get_free_port('https')
+-    cherrypy_port = get_free_port('cherrypy_port')
+-    test_server = run_server(host, port, ssl_port, test_mode=True,
+-                             cherrypy_port=cherrypy_port, model=model)
++    test_server = run_server(test_mode=True, model=model)
+ 
+ 
+ def tearDownModule():
+@@ -61,7 +52,7 @@ def tearDownModule():
+     os.unlink('/tmp/obj-store-test')
+ 
+ 
+-def _do_volume_test(self, model, host, ssl_port, pool_name):
++def _do_volume_test(self, model, pool_name):
+     def _task_lookup(taskid):
+         return json.loads(
+             self.request('/plugins/kimchi/tasks/%s' % taskid).read()
+@@ -176,7 +167,7 @@ def _do_volume_test(self, model, host, ssl_port, pool_name):
+             self.assertEquals('ready for upload', status['message'])
+ 
+             # Upload volume content
+-            url = 'https://%s:%s' % (host, ssl_port) + uri + '/' + filename
++            url = 'https://%s:%s' % (HOST, PROXY_PORT) + uri + '/' + filename
+ 
+             # Create a file with 5M to upload
+             # Max body size is set to 4M so the upload will fail with 413
+@@ -250,7 +241,7 @@ def _do_volume_test(self, model, host, ssl_port, pool_name):
+ 
+ class StorageVolumeTests(unittest.TestCase):
+     def setUp(self):
+-        self.request = partial(request, host, ssl_port)
++        self.request = partial(request)
+ 
+     def test_get_storagevolume(self):
+         uri = '/plugins/kimchi/storagepools/default/storagevolumes'
+@@ -271,4 +262,4 @@ class StorageVolumeTests(unittest.TestCase):
+             self.assertEquals(sorted(all_keys), sorted(vol_info.keys()))
+ 
+     def test_storagevolume_action(self):
+-        _do_volume_test(self, model, host, ssl_port, 'default')
++        _do_volume_test(self, model, 'default')
+diff --git a/tests/test_networkxml.py b/tests/test_networkxml.py
+index a39cd61..6c133c5 100644
+--- a/tests/test_networkxml.py
++++ b/tests/test_networkxml.py
+@@ -22,13 +22,16 @@ import lxml.etree as ET
+ import unittest
+ 
+ 
+-from tests.utils import normalize_xml
+-
+ from wok.xmlutils.utils import xpath_get_text
+ 
+ from wok.plugins.kimchi.xmlutils import network as nxml
+ 
+ 
++def normalize_xml(xml_str):
++    return ET.tostring(ET.fromstring(xml_str,
++                       ET.XMLParser(remove_blank_text=True)))
++
++
+ class NetworkXmlTests(unittest.TestCase):
+     def test_dhcp_xml(self):
+         """
+diff --git a/tests/test_rest.py b/tests/test_rest.py
+index 00ad7f3..111d5ed 100644
+--- a/tests/test_rest.py
++++ b/tests/test_rest.py
+@@ -27,8 +27,7 @@ import urllib2
+ import urlparse
+ from functools import partial
+ 
+-from tests.utils import get_free_port, patch_auth, request
+-from tests.utils import run_server, wait_task
++from tests.utils import patch_auth, request, run_server, wait_task
+ 
+ from wok.asynctask import AsyncTask
+ from wok.rollbackcontext import RollbackContext
+@@ -41,10 +40,6 @@ import iso_gen
+ 
+ test_server = None
+ model = None
+-host = None
+-port = None
+-ssl_port = None
+-cherrypy_port = None
+ fake_iso = '/tmp/fake.iso'
+ 
+ DISKS = [{'size': 10, 'format': 'qcow2', 'index': 0, 'pool': {
+@@ -52,16 +47,11 @@ DISKS = [{'size': 10, 'format': 'qcow2', 'index': 0, 'pool': {
+ 
+ 
+ def setUpModule():
+-    global test_server, model, host, port, ssl_port, cherrypy_port
++    global test_server, model
+ 
+     patch_auth()
+     model = mockmodel.MockModel('/tmp/obj-store-test')
+-    host = '127.0.0.1'
+-    port = get_free_port('http')
+-    ssl_port = get_free_port('https')
+-    cherrypy_port = get_free_port('cherrypy_port')
+-    test_server = run_server(host, port, ssl_port, test_mode=True,
+-                             cherrypy_port=cherrypy_port, model=model)
++    test_server = run_server(test_mode=True, model=model)
+ 
+     # Create fake ISO to do the tests
+     iso_gen.construct_fake_iso(fake_iso, True, '12.04', 'ubuntu')
+@@ -92,7 +82,7 @@ class RestTests(unittest.TestCase):
+         cb('in progress')
+ 
+     def setUp(self):
+-        self.request = partial(request, host, ssl_port)
++        self.request = partial(request)
+         model.reset()
+ 
+     def assertHTTPStatus(self, code, *args):
+@@ -1428,5 +1418,5 @@ class HttpsRestTests(RestTests):
+     Run all of the same tests as above, but use https instead
+     """
+     def setUp(self):
+-        self.request = partial(request, host, ssl_port)
++        self.request = partial(request)
+         model.reset()
+diff --git a/tests/test_template.py b/tests/test_template.py
+index 727a354..2b70039 100644
+--- a/tests/test_template.py
++++ b/tests/test_template.py
+@@ -25,7 +25,7 @@ import psutil
+ import unittest
+ from functools import partial
+ 
+-from tests.utils import get_free_port, patch_auth, request, run_server
++from tests.utils import patch_auth, request, run_server
+ 
+ from wok.plugins.kimchi.config import READONLY_POOL_TYPE
+ from wok.plugins.kimchi.mockmodel import MockModel
+@@ -35,25 +35,16 @@ from wok.plugins.kimchi.model.templates import MAX_MEM_LIM
+ 
+ model = None
+ test_server = None
+-host = None
+-port = None
+-ssl_port = None
+-cherrypy_port = None
+ MOCK_ISO = "/tmp/mock.iso"
+ DEFAULT_POOL = u'/plugins/kimchi/storagepools/default-pool'
+ 
+ 
+ def setUpModule():
+-    global test_server, model, host, port, ssl_port, cherrypy_port
++    global test_server, model
+ 
+     patch_auth()
+     model = MockModel('/tmp/obj-store-test')
+-    host = '127.0.0.1'
+-    port = get_free_port('http')
+-    ssl_port = get_free_port('https')
+-    cherrypy_port = get_free_port('cherrypy_port')
+-    test_server = run_server(host, port, ssl_port, test_mode=True,
+-                             cherrypy_port=cherrypy_port, model=model)
++    test_server = run_server(test_mode=True, model=model)
+     iso_gen.construct_fake_iso(MOCK_ISO, True, '14.04', 'ubuntu')
+ 
+ 
+@@ -64,7 +55,7 @@ def tearDownModule():
+ 
+ class TemplateTests(unittest.TestCase):
+     def setUp(self):
+-        self.request = partial(request, host, ssl_port)
++        self.request = partial(request)
+         model.reset()
+ 
+     def test_tmpl_lifecycle(self):
+diff --git a/ui/js/src/kimchi.api.js b/ui/js/src/kimchi.api.js
+index 81d10db..574d3c1 100644
+--- a/ui/js/src/kimchi.api.js
++++ b/ui/js/src/kimchi.api.js
+@@ -313,18 +313,17 @@ var kimchi = {
+             type : 'GET',
+             dataType : 'json'
+         }).done(function(data, textStatus, xhr) {
+-            proxy_port = data['websockets_port'];
+-            ssl_port = data['ssl_port'];
++            proxy_port = data['proxy_port'];
+             server_root = data['server_root'];
+             wok.requestJSON({
+                 url : "plugins/kimchi/vms/" + encodeURIComponent(vm) + "/serial",
+                 type : "POST",
+                 dataType : "json"
+             }).done(function() {
+-                url = 'https://' + location.hostname + ':' + ssl_port;
++                url = 'https://' + location.hostname + ':' + proxy_port;
+                 url += server_root;
+                 url += "/plugins/kimchi/serial/html/serial.html";
+-                url += "?port=" + ssl_port;
++                url += "?port=" + proxy_port;
+                 url += "&path=" + server_root + "/websockify";
+                 url += "?token=" + wok.urlSafeB64Encode(vm+'-console').replace(/=*$/g, "");
+                 url += '&encrypt=1';
+@@ -338,18 +337,17 @@ var kimchi = {
+     },
+ 
+     vncToVM : function(vm) {
+-        proxy_port = wok.config['websockets_port'];
+-        ssl_port = wok.config['ssl_port'];
++        proxy_port = wok.config['proxy_port'];
+         server_root = wok.config['server_root'];
+         wok.requestJSON({
+             url : "plugins/kimchi/vms/" + encodeURIComponent(vm) + "/connect",
+             type : "POST",
+             dataType : "json"
+         }).done(function() {
+-            url = 'https://' + location.hostname + ':' + ssl_port;
++            url = 'https://' + location.hostname + ':' + proxy_port;
+             url += server_root;
+             url += "/plugins/kimchi/novnc/vnc_auto.html";
+-            url += "?port=" + ssl_port;
++            url += "?port=" + proxy_port;
+             url += "&path=" + server_root + "/websockify";
+             /*
+              * From python documentation base64.urlsafe_b64encode(s)
+@@ -365,22 +363,21 @@ var kimchi = {
+     },
+ 
+     spiceToVM : function(vm) {
+-        proxy_port = wok.config['websockets_port'];
+-        ssl_port = wok.config['ssl_port'];
++        proxy_port = wok.config['proxy_port'];
+         server_root = wok.config['server_root'];
+         wok.requestJSON({
+             url : "plugins/kimchi/vms/" + encodeURIComponent(vm) + "/connect",
+             type : "POST",
+             dataType : "json"
+         }).done(function(data, textStatus, xhr) {
+-            url = 'https://' + location.hostname + ':' + ssl_port;
++            url = 'https://' + location.hostname + ':' + proxy_port;
+             url += server_root;
+             url += "/plugins/kimchi/spice_auto.html";
+             /*
+              * When using server_root we need pass the value with port
+              * argument to be used correctly by spice_auto.html scripts
+              */
+-            url += "?port=" + ssl_port + server_root;
++            url += "?port=" + proxy_port + server_root;
+             url += "&listen=" + location.hostname;
+             /*
+              * From python documentation base64.urlsafe_b64encode(s)
+diff --git a/websocket.py b/websocket.py
+index 122b2ce..6268c8a 100644
+--- a/websocket.py
++++ b/websocket.py
+@@ -25,7 +25,7 @@ import os
+ from multiprocessing import Process
+ from websockify import WebSocketProxy
+ 
+-from wok.config import config, paths, PluginPaths
++from wok.config import config, PluginPaths
+ 
+ 
+ try:
+@@ -72,12 +72,6 @@ def new_ws_proxy():
+         if e.errno == errno.EEXIST:
+             pass
+ 
+-    cert = config.get('server', 'ssl_cert')
+-    key = config.get('server', 'ssl_key')
+-    if not (cert and key):
+-        cert = '%s/wok-cert.pem' % paths.conf_dir
+-        key = '%s/wok-key.pem' % paths.conf_dir
+-
+     params = {'listen_host': '127.0.0.1',
+               'listen_port': config.get('server', 'websockets_port'),
+               'ssl_only': False}
+-- 
+2.7.4
+
