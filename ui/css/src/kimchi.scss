@@ -19,20 +19,20 @@
 //
 // Wok Variables
 // ----------------------------------------------------------------------------
-@import "../../../../../../../ui/css/src/modules/wok-variables";
+@import "modules/wok-variables";
 
 //
 // Imported functions
 // ----------------------------------------------------------------------------
-@import "../../../../../../../ui/css/src/modules/compact";
-@import "../../../../../../../ui/css/src/vendor/compass-mixins/lib/compass";
-@import "../../../../../../../ui/css/src/vendor/bootstrap-sass/bootstrap/mixins";
+@import "modules/compact";
+@import "vendor/compass-mixins/lib/compass";
+@import "vendor/bootstrap-sass/bootstrap/mixins";
 
 //
 // Extended classes
 // ----------------------------------------------------------------------------
-@import "../../../../../../../ui/css/src/modules/utils";
-@import "../../../../../../../ui/css/src/modules/animation";
+@import "modules/utils";
+@import "modules/animation";
 
 //
 // Kimchi variables and classes
