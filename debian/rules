@@ -11,6 +11,13 @@ override_dh_clean:
 	$(shell find ./ -name '*.gmo'| sed 's#[^/]*$$#*.gmo#'| sort|uniq) \
 	$(shell find ./ -name '*.mo' -type l)
 
+override_dh_link:
+	dh_link
+	# Use Debian-packaged term.js
+	# libjs-term.js: /usr/share/javascript/term.js/term.js
+	rm -f $(CURDIR)/debian/wok/plugins/kimchi/ui/serial/libs/term.js
+	dh_link -p kimchi usr/share/javascript/term.js/term.js usr/share/wok/plugins/kimchi/ui/serial/libs/term.js
+
 override_dh_auto_build:
 	# Debian : we removed generated css above and make sure we can rebuild them
 	make -C ui/css css

@@ -19,6 +19,7 @@ Architecture: any
 Depends: gettext,
          ginger-base,
          libguestfs-tools,
+         libjs-term.js,
          libvirt-clients,
          libvirt-daemon-system,
          nfs-common,
