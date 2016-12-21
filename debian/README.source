@@ -5,3 +5,7 @@ We don't veriify upstream source tarball as upstream don't sign releases.
 
 override_dh_auto_test is used to skip tests as testing implies creating VMs
 which is not always possible depending on the build environment/host.
+
+Overriding insane-line-length-in-source-file ui/spice-html5/thirdparty/sha1.js
+since this file is not used in final package (only used if making with flag
+--with-spice-html5).
