@@ -1,6 +1,6 @@
-kimchi (2.3.0-1) unstable; urgency=low
+kimchi (2.3.1-1) unstable; urgency=low
 
   * Initial release (Closes: #772823, LP: #1408071)
   * kimchi depends on wok (ITP #846595) and ginger-base (ITP #846598)
 
- -- Lucio Correia <luciojhc@linux.vnet.ibm.com>  Mon, 24 Oct 2016 14:28:17 -0200
+ -- Lucio Correia <luciojhc@linux.vnet.ibm.com>  Fri, 23 Dec 2016 18:06:22 -0200
