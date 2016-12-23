@@ -1,19 +1,19 @@
-From 5f3575ce752fef0de86afd9f26ec5a76204fb83d Mon Sep 17 00:00:00 2001
+From 4938a90bfef231f823bc2cb442118f373766c621 Mon Sep 17 00:00:00 2001
 From: Lucio Correia <luciojhc@linux.vnet.ibm.com>
 Date: Wed, 23 Nov 2016 14:20:06 -0200
-Subject: [PATCH] Rename wokd to wok
+Subject: [PATCH] [Kimchi] Rename wokd to wok
 
 Signed-off-by: Lucio Correia <luciojhc@linux.vnet.ibm.com>
 ---
  Makefile.am                    | 10 +++++-----
- contrib/kimchid.service.ubuntu |  4 ++--
+ contrib/kimchid.service.debian |  4 ++--
  docs/README-federation.md      |  2 +-
  docs/README.md                 |  2 +-
  model/peers.py                 |  8 ++++----
  5 files changed, 13 insertions(+), 13 deletions(-)
 
 diff --git a/Makefile.am b/Makefile.am
-index 01d4edf..36607a1 100644
+index 906deac..3cbc689 100644
 --- a/Makefile.am
 +++ b/Makefile.am
 @@ -156,11 +156,11 @@ ChangeLog:
@@ -23,8 +23,8 @@ index 01d4edf..36607a1 100644
 -		mkdir -p $(DESTDIR)/etc/systemd/system/wokd.service.d; \
 +		mkdir -p $(DESTDIR)/etc/systemd/system/wok.service.d; \
  		if test -f /etc/debian_version; then \
--			$(INSTALL_DATA) contrib/kimchid.service.ubuntu $(DESTDIR)/etc/systemd/system/wokd.service.d/kimchi.conf; \
-+			$(INSTALL_DATA) contrib/kimchid.service.ubuntu $(DESTDIR)/etc/systemd/system/wok.service.d/kimchi.conf; \
+-			$(INSTALL_DATA) contrib/kimchid.service.debian $(DESTDIR)/etc/systemd/system/wokd.service.d/kimchi.conf; \
++			$(INSTALL_DATA) contrib/kimchid.service.debian $(DESTDIR)/etc/systemd/system/wok.service.d/kimchi.conf; \
  		else \
 -			$(INSTALL_DATA) contrib/kimchid.service.fedora $(DESTDIR)/etc/systemd/system/wokd.service.d/kimchi.conf; \
 +			$(INSTALL_DATA) contrib/kimchid.service.fedora $(DESTDIR)/etc/systemd/system/wok.service.d/kimchi.conf; \
@@ -42,17 +42,17 @@ index 01d4edf..36607a1 100644
  	fi; \
  	$(RM) $(DESTDIR)$(kimchidir)/API.json
  	$(RM) -rf $(DESTDIR)/$(localstatedir)/lib/kimchi
-diff --git a/contrib/kimchid.service.ubuntu b/contrib/kimchid.service.ubuntu
-index e52db66..e261942 100644
---- a/contrib/kimchid.service.ubuntu
-+++ b/contrib/kimchid.service.ubuntu
+diff --git a/contrib/kimchid.service.debian b/contrib/kimchid.service.debian
+index 87a5866..fc58f6a 100644
+--- a/contrib/kimchid.service.debian
++++ b/contrib/kimchid.service.debian
 @@ -1,7 +1,7 @@
  [Unit]
 -Requires=wokd.service
 +Requires=wok.service
- Wants=libvirt-bin.service
--After=libvirt-bin.service wokd.service
-+After=libvirt-bin.service wok.service
+ Wants=libvirtd.service
+-After=libvirtd.service wokd.service
++After=libvirtd.service wok.service
  
  [Service]
  Nice=0
@@ -70,10 +70,10 @@ index 3554757..561adde 100644
  The Wok server will be registered on openSLP on server starting up and will
  be found by other Wok peers (with federation feature enabled) in the same
 diff --git a/docs/README.md b/docs/README.md
-index 674a4d7..7974d1b 100644
+index 7b356b1..e618f43 100644
 --- a/docs/README.md
 +++ b/docs/README.md
-@@ -31,7 +31,7 @@ Install Dependencies
+@@ -34,7 +34,7 @@ Install Dependencies
  First of all, make sure to [Wok](https://github.com/kimchi-project/wok/#getting-started)
  and [Ginger Base](https://github.com/kimchi-project/gingerbase/#getting-started) installed in your system.
  To add Kimchi plugin, please make sure to have all the dependencies installed

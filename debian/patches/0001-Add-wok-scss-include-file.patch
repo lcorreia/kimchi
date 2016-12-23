@@ -1,4 +1,4 @@
-From 36de4f872ec205179466fb567554a7e8e9dbf2b3 Mon Sep 17 00:00:00 2001
+From 0b47e4a4155b759213e37f0cc5a2599059441fc7 Mon Sep 17 00:00:00 2001
 From: Lucio Correia <luciojhc@linux.vnet.ibm.com>
 Date: Wed, 23 Nov 2016 11:51:17 -0200
 Subject: [PATCH] [Kimchi] Add wok scss include file
@@ -23,33 +23,36 @@ index 6573e2b..dc7741d 100644
 -	sassc -s expanded $< kimchi.css
 +	pysassc -I /usr/share/wok/scss -s expanded $< kimchi.css
 diff --git a/ui/css/src/kimchi.scss b/ui/css/src/kimchi.scss
-index 89904e0..44758c3 100644
+index 0d53901..58bae6c 100644
 --- a/ui/css/src/kimchi.scss
 +++ b/ui/css/src/kimchi.scss
-@@ -17,17 +17,17 @@
-  */
- 
- // Core variables
+@@ -19,20 +19,20 @@
+ //
+ // Wok Variables
+ // ----------------------------------------------------------------------------
 -@import "../../../../../../../ui/css/src/modules/wok-variables";
 +@import "modules/wok-variables";
- // Core functions
+ 
+ //
+ // Imported functions
+ // ----------------------------------------------------------------------------
 -@import "../../../../../../../ui/css/src/modules/compact";
-+@import "modules/compact";
- // Compass Mixins
 -@import "../../../../../../../ui/css/src/vendor/compass-mixins/lib/compass";
-+@import "vendor/compass-mixins/lib/compass";
- // Bootstrap Mixins
 -@import "../../../../../../../ui/css/src/vendor/bootstrap-sass/bootstrap/mixins";
++@import "modules/compact";
++@import "vendor/compass-mixins/lib/compass";
 +@import "vendor/bootstrap-sass/bootstrap/mixins";
  
+ //
  // Extended classes
+ // ----------------------------------------------------------------------------
 -@import "../../../../../../../ui/css/src/modules/utils";
 -@import "../../../../../../../ui/css/src/modules/animation";
 +@import "modules/utils";
 +@import "modules/animation";
  
- // Images List - Guests and Templates
- @import "modules/iso-list";
+ //
+ // Kimchi variables and classes
 -- 
 2.7.4
 

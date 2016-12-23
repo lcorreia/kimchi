@@ -1,7 +1,8 @@
-From 5472ce92b2addd86d88bacd0ab5bc96765a14a27 Mon Sep 17 00:00:00 2001
+From 0e3340d584cbc7966b0f391b3d8a31eeac455266 Mon Sep 17 00:00:00 2001
 From: Paulo Vital <pvital@linux.vnet.ibm.com>
 Date: Mon, 10 Oct 2016 11:08:48 -0300
-Subject: [PATCH 2/3] Issue #733: CSS updates to handle relative path support.
+Subject: [PATCH] [Kimchi 2/3] Issue #733: CSS updates to handle relative path
+ support.
 
 Signed-off-by: Paulo Vital <pvital@linux.vnet.ibm.com>
 ---
@@ -9,7 +10,7 @@ Signed-off-by: Paulo Vital <pvital@linux.vnet.ibm.com>
  1 file changed, 49 insertions(+), 46 deletions(-)
 
 diff --git a/ui/css/kimchi.css b/ui/css/kimchi.css
-index 9a9ff25..231c925 100644
+index 9ae9f56..b5752ca 100644
 --- a/ui/css/kimchi.css
 +++ b/ui/css/kimchi.css
 @@ -96,7 +96,7 @@
@@ -114,7 +115,7 @@ index 9a9ff25..231c925 100644
  }
  
  body.wok-gallery {
-@@ -1438,7 +1438,7 @@ body.wok-gallery {
+@@ -1464,7 +1464,7 @@ body.wok-gallery {
    border: 1px solid #eee !important;
    margin-bottom: 3px;
    display: block;
@@ -123,7 +124,7 @@ index 9a9ff25..231c925 100644
    font-weight: 700;
    line-height: 1;
    text-align: left;
-@@ -1724,7 +1724,7 @@ body.wok-gallery {
+@@ -1746,7 +1746,7 @@ body.wok-gallery {
    height: 664px;
    width: 2164px;
    left: 0;
@@ -132,7 +133,7 @@ index 9a9ff25..231c925 100644
  }
  
  #template-add-window.modal-content p {
-@@ -2021,31 +2021,31 @@ body.wok-gallery {
+@@ -2043,31 +2043,31 @@ body.wok-gallery {
  }
  
  #templates-root-container .wok-vm-list .distro-icon.icon-centos {
@@ -171,7 +172,7 @@ index 9a9ff25..231c925 100644
  }
  
  #templates-root-container .wok-vm-gallery {
-@@ -2111,7 +2111,9 @@ body.wok-gallery {
+@@ -2133,7 +2133,9 @@ body.wok-gallery {
    font-size: 32px;
  }
  
@@ -182,7 +183,7 @@ index 9a9ff25..231c925 100644
    padding-bottom: 11px;
  }
  
-@@ -2152,31 +2154,31 @@ body.wok-gallery {
+@@ -2174,31 +2176,31 @@ body.wok-gallery {
  }
  
  #templates-root-container .wok-vm-gallery .name-distro-icon.icon-centos {
@@ -221,7 +222,7 @@ index 9a9ff25..231c925 100644
  }
  
  #templates-root-container span.template-status {
-@@ -2230,7 +2232,7 @@ body.wok-gallery {
+@@ -2252,7 +2254,7 @@ body.wok-gallery {
  }
  
  #network-root-container .wok-nw-loading-icon {
@@ -230,7 +231,7 @@ index 9a9ff25..231c925 100644
    -webkit-animation: spin 3s infinite linear;
    -o-animation: spin 3s infinite linear;
    animation: spin 3s infinite linear;
-@@ -2337,15 +2339,15 @@ body.wok-gallery {
+@@ -2359,15 +2361,15 @@ body.wok-gallery {
  }
  
  #storage-root-container .wok-datagrid-body .inactive .usage-icon.icon-high {
@@ -249,7 +250,7 @@ index 9a9ff25..231c925 100644
  }
  
  #storage-root-container .volumes {
-@@ -2417,15 +2419,15 @@ body.wok-gallery {
+@@ -2439,15 +2441,15 @@ body.wok-gallery {
  }
  
  #storage-root-container .volumes .volume-icon.icon-high {
@@ -268,7 +269,7 @@ index 9a9ff25..231c925 100644
  }
  
  #storage-root-container .volumes .volume-progress {
-@@ -2537,7 +2539,7 @@ body.wok-gallery {
+@@ -2559,7 +2561,7 @@ body.wok-gallery {
    border-style: solid;
    border-color: transparent;
    border-color: rgba(255, 255, 255, 0);
@@ -277,7 +278,7 @@ index 9a9ff25..231c925 100644
  }
  
  #storage-root-container .volumes .wok-gallery .volume-box-inner {
-@@ -2551,7 +2553,7 @@ body.wok-gallery {
+@@ -2573,7 +2575,7 @@ body.wok-gallery {
    border-style: solid;
    border-color: #fff;
    background: #fff;
@@ -286,7 +287,7 @@ index 9a9ff25..231c925 100644
  }
  
  #storage-root-container .volumes .wok-gallery span.column-name,
-@@ -2866,17 +2868,17 @@ body.wok-gallery {
+@@ -2888,17 +2890,17 @@ body.wok-gallery {
  
  #storage-root-container .wok-datagrid > .wok-datagrid-header > span.column-usage .usage-icon.icon-high,
  #storage-root-container .wok-datagrid > .wok-datagrid-body > .wok-datagrid-row > span.column-usage .usage-icon.icon-high {
@@ -307,7 +308,7 @@ index 9a9ff25..231c925 100644
  }
  
  #storage-root-container .wok-datagrid > .wok-datagrid-header > span.column-capacity,
-@@ -3032,7 +3034,8 @@ body.wok-gallery {
+@@ -3054,7 +3056,8 @@ body.wok-gallery {
    white-space: nowrap;
  }
  
