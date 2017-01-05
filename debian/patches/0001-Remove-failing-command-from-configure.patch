@@ -1,0 +1,26 @@
+From 8f5af1d5c187105f7d738b0dd032ca96577b1852 Mon Sep 17 00:00:00 2001
+From: Lucio Correia <luciojhc@linux.vnet.ibm.com>
+Date: Thu, 5 Jan 2017 14:13:59 -0200
+Subject: [PATCH] Remove failing command from configure
+
+Signed-off-by: Lucio Correia <luciojhc@linux.vnet.ibm.com>
+---
+ configure.ac | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index 870ac0c..49b35ba 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -125,8 +125,6 @@ AC_CONFIG_FILES([
+     contrib/kimchi.spec.suse
+     tests/Makefile
+     xmlutils/Makefile
+-],[
+-    chmod +x po/gen-pot
+ ])
+ 
+ AC_OUTPUT
+-- 
+2.7.4
+
