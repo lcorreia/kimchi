@@ -125,8 +125,6 @@ AC_CONFIG_FILES([
     contrib/kimchi.spec.suse
     tests/Makefile
     xmlutils/Makefile
-],[
-    chmod +x po/gen-pot
 ])
 
 AC_OUTPUT
