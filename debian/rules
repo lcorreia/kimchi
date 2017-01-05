@@ -7,7 +7,7 @@ export AUTOPOINT=true
 	dh $@ --with python2
 
 override_dh_clean:
-	dh_clean po/gen-pot po/stamp-po ui/css/kimchi.css \
+	dh_clean po/gen-pot po/stamp-po \
 	$(shell find ./ -name '*.gmo'| sed 's#[^/]*$$#*.gmo#'| sort|uniq) \
 	$(shell find ./ -name '*.mo' -type l)
 
